@@ -3,7 +3,8 @@
 -- Host: 127.0.0.1    Database: collectors
 -- ------------------------------------------------------
 -- Server version	8.0.33
-CREATE SCHEMA collectors;
+
+CREATE SCHEMA IF NOT EXISTS collectors;
 USE collectors;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
