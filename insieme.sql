@@ -4,19 +4,19 @@ CREATE SCHEMA IF NOT EXISTS collectors;
 USE collectors;
 
 create table collezionista(
-  ID integer unsigned primary key auto_increment not null,
+  ID integer primary key auto_increment not null,
   email varchar(320) unique not null,
   nickname varchar(25) unique not null
 );
 
 create table collezione(
-  ID integer unsigned primary key auto_increment not null,
+  ID integer primary key auto_increment not null,
   nome varchar(25) unique not null,
   flag boolean
 );
 
 create table disco(
-  ID integer unsigned primary key auto_increment not null,
+  ID integer primary key auto_increment not null,
   titolo varchar(25) not null,
   anno_uscita date not null,
   barcode varchar(128), /*lunghezza massima barcode esistenti*/
@@ -26,41 +26,41 @@ create table disco(
 );
 
 create table genere(
-  ID integer unsigned primary key auto_increment not null,
+  ID integer primary key auto_increment not null,
   nome varchar(25) unique not null
 );
 
 create table traccia(
-  ID integer unsigned primary key auto_increment not null,
+  ID integer primary key auto_increment not null,
   titolo varchar(25) not null,
   durata time not null
 );
 
 create table anagrafica(
-  ID integer unsigned primary key auto_increment not null,
+  ID integer primary key auto_increment not null,
   nome varchar(25) not null,
   cognome varchar(25) not null,
   data_nascita date not null
 );
 
 create table autore(
-  ID integer unsigned primary key auto_increment not null,
+  ID integer primary key auto_increment not null,
   nome_autore varchar(25) not null,
   info varchar(255),
   ruolo enum('esecutore', 'compositore'),
-  ID_Anagrafica integer unsigned not null,
+  ID_Anagrafica integer not null,
   foreign key(ID_Anagrafica) references anagrafica(ID) /*on update & on delete da aggiungere*/
 );
 
 create table immagine(
-  ID integer unsigned primary key auto_increment not null,
+  ID integer primary key auto_increment not null,
   file varchar(255) not null,
   didascalia varchar(1000)
 );
 
 
 create table etichetta(
-  ID integer unsigned primary key auto_increment not null,
+  ID integer primary key auto_increment not null,
   nome varchar(25) not null,
   sede_legale varchar(255) not null,
   email varchar(320) not null

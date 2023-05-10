@@ -4,11 +4,6 @@
 -- ------------------------------------------------------
 -- Server version	8.0.33
 
-DROP SCHEMA IF EXISTS collectors;
-
-CREATE SCHEMA IF NOT EXISTS collectors;
-USE collectors;
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -57,7 +52,7 @@ CREATE TABLE `autore` (
   `nome_autore` varchar(25) NOT NULL,
   `info` varchar(255) DEFAULT NULL,
   `ruolo` enum('esecutore','compositore') DEFAULT NULL,
-  `ID_Anagrafica` int DEFAULT NULL,
+  `ID_Anagrafica` int NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `ID_Anagrafica` (`ID_Anagrafica`),
   CONSTRAINT `autore_ibfk_1` FOREIGN KEY (`ID_Anagrafica`) REFERENCES `anagrafica` (`ID`)
@@ -111,7 +106,8 @@ CREATE TABLE `collezione` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(25) NOT NULL,
   `flag` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `nome` (`nome`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -136,6 +132,7 @@ CREATE TABLE `collezionista` (
   `email` varchar(320) NOT NULL,
   `nickname` varchar(25) NOT NULL,
   PRIMARY KEY (`ID`),
+  UNIQUE KEY `email` (`email`),
   UNIQUE KEY `nickname` (`nickname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -264,7 +261,7 @@ CREATE TABLE `disco` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `titolo` varchar(25) NOT NULL,
   `anno_uscita` date NOT NULL,
-  `barcode` varchar(128) NOT NULL,
+  `barcode` varchar(128) DEFAULT NULL,
   `fomato` enum('vinile','cd','digitale') DEFAULT NULL,
   `stato_conservazione` enum('nuovo','come nuovo','ottimo','buono','accettabile') DEFAULT NULL,
   `descrizione_conservazione` varchar(255) DEFAULT NULL,
@@ -543,4 +540,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-06 19:41:59
+-- Dump completed on 2023-05-10 20:16:37
