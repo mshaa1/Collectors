@@ -1,3 +1,8 @@
+DROP SCHEMA IF EXISTS collectors;
+
+CREATE SCHEMA IF NOT EXISTS collectors;
+USE collectors;
+
 create table collezionista(
   ID integer unsigned primary key auto_increment not null,
   email varchar(320) unique not null,
