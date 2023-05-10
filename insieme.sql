@@ -1,62 +1,61 @@
 create table collezionista(
-  ID integer primary key auto_increment not null,
+  ID integer unsigned primary key auto_increment not null,
   email varchar(320) unique not null,
   nickname varchar(25) unique not null
 );
 
 create table collezione(
-  ID integer primary key auto_increment not null,
+  ID integer unsigned primary key auto_increment not null,
   nome varchar(25) unique not null,
   flag boolean
 );
 
 create table disco(
-  ID integer primary key auto_increment not null,
+  ID integer unsigned primary key auto_increment not null,
   titolo varchar(25) not null,
   anno_uscita date not null,
-  barcode varchar(128) not null, /*lunghezza massima barcode esistenti*/
+  barcode varchar(128), /*lunghezza massima barcode esistenti*/
   fomato enum('vinile', 'cd', 'digitale'),
   stato_conservazione enum ('nuovo', 'come nuovo', 'ottimo', 'buono', 'accettabile'),
   descrizione_conservazione varchar(255)
 );
 
 create table genere(
-  ID integer primary key auto_increment not null,
+  ID integer unsigned primary key auto_increment not null,
   nome varchar(25) unique not null
 );
 
 create table traccia(
-  ID integer primary key auto_increment not null,
+  ID integer unsigned primary key auto_increment not null,
   titolo varchar(25) not null,
   durata time not null
 );
 
 create table anagrafica(
-  ID integer primary key auto_increment not null,
+  ID integer unsigned primary key auto_increment not null,
   nome varchar(25) not null,
   cognome varchar(25) not null,
   data_nascita date not null
 );
 
-
 create table autore(
-  ID integer primary key auto_increment not null,
+  ID integer unsigned primary key auto_increment not null,
   nome_autore varchar(25) not null,
   info varchar(255),
   ruolo enum('esecutore', 'compositore'),
-  ID_Anagrafica integer,
-  foreign key(ID_Anagrafica) references anagrafica(ID) /*on update aggiungere*/
+  ID_Anagrafica integer unsigned not null,
+  foreign key(ID_Anagrafica) references anagrafica(ID) /*on update & on delete da aggiungere*/
 );
 
 create table immagine(
-  ID integer primary key auto_increment not null,
+  ID integer unsigned primary key auto_increment not null,
   file varchar(255) not null,
   didascalia varchar(1000)
 );
 
 
 create table etichetta(
-  ID integer primary key auto_increment not null,
+  ID integer unsigned primary key auto_increment not null,
   nome varchar(25) not null,
   sede_legale varchar(255) not null,
   email varchar(320) not null
