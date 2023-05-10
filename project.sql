@@ -4,6 +4,8 @@
 -- ------------------------------------------------------
 -- Server version	8.0.33
 
+DROP SCHEMA IF EXISTS collectors;
+
 CREATE SCHEMA IF NOT EXISTS collectors;
 USE collectors;
 

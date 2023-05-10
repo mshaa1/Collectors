@@ -1,12 +1,12 @@
 create table collezionista(
   ID integer primary key auto_increment not null,
-  email varchar(320) not null,
+  email varchar(320) unique not null,
   nickname varchar(25) unique not null
 );
 
 create table collezione(
   ID integer primary key auto_increment not null,
-  nome varchar(25) not null,
+  nome varchar(25) unique not null,
   flag boolean
 );
 
@@ -22,7 +22,7 @@ create table disco(
 
 create table genere(
   ID integer primary key auto_increment not null,
-  nome varchar(25) not null unique
+  nome varchar(25) unique not null
 );
 
 create table traccia(
