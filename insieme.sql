@@ -18,7 +18,7 @@ create table collezione(
 create table disco(
   ID integer primary key auto_increment not null,
   titolo varchar(25) not null,
-  anno_uscita date not null,
+  anno_uscita char not null,
   barcode varchar(128), /*lunghezza massima barcode esistenti*/
   fomato enum('vinile', 'cd', 'digitale'),
   stato_conservazione enum ('nuovo', 'come nuovo', 'ottimo', 'buono', 'accettabile'),
@@ -65,11 +65,11 @@ create table etichetta(
 /*-------- aggiungere on update --------*/
 
 create table condivide(
-  ID_collezionista integer,
-  foreign key (ID_collezionista) references collezionista(ID),
-
   ID_collezione integer,
-  foreign key (ID_collezione) references collezione(ID)
+  foreign key (ID_collezione) references collezione(ID), /*collezione da condividere*/
+  ID_collezionista integer,
+  foreign key (ID_collezionista) references collezionista(ID) /*collezionista a cui è condivisa la collezione */
+
 );
 
 create table possiede_collezioni(
