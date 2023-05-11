@@ -17,8 +17,8 @@ create table collezione(
 
 create table disco(
   ID integer primary key auto_increment not null,
-  titolo varchar(25) not null,
-  anno_uscita char not null,
+  titolo varchar(35) not null,
+  anno_uscita char(4) not null,
   barcode varchar(128), /*lunghezza massima barcode esistenti*/
   fomato enum('vinile', 'cd', 'digitale'),
   stato_conservazione enum ('nuovo', 'come nuovo', 'ottimo', 'buono', 'accettabile'),
@@ -32,7 +32,7 @@ create table genere(
 
 create table traccia(
   ID integer primary key auto_increment not null,
-  titolo varchar(25) not null,
+  titolo varchar(50) not null,
   durata time not null
 );
 
@@ -43,7 +43,7 @@ create table autore(
   data_nascita date not null,
   nome_autore varchar(25) not null,
   info varchar(255),
-  ruolo enum('esecutore', 'compositore')
+  ruolo enum('esecutore', 'compositore', 'poliedrico')
 );
 
 create table immagine(
