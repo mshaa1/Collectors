@@ -36,20 +36,14 @@ create table traccia(
   durata time not null
 );
 
-create table anagrafica(
-  ID integer primary key auto_increment not null,
-  nome varchar(25) not null,
-  cognome varchar(25) not null,
-  data_nascita date not null
-);
-
 create table autore(
   ID integer primary key auto_increment not null,
+  nome varchar(20) not null,
+  cognome varchar(20) not null,
+  data_nascita date not null,
   nome_autore varchar(25) not null,
   info varchar(255),
-  ruolo enum('esecutore', 'compositore'),
-  ID_Anagrafica integer not null,
-  foreign key(ID_Anagrafica) references anagrafica(ID) /*on update & on delete da aggiungere*/
+  ruolo enum('esecutore', 'compositore')
 );
 
 create table immagine(
@@ -126,13 +120,6 @@ create table produce_disco(
   ID_autore integer,
   foreign key (ID_disco) references disco(ID),
   foreign key (ID_autore) references autore(ID)
-);
-
-create table dettagli_autore(
-  ID_autore integer,
-  ID_anagrafica integer,
-  foreign key (ID_autore) references autore(ID),
-  foreign key (ID_anagrafica) references anagrafica(ID)
 );
 
 create table realizza_traccia(
