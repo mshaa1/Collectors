@@ -65,11 +65,11 @@ create table etichetta(
 /*-------- aggiungere on update --------*/
 
 create table condivide(
-  ID_collezionista integer,
-  foreign key (ID_collezionista) references collezionista(ID),
-
   ID_collezione integer,
-  foreign key (ID_collezione) references collezione(ID)
+  foreign key (ID_collezione) references collezione(ID), /*collezione da condividere*/
+  ID_collezionista integer,
+  foreign key (ID_collezionista) references collezionista(ID) /*collezionista a cui è condivisa la collezione */
+
 );
 
 create table possiede_collezioni(
