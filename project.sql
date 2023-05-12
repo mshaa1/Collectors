@@ -16,31 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `anagrafica`
---
-
-DROP TABLE IF EXISTS `anagrafica`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `anagrafica` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(25) NOT NULL,
-  `cognome` varchar(25) NOT NULL,
-  `data_nascita` date NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `anagrafica`
---
-
-LOCK TABLES `anagrafica` WRITE;
-/*!40000 ALTER TABLE `anagrafica` DISABLE KEYS */;
-/*!40000 ALTER TABLE `anagrafica` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `autore`
 --
 
@@ -49,13 +24,13 @@ DROP TABLE IF EXISTS `autore`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `autore` (
   `ID` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(20) NOT NULL,
+  `cognome` varchar(20) NOT NULL,
+  `data_nascita` date NOT NULL,
   `nome_autore` varchar(25) NOT NULL,
   `info` varchar(255) DEFAULT NULL,
-  `ruolo` enum('esecutore','compositore') DEFAULT NULL,
-  `ID_Anagrafica` int NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ID_Anagrafica` (`ID_Anagrafica`),
-  CONSTRAINT `autore_ibfk_1` FOREIGN KEY (`ID_Anagrafica`) REFERENCES `anagrafica` (`ID`)
+  `ruolo` enum('esecutore','compositore','poliedrico') DEFAULT NULL,
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -180,12 +155,12 @@ DROP TABLE IF EXISTS `condivide`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `condivide` (
-  `ID_collezionista` int DEFAULT NULL,
   `ID_collezione` int DEFAULT NULL,
-  KEY `ID_collezionista` (`ID_collezionista`),
+  `ID_collezionista` int DEFAULT NULL,
   KEY `ID_collezione` (`ID_collezione`),
-  CONSTRAINT `condivide_ibfk_1` FOREIGN KEY (`ID_collezionista`) REFERENCES `collezionista` (`ID`),
-  CONSTRAINT `condivide_ibfk_2` FOREIGN KEY (`ID_collezione`) REFERENCES `collezione` (`ID`)
+  KEY `ID_collezionista` (`ID_collezionista`),
+  CONSTRAINT `condivide_ibfk_1` FOREIGN KEY (`ID_collezione`) REFERENCES `collezione` (`ID`),
+  CONSTRAINT `condivide_ibfk_2` FOREIGN KEY (`ID_collezionista`) REFERENCES `collezionista` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -225,32 +200,6 @@ LOCK TABLES `contiene_tracce` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `dettagli_autore`
---
-
-DROP TABLE IF EXISTS `dettagli_autore`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `dettagli_autore` (
-  `ID_autore` int DEFAULT NULL,
-  `ID_anagrafica` int DEFAULT NULL,
-  KEY `ID_autore` (`ID_autore`),
-  KEY `ID_anagrafica` (`ID_anagrafica`),
-  CONSTRAINT `dettagli_autore_ibfk_1` FOREIGN KEY (`ID_autore`) REFERENCES `autore` (`ID`),
-  CONSTRAINT `dettagli_autore_ibfk_2` FOREIGN KEY (`ID_anagrafica`) REFERENCES `anagrafica` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `dettagli_autore`
---
-
-LOCK TABLES `dettagli_autore` WRITE;
-/*!40000 ALTER TABLE `dettagli_autore` DISABLE KEYS */;
-/*!40000 ALTER TABLE `dettagli_autore` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `disco`
 --
 
@@ -259,8 +208,8 @@ DROP TABLE IF EXISTS `disco`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `disco` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `titolo` varchar(25) NOT NULL,
-  `anno_uscita` date NOT NULL,
+  `titolo` varchar(35) NOT NULL,
+  `anno_uscita` char(4) NOT NULL,
   `barcode` varchar(128) DEFAULT NULL,
   `fomato` enum('vinile','cd','digitale') DEFAULT NULL,
   `stato_conservazione` enum('nuovo','come nuovo','ottimo','buono','accettabile') DEFAULT NULL,
@@ -516,7 +465,7 @@ DROP TABLE IF EXISTS `traccia`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `traccia` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `titolo` varchar(25) NOT NULL,
+  `titolo` varchar(50) NOT NULL,
   `durata` time NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -540,4 +489,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-10 20:16:37
+-- Dump completed on 2023-05-12 11:46:30
