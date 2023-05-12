@@ -11,8 +11,10 @@ create table collezionista(
 
 create table collezione(
   ID integer primary key auto_increment not null,
-  nome varchar(25) unique not null,
-  flag boolean
+  nome varchar(25) not null,
+  flag boolean,
+  ID_collezione integer,
+  foreign key (ID_collezione) references collezionista(ID) on delete cascade
 );
 
 create table disco(
@@ -66,24 +68,17 @@ create table etichetta(
 
 create table condivide(
   ID_collezione integer,
-  foreign key (ID_collezione) references collezione(ID), /*collezione da condividere*/
+  foreign key (ID_collezione) references collezione(ID) on delete cascade,           /*collezione da condividere*/
   ID_collezionista integer,
-  foreign key (ID_collezionista) references collezionista(ID) /*collezionista a cui è condivisa la collezione */
-
+  foreign key (ID_collezionista) references collezionista(ID) on delete cascade       /*collezionista a cui è condivisa la collezione */
 );
 
-create table possiede_collezioni(
-  ID_collezionista integer,
-  ID_collezione integer,
-  foreign key (ID_collezionista) references collezionista(ID),
-  foreign key (ID_collezione) references collezione(ID)
-);
 
 create table colleziona_dischi(
   ID_collezionista integer,
   ID_disco integer,
   numero_duplicati integer not null,
-  foreign key (ID_collezionista) references collezionista(ID),
+  foreign key (ID_collezionista) references collezionista(ID) on delete cascade,
   foreign key (ID_disco) references disco(ID)
 );
 

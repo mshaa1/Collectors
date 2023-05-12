@@ -56,7 +56,7 @@ CREATE TABLE `colleziona_dischi` (
   `numero_duplicati` int NOT NULL,
   KEY `ID_collezionista` (`ID_collezionista`),
   KEY `ID_disco` (`ID_disco`),
-  CONSTRAINT `colleziona_dischi_ibfk_1` FOREIGN KEY (`ID_collezionista`) REFERENCES `collezionista` (`ID`),
+  CONSTRAINT `colleziona_dischi_ibfk_1` FOREIGN KEY (`ID_collezionista`) REFERENCES `collezionista` (`ID`) ON DELETE CASCADE,
   CONSTRAINT `colleziona_dischi_ibfk_2` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -81,8 +81,10 @@ CREATE TABLE `collezione` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(25) NOT NULL,
   `flag` tinyint(1) DEFAULT NULL,
+  `ID_collezione` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `nome` (`nome`)
+  KEY `ID_collezione` (`ID_collezione`),
+  CONSTRAINT `collezione_ibfk_1` FOREIGN KEY (`ID_collezione`) REFERENCES `collezionista` (`ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -159,8 +161,8 @@ CREATE TABLE `condivide` (
   `ID_collezionista` int DEFAULT NULL,
   KEY `ID_collezione` (`ID_collezione`),
   KEY `ID_collezionista` (`ID_collezionista`),
-  CONSTRAINT `condivide_ibfk_1` FOREIGN KEY (`ID_collezione`) REFERENCES `collezione` (`ID`),
-  CONSTRAINT `condivide_ibfk_2` FOREIGN KEY (`ID_collezionista`) REFERENCES `collezionista` (`ID`)
+  CONSTRAINT `condivide_ibfk_1` FOREIGN KEY (`ID_collezione`) REFERENCES `collezione` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `condivide_ibfk_2` FOREIGN KEY (`ID_collezionista`) REFERENCES `collezionista` (`ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -353,32 +355,6 @@ LOCK TABLES `inciso` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `possiede_collezioni`
---
-
-DROP TABLE IF EXISTS `possiede_collezioni`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `possiede_collezioni` (
-  `ID_collezionista` int DEFAULT NULL,
-  `ID_collezione` int DEFAULT NULL,
-  KEY `ID_collezionista` (`ID_collezionista`),
-  KEY `ID_collezione` (`ID_collezione`),
-  CONSTRAINT `possiede_collezioni_ibfk_1` FOREIGN KEY (`ID_collezionista`) REFERENCES `collezionista` (`ID`),
-  CONSTRAINT `possiede_collezioni_ibfk_2` FOREIGN KEY (`ID_collezione`) REFERENCES `collezione` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `possiede_collezioni`
---
-
-LOCK TABLES `possiede_collezioni` WRITE;
-/*!40000 ALTER TABLE `possiede_collezioni` DISABLE KEYS */;
-/*!40000 ALTER TABLE `possiede_collezioni` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `produce_disco`
 --
 
@@ -489,4 +465,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-12 11:46:30
+-- Dump completed on 2023-05-12 13:08:17
