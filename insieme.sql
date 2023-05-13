@@ -13,23 +13,34 @@ create table collezione(
   ID integer primary key auto_increment not null,
   nome varchar(25) not null,
   flag boolean,
-  ID_collezione integer,
-  foreign key (ID_collezione) references collezionista(ID) on delete cascade
+  ID_collezionista integer not null,
+  foreign key (ID_collezionista) references collezionista(ID) on update cascade on delete cascade
 );
 
-create table disco(
+create table etichetta(
   ID integer primary key auto_increment not null,
-  titolo varchar(35) not null,
-  anno_uscita char(4) not null,
-  barcode varchar(128), /*lunghezza massima barcode esistenti*/
-  fomato enum('vinile', 'cd', 'digitale'),
-  stato_conservazione enum ('nuovo', 'come nuovo', 'ottimo', 'buono', 'accettabile'),
-  descrizione_conservazione varchar(255)
+  nome varchar(25) not null,
+  sede_legale varchar(255) not null,
+  email varchar(320) not null
 );
 
 create table genere(
   ID integer primary key auto_increment not null,
   nome varchar(25) unique not null
+);
+
+create table disco(
+  ID integer primary key auto_increment not null,
+  titolo varchar(35) not null,
+  anno_uscita smallint not null,
+  barcode varchar(128), /*lunghezza massima barcode esistenti*/
+  fomato enum('vinile', 'cd', 'digitale'),
+  stato_conservazione enum ('nuovo', 'come nuovo', 'ottimo', 'buono', 'accettabile'),
+  descrizione_conservazione varchar(255),
+  ID_etichetta integer, 
+  foreign key (ID_etichetta) references etichetta(ID) on update cascade on delete set null,
+  ID_genere integer,
+  foreign key (ID_genere) references genere(id) on update cascade on delete set null
 );
 
 create table traccia(
@@ -51,82 +62,54 @@ create table autore(
 create table immagine(
   ID integer primary key auto_increment not null,
   file varchar(255) not null,
-  didascalia varchar(1000)
-);
-
-
-create table etichetta(
-  ID integer primary key auto_increment not null,
-  nome varchar(25) not null,
-  sede_legale varchar(255) not null,
-  email varchar(320) not null
+  didascalia varchar(1000),
+  ID_disco integer,
+  foreign key (ID_disco) references disco(ID) on update cascade on delete cascade
 );
 
 
 
-/*-------- aggiungere on update --------*/
+/*-------- outer tables --------*/
 
 create table condivide(
-  ID_collezione integer,
+  ID_collezione integer not null,
   foreign key (ID_collezione) references collezione(ID) on delete cascade,           /*collezione da condividere*/
-  ID_collezionista integer,
+  ID_collezionista integer not null,
   foreign key (ID_collezionista) references collezionista(ID) on delete cascade       /*collezionista a cui è condivisa la collezione */
 );
 
-
 create table colleziona_dischi(
-  ID_collezionista integer,
-  ID_disco integer,
   numero_duplicati integer not null,
-  foreign key (ID_collezionista) references collezionista(ID) on delete cascade,
-  foreign key (ID_disco) references disco(ID)
+  ID_collezionista integer not null,
+  foreign key (ID_collezionista) references collezionista(ID) on update cascade on delete cascade,
+  ID_disco integer not null,
+  foreign key (ID_disco) references disco(ID) on update cascade on delete cascade
 );
 
 create table comprende_dischi(
-  ID_collezione integer,
-  ID_disco integer,
-  foreign key (ID_collezione) references collezione(ID),
-  foreign key (ID_disco) references disco(ID)
-);
-
-create table inciso(
-  ID_disco integer,
-  ID_etichetta integer,
-  foreign key (ID_disco) references disco(ID),
-  foreign key (ID_etichetta) references etichetta(ID)
+  ID_collezione integer not null,
+  foreign key (ID_collezione) references collezione(ID) on update cascade on delete cascade,
+  ID_disco integer not null,
+  foreign key (ID_disco) references disco(ID) on update cascade on delete cascade
 );
 
 create table contiene_tracce(
-  ID_disco integer,
+  ID_disco integer not null,
+  foreign key (ID_disco) references disco(ID) on update cascade on delete cascade,
   ID_traccia integer not null,
-  foreign key (ID_disco) references disco(ID),
-  foreign key (ID_traccia) references traccia(ID)
-);
-
-create table raffigurato(
-  ID_disco integer,
-  ID_immagine integer,
-  foreign key (ID_disco) references disco(ID),
-  foreign key (ID_immagine) references immagine(ID)
+  foreign key (ID_traccia) references traccia(ID) on update cascade on delete cascade
 );
 
 create table produce_disco(
-  ID_disco integer,
-  ID_autore integer,
-  foreign key (ID_disco) references disco(ID),
-  foreign key (ID_autore) references autore(ID)
+  ID_disco integer not null,
+  foreign key (ID_disco) references disco(ID) on update cascade on delete cascade,
+  ID_autore integer not null,
+  foreign key (ID_autore) references autore(ID) on update cascade on delete cascade
 );
 
 create table realizza_traccia(
-  ID_traccia integer,
-  ID_autore integer,
-  foreign key (ID_traccia) references traccia(ID),
-  foreign key (ID_autore) references autore(ID)
-);
-
-create table genere_associato(
-  ID_genere integer,
-  ID_disco integer unique, /*il disco ha (1,1) generi, quindi non posso avere un disco con più generi ??*/
-  foreign key (ID_genere) references genere(ID),
-  foreign key (ID_disco) references disco(ID)
+  ID_traccia integer not null,
+  foreign key (ID_traccia) references traccia(ID) on update cascade on delete cascade,
+  ID_autore integer not null,
+  foreign key (ID_autore) references autore(ID) on update cascade on delete cascade
 );
