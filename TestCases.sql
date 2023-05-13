@@ -6,51 +6,38 @@ VALUES
     (3,'loacker@temp232.it', 'SupaHacka'),
     (4,'AloneGotou@gmail.jp','GuitarHero');
 
-insert into collezione(ID, nome, flag)
+insert into collezione(ID, nome, flag, ID_collezionista)
 VALUES
-    (1,'Dr.Stone OST', 1),
-    (2,'Canzoni', 1),
-    (3,'Anime', 0),
-    (4,'kessoku', 0);
+    (1,'Dr.Stone OST', 1, 1), /* Mr.Why -> Dr.Stone OST*/
+    (2,'Canzoni', 1, 2), /* TeamNapoli -> Canzoni*/
+    (3,'Anime', 0, 3), /* SupaHacka -> Anime*/
+    (4,'kessoku', 0, 4); /* GuitarHero -> kessoku */
 
-/* legame collezionista-collezione*/
-insert into possiede_collezioni(ID_collezionista, ID_collezione)
-VALUES
-    (1,1), /* Mr.Why -> Dr.Stone OST*/
-    (2,2), /* TeamNapoli -> Canzoni*/
-    (3,3), /* SupaHacka -> Anime*/
-    (4,4); /* GuitarHero -> kessoku */
 
 /*condivisioni*/
 insert into condivide(ID_collezione, ID_collezionista)
 VALUES
     (2, 4), /*Canzoni -> GuitarHero*/
     (3, 1); /*Anime -> Mr.Why*/
-
-INSERT INTO disco(ID, titolo, anno_uscita, barcode, fomato, stato_conservazione, descrizione_conservazione)
-VALUES
-    (1,'kessoku bando album', '2022', '92999282', 'digitale', null, null),
-    (2,'Dr. Stone Original Soundtrack', '2019', '2767236', 'cd', 'come nuovo', null),
-    (3,'Dr. Stone Original Soundtrack 2', '2021', '274829', 'vinile', 'ottimo', 'ripescato dal mare'),
-    (4, 'Dr. Stone Original Soundtrack 3', '2023', '72483', 'digitale', 'accettabile', 'non completo'),
-    (5, 'Tobu collection', '2023', '243432', 'digitale', null, null),
-    (6, 'Janji', '2022', '378465783', 'digitale', null,null);
-
 INSERT INTO etichetta(ID, nome, sede_legale, email)
 VALUES
     (1, 'Aniplex', 'Tokyo', 'Aniplex.business@aho.jp'),
     (2, 'NCS', 'Oslo', 'nocopyrightsongs@support.com'),
     (3, 'TMS', 'Tokyo', 'TMSCompany@jld.com');
 
-/*Disco-Etichetta*/
-INSERT INTO inciso(ID_disco, ID_etichetta)
+INSERT INTO genere(ID, nome) VALUES (1,'OST'),(2,'Rock'),(3,'Progressive Electronic');
+
+INSERT INTO disco(ID, titolo, anno_uscita, barcode, fomato, stato_conservazione, descrizione_conservazione, ID_etichetta, ID_genere)
 VALUES
-    (1, 1), /*kessoku bando album -> Aniplex*/
-    (2, 3), /*Dr. Stone Original Soundtrack -> TMS*/
-    (3, 3), /*Dr. Stone Original Soundtrack 2 -> TMS*/
-    (4, 3), /*Dr. Stone Original Soundtrack 3 -> TMS*/
-    (5, 2), /*Tobu collection -> NCS*/
-    (6, 2); /*Janji -> NCS*/
+    (1,'kessoku bando album', '2022', '92999282', 'digitale', null, null, 1, 2),
+    (2,'Dr. Stone Original Soundtrack', '2019', '2767236', 'cd', 'come nuovo', null, 3, 1),
+    (3,'Dr. Stone Original Soundtrack 2', '2021', '274829', 'vinile', 'ottimo', 'ripescato dal mare', 3, 1),
+    (4, 'Dr. Stone Original Soundtrack 3', '2023', '72483', 'digitale', 'accettabile', 'non completo', 3, 1),
+    (5, 'Tobu collection', '2023', '243432', 'digitale', null, null, 2, 3),
+    (6, 'Janji', '2022', '378465783', 'digitale', null,null, 2, 3);
+
+
+
 
 /*TODO associare Immagini ai dischi*/
 
@@ -76,15 +63,6 @@ VALUES
     (1,4,1); /*Mr.Why -> Dr. Stone Original Soundtrack 3*/
 /*ha 2 dischi di ognuno*/
 
-INSERT INTO genere(ID, nome) VALUES (1,'OST'),(2,'Rock'),(3,'Progressive Electronic');
-INSERT INTO genere_associato(ID_genere, ID_disco)
-VALUES
-    (2, 1), /*Rock -> kessoku bando album*/
-    (1, 2), /*OST -> Dr. Stone Original Soundtrack*/
-    (1, 3), /*OST -> Dr. Stone Original Soundtrack 2*/
-    (1, 4), /*OST -> Dr. Stone Original Soundtrack 3*/
-    (3, 5), /*Progressive Electronic -> Tobu collection*/
-    (3, 6); /*Progressive Electronic -> Janji*/
 
 INSERT INTO autore(ID, nome, cognome, data_nascita, nome_autore, info, ruolo)
 VALUES
