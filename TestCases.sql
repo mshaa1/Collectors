@@ -9,7 +9,9 @@ VALUES
 insert into collezione(ID, nome, flag, ID_collezionista)
 VALUES
     (1,'Dr.Stone OST', 1, 1), /* Mr.Why -> Dr.Stone OST*/
+    (5,'Main playlist',0, 1) /* Mr.Why -> Main playlist*/,
     (2,'Canzoni', 1, 2), /* TeamNapoli -> Canzoni*/
+    (6,'House', 0, 2), /* TeamNapoli -> House*/
     (3,'Anime', 0, 3), /* SupaHacka -> Anime*/
     (4,'kessoku', 0, 4); /* GuitarHero -> kessoku */
 
@@ -49,19 +51,34 @@ VALUES
     (1,4), /*Dr. Stone ost -> Dr. Stone Original Soundtrack 3*/
     (2,5), /*Canzoni -> Tobu collection*/
     (2,6), /*Canzoni -> Janji*/
+    (2,1), /*Canzoni -> kessoku bando album*/
+    (2,2), /*Canzoni -> Dr. Stone Original Soundtrack*/
+    (2,3), /*Canzoni -> Dr. Stone Original Soundtrack 2*/
     (3,1), /*Anime -> kessoku bando album*/
     (3,2), /*Anime -> Dr. Stone Original Soundtrack*/
     (3,3), /*Anime -> Dr. Stone Original Soundtrack 2*/
     (3,4), /*Anime -> Dr. Stone Original Soundtrack 3*/
-    (4,1); /*kessoku -> kessoku bando album*/
+    (4,1), /*kessoku -> kessoku bando album*/
+    (5,2), /*Main playlist -> Dr. Stone Original Soundtrack*/
+    (5,3), /*Main playlist -> Dr. Stone Original Soundtrack 2*/
+    (5,4), /*Main playlist -> Dr. Stone Original Soundtrack 3*/
+    (5,5), /*Main playlist -> Tobu collection*/
+    (5,6), /*Main playlist -> Janji*/
+    (6,5), /*House -> Tobu collection*/
+    (6,6); /*House -> Janji*/
+
 
 /*Collezionista-dischi(duplicati)*/
 INSERT INTO colleziona_dischi(ID_collezionista, ID_disco, numero_duplicati)
 VALUES
     (1,2,1), /*Mr.Why -> Dr. Stone Original Soundtrack*/
     (1,3,1), /*Mr. Why -> Dr. Stone Original Soundtrack 2*/
-    (1,4,1); /*Mr.Why -> Dr. Stone Original Soundtrack 3*/
-/*ha 2 dischi di ognuno*/
+    (1,4,1), /*Mr.Why -> Dr. Stone Original Soundtrack 3*/
+    (2,5,1), /*TeamNapoli -> Tobu collection*/
+    (2,6,1), /*TeamNapoli -> Janji*/
+    (2,2,1), /*TeamNapoli -> Dr. Stone Original Soundtrack*/
+    (2,3,1); /*TeamNapoli -> Dr. Stone Original Soundtrack 2*/
+    /*ha 2 dischi di ognuno*/
 
 
 INSERT INTO autore(ID, nome, cognome, data_nascita, nome_autore, info, ruolo)
