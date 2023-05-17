@@ -73,9 +73,9 @@ create table immagine(
 
 create table condivide(
   ID_collezione integer not null,
-  foreign key (ID_collezione) references collezione(ID) on delete cascade,           /*collezione da condividere*/
+  foreign key (ID_collezione) references collezione(ID) on update cascade on delete cascade,           /*collezione da condividere*/
   ID_collezionista integer not null,
-  foreign key (ID_collezionista) references collezionista(ID) on delete cascade       /*collezionista a cui è condivisa la collezione */
+  foreign key (ID_collezionista) references collezionista(ID) on update cascade on delete cascade       /*collezionista a cui è condivisa la collezione */
 );
 
 create table colleziona_dischi(
