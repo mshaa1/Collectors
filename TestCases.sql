@@ -51,7 +51,7 @@ VALUES
     (2,6), /*Canzoni -> Janji*/
     (3,1), /*Anime -> kessoku bando album*/
     (3,2), /*Anime -> Dr. Stone Original Soundtrack*/
-    (1,3), /*Anime -> Dr. Stone Original Soundtrack 2*/
+    (3,3), /*Anime -> Dr. Stone Original Soundtrack 2*/
     (3,4), /*Anime -> Dr. Stone Original Soundtrack 3*/
     (4,1); /*kessoku -> kessoku bando album*/
 
