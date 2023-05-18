@@ -75,9 +75,7 @@ VALUES
     (1,3,1), /*Mr. Why -> Dr. Stone Original Soundtrack 2*/
     (1,4,1), /*Mr.Why -> Dr. Stone Original Soundtrack 3*/
     (2,5,1), /*TeamNapoli -> Tobu collection*/
-    (2,6,1), /*TeamNapoli -> Janji*/
-    (2,2,1), /*TeamNapoli -> Dr. Stone Original Soundtrack*/
-    (2,3,1); /*TeamNapoli -> Dr. Stone Original Soundtrack 2*/
+    (2,6,1); /*TeamNapoli -> Janji*/
     /*ha 2 dischi di ognuno*/
 
 
