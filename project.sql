@@ -51,13 +51,13 @@ DROP TABLE IF EXISTS `colleziona_dischi`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `colleziona_dischi` (
-  `ID_collezionista` int DEFAULT NULL,
-  `ID_disco` int DEFAULT NULL,
   `numero_duplicati` int NOT NULL,
+  `ID_collezionista` int NOT NULL,
+  `ID_disco` int NOT NULL,
   KEY `ID_collezionista` (`ID_collezionista`),
   KEY `ID_disco` (`ID_disco`),
-  CONSTRAINT `colleziona_dischi_ibfk_1` FOREIGN KEY (`ID_collezionista`) REFERENCES `collezionista` (`ID`) ON DELETE CASCADE,
-  CONSTRAINT `colleziona_dischi_ibfk_2` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`)
+  CONSTRAINT `colleziona_dischi_ibfk_1` FOREIGN KEY (`ID_collezionista`) REFERENCES `collezionista` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `colleziona_dischi_ibfk_2` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -81,10 +81,10 @@ CREATE TABLE `collezione` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(25) NOT NULL,
   `flag` tinyint(1) DEFAULT NULL,
-  `ID_collezione` int DEFAULT NULL,
+  `ID_collezionista` int NOT NULL,
   PRIMARY KEY (`ID`),
-  KEY `ID_collezione` (`ID_collezione`),
-  CONSTRAINT `collezione_ibfk_1` FOREIGN KEY (`ID_collezione`) REFERENCES `collezionista` (`ID`) ON DELETE CASCADE
+  KEY `ID_collezionista` (`ID_collezionista`),
+  CONSTRAINT `collezione_ibfk_1` FOREIGN KEY (`ID_collezionista`) REFERENCES `collezionista` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -110,7 +110,8 @@ CREATE TABLE `collezionista` (
   `nickname` varchar(25) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `nickname` (`nickname`)
+  UNIQUE KEY `nickname` (`nickname`),
+  CONSTRAINT `collezionista_chk_1` CHECK (regexp_like(`email`,_utf8mb4'[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]+$'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -131,12 +132,12 @@ DROP TABLE IF EXISTS `comprende_dischi`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `comprende_dischi` (
-  `ID_collezione` int DEFAULT NULL,
-  `ID_disco` int DEFAULT NULL,
+  `ID_collezione` int NOT NULL,
+  `ID_disco` int NOT NULL,
   KEY `ID_collezione` (`ID_collezione`),
   KEY `ID_disco` (`ID_disco`),
-  CONSTRAINT `comprende_dischi_ibfk_1` FOREIGN KEY (`ID_collezione`) REFERENCES `collezione` (`ID`),
-  CONSTRAINT `comprende_dischi_ibfk_2` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`)
+  CONSTRAINT `comprende_dischi_ibfk_1` FOREIGN KEY (`ID_collezione`) REFERENCES `collezione` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comprende_dischi_ibfk_2` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -157,12 +158,12 @@ DROP TABLE IF EXISTS `condivide`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `condivide` (
-  `ID_collezione` int DEFAULT NULL,
-  `ID_collezionista` int DEFAULT NULL,
+  `ID_collezione` int NOT NULL,
+  `ID_collezionista` int NOT NULL,
   KEY `ID_collezione` (`ID_collezione`),
   KEY `ID_collezionista` (`ID_collezionista`),
-  CONSTRAINT `condivide_ibfk_1` FOREIGN KEY (`ID_collezione`) REFERENCES `collezione` (`ID`) ON DELETE CASCADE,
-  CONSTRAINT `condivide_ibfk_2` FOREIGN KEY (`ID_collezionista`) REFERENCES `collezionista` (`ID`) ON DELETE CASCADE
+  CONSTRAINT `condivide_ibfk_1` FOREIGN KEY (`ID_collezione`) REFERENCES `collezione` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `condivide_ibfk_2` FOREIGN KEY (`ID_collezionista`) REFERENCES `collezionista` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -183,12 +184,12 @@ DROP TABLE IF EXISTS `contiene_tracce`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `contiene_tracce` (
-  `ID_disco` int DEFAULT NULL,
+  `ID_disco` int NOT NULL,
   `ID_traccia` int NOT NULL,
   KEY `ID_disco` (`ID_disco`),
   KEY `ID_traccia` (`ID_traccia`),
-  CONSTRAINT `contiene_tracce_ibfk_1` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`),
-  CONSTRAINT `contiene_tracce_ibfk_2` FOREIGN KEY (`ID_traccia`) REFERENCES `traccia` (`ID`)
+  CONSTRAINT `contiene_tracce_ibfk_1` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `contiene_tracce_ibfk_2` FOREIGN KEY (`ID_traccia`) REFERENCES `traccia` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -211,12 +212,18 @@ DROP TABLE IF EXISTS `disco`;
 CREATE TABLE `disco` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `titolo` varchar(35) NOT NULL,
-  `anno_uscita` char(4) NOT NULL,
+  `anno_uscita` smallint NOT NULL,
   `barcode` varchar(128) DEFAULT NULL,
   `fomato` enum('vinile','cd','digitale') DEFAULT NULL,
   `stato_conservazione` enum('nuovo','come nuovo','ottimo','buono','accettabile') DEFAULT NULL,
   `descrizione_conservazione` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
+  `ID_etichetta` int DEFAULT NULL,
+  `ID_genere` int DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `ID_etichetta` (`ID_etichetta`),
+  KEY `ID_genere` (`ID_genere`),
+  CONSTRAINT `disco_ibfk_1` FOREIGN KEY (`ID_etichetta`) REFERENCES `etichetta` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `disco_ibfk_2` FOREIGN KEY (`ID_genere`) REFERENCES `genere` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -241,7 +248,8 @@ CREATE TABLE `etichetta` (
   `nome` varchar(25) NOT NULL,
   `sede_legale` varchar(255) NOT NULL,
   `email` varchar(320) NOT NULL,
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`ID`),
+  CONSTRAINT `etichetta_chk_1` CHECK (regexp_like(`email`,_utf8mb4'[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]+$'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -279,32 +287,6 @@ LOCK TABLES `genere` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `genere_associato`
---
-
-DROP TABLE IF EXISTS `genere_associato`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `genere_associato` (
-  `ID_genere` int DEFAULT NULL,
-  `ID_disco` int DEFAULT NULL,
-  UNIQUE KEY `ID_disco` (`ID_disco`),
-  KEY `ID_genere` (`ID_genere`),
-  CONSTRAINT `genere_associato_ibfk_1` FOREIGN KEY (`ID_genere`) REFERENCES `genere` (`ID`),
-  CONSTRAINT `genere_associato_ibfk_2` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `genere_associato`
---
-
-LOCK TABLES `genere_associato` WRITE;
-/*!40000 ALTER TABLE `genere_associato` DISABLE KEYS */;
-/*!40000 ALTER TABLE `genere_associato` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `immagine`
 --
 
@@ -315,7 +297,10 @@ CREATE TABLE `immagine` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `file` varchar(255) NOT NULL,
   `didascalia` varchar(1000) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
+  `ID_disco` int DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `ID_disco` (`ID_disco`),
+  CONSTRAINT `immagine_ibfk_1` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -329,32 +314,6 @@ LOCK TABLES `immagine` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `inciso`
---
-
-DROP TABLE IF EXISTS `inciso`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `inciso` (
-  `ID_disco` int DEFAULT NULL,
-  `ID_etichetta` int DEFAULT NULL,
-  KEY `ID_disco` (`ID_disco`),
-  KEY `ID_etichetta` (`ID_etichetta`),
-  CONSTRAINT `inciso_ibfk_1` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`),
-  CONSTRAINT `inciso_ibfk_2` FOREIGN KEY (`ID_etichetta`) REFERENCES `etichetta` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `inciso`
---
-
-LOCK TABLES `inciso` WRITE;
-/*!40000 ALTER TABLE `inciso` DISABLE KEYS */;
-/*!40000 ALTER TABLE `inciso` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `produce_disco`
 --
 
@@ -362,12 +321,12 @@ DROP TABLE IF EXISTS `produce_disco`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `produce_disco` (
-  `ID_disco` int DEFAULT NULL,
-  `ID_autore` int DEFAULT NULL,
+  `ID_disco` int NOT NULL,
+  `ID_autore` int NOT NULL,
   KEY `ID_disco` (`ID_disco`),
   KEY `ID_autore` (`ID_autore`),
-  CONSTRAINT `produce_disco_ibfk_1` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`),
-  CONSTRAINT `produce_disco_ibfk_2` FOREIGN KEY (`ID_autore`) REFERENCES `autore` (`ID`)
+  CONSTRAINT `produce_disco_ibfk_1` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `produce_disco_ibfk_2` FOREIGN KEY (`ID_autore`) REFERENCES `autore` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -381,32 +340,6 @@ LOCK TABLES `produce_disco` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `raffigurato`
---
-
-DROP TABLE IF EXISTS `raffigurato`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `raffigurato` (
-  `ID_disco` int DEFAULT NULL,
-  `ID_immagine` int DEFAULT NULL,
-  KEY `ID_disco` (`ID_disco`),
-  KEY `ID_immagine` (`ID_immagine`),
-  CONSTRAINT `raffigurato_ibfk_1` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`),
-  CONSTRAINT `raffigurato_ibfk_2` FOREIGN KEY (`ID_immagine`) REFERENCES `immagine` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `raffigurato`
---
-
-LOCK TABLES `raffigurato` WRITE;
-/*!40000 ALTER TABLE `raffigurato` DISABLE KEYS */;
-/*!40000 ALTER TABLE `raffigurato` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `realizza_traccia`
 --
 
@@ -414,12 +347,12 @@ DROP TABLE IF EXISTS `realizza_traccia`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `realizza_traccia` (
-  `ID_traccia` int DEFAULT NULL,
-  `ID_autore` int DEFAULT NULL,
+  `ID_traccia` int NOT NULL,
+  `ID_autore` int NOT NULL,
   KEY `ID_traccia` (`ID_traccia`),
   KEY `ID_autore` (`ID_autore`),
-  CONSTRAINT `realizza_traccia_ibfk_1` FOREIGN KEY (`ID_traccia`) REFERENCES `traccia` (`ID`),
-  CONSTRAINT `realizza_traccia_ibfk_2` FOREIGN KEY (`ID_autore`) REFERENCES `autore` (`ID`)
+  CONSTRAINT `realizza_traccia_ibfk_1` FOREIGN KEY (`ID_traccia`) REFERENCES `traccia` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `realizza_traccia_ibfk_2` FOREIGN KEY (`ID_autore`) REFERENCES `autore` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -465,4 +398,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-12 13:08:17
+-- Dump completed on 2023-05-19 13:38:30

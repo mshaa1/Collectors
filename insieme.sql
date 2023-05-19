@@ -5,7 +5,7 @@ USE collectors;
 
 create table collezionista(
   ID integer primary key auto_increment not null,
-  email varchar(320) unique not null,
+  email varchar(320) unique not null check (email REGEXP '[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$'),
   nickname varchar(25) unique not null
 );
 
@@ -21,7 +21,7 @@ create table etichetta(
   ID integer primary key auto_increment not null,
   nome varchar(25) not null,
   sede_legale varchar(255) not null,
-  email varchar(320) not null
+  email varchar(320) not null check (email REGEXP '[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$')
 );
 
 create table genere(
