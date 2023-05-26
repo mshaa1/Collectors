@@ -51,8 +51,8 @@ create table traccia(
 
 create table autore(
   ID integer primary key auto_increment not null,
-  nome varchar(20) not null,
-  cognome varchar(20) not null,
+  nome varchar(20),
+  cognome varchar(20),
   data_nascita date not null,
   nome_autore varchar(25) not null,
   info varchar(255),
