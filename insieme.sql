@@ -1,6 +1,6 @@
 DROP SCHEMA IF EXISTS collectors;
 
-CREATE SCHEMA IF NOT EXISTS collectors;
+create SCHEMA IF not EXISTS collectors;
 USE collectors;
 
 create table collezionista(
@@ -34,7 +34,7 @@ create table disco(
   titolo varchar(35) not null,
   anno_uscita smallint not null,
   barcode varchar(128), /*lunghezza massima barcode esistenti*/
-  fomato enum('vinile', 'cd', 'digitale'),
+  formato enum('vinile', 'cd', 'digitale'),
   stato_conservazione enum ('nuovo', 'come nuovo', 'ottimo', 'buono', 'accettabile'),
   descrizione_conservazione varchar(255),
   ID_etichetta integer, 
@@ -47,6 +47,8 @@ create table traccia(
   ID integer primary key auto_increment not null,
   titolo varchar(50) not null,
   durata time not null
+  ID_disco integer,
+  foreign key (ID_disco) references disco(ID) on update cascade on delete cascade
 );
 
 create table autore(
@@ -91,13 +93,6 @@ create table comprende_dischi(
   foreign key (ID_collezione) references collezione(ID) on update cascade on delete cascade,
   ID_disco integer not null,
   foreign key (ID_disco) references disco(ID) on update cascade on delete cascade
-);
-
-create table contiene_tracce(
-  ID_disco integer not null,
-  foreign key (ID_disco) references disco(ID) on update cascade on delete cascade,
-  ID_traccia integer not null,
-  foreign key (ID_traccia) references traccia(ID) on update cascade on delete cascade
 );
 
 create table produce_disco(

@@ -29,7 +29,7 @@ VALUES
 
 INSERT INTO genere(ID, nome) VALUES (1,'OST'),(2,'Rock'),(3,'Progressive Electronic');
 
-INSERT INTO disco(ID, titolo, anno_uscita, barcode, fomato, stato_conservazione, descrizione_conservazione, ID_etichetta, ID_genere)
+INSERT INTO disco(ID, titolo, anno_uscita, barcode, formato, stato_conservazione, descrizione_conservazione, ID_etichetta, ID_genere)
 VALUES
     (1,'kessoku bando album', '2022', '92999282', 'digitale', null, null, 1, 2),
     (2,'Dr. Stone Original Soundtrack', '2019', '2767236', 'cd', 'come nuovo', null, 3, 1),
