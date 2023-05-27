@@ -46,7 +46,7 @@ create table disco(
 create table traccia(
   ID integer primary key auto_increment not null,
   titolo varchar(50) not null,
-  durata time not null
+  durata time not null,
   ID_disco integer,
   foreign key (ID_disco) references disco(ID) on update cascade on delete cascade
 );

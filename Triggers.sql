@@ -29,3 +29,5 @@ BEGIN
         CALL Aggiornamento_Duplicati(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
     END IF;
 END$
+
+DELIMITER ;
