@@ -122,7 +122,6 @@ end$
 -- 9
 -- verifica della visibilità di una collezione da parte di un collezionista
 
-
 create function verifica_visibilita_collezione(ID_collezione integer, ID_collezionista integer)
     returns boolean deterministic
 begin
@@ -136,6 +135,7 @@ begin
         return true;
     end if;
     return false;
+end;
 end$
 
 

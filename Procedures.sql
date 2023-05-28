@@ -1,9 +1,9 @@
 USE collectors;
-DROP PROCEDURE IF EXISTS Aggiornamento_Duplicati;
+DROP PROCEDURE IF EXISTS Gestione_Disco;
 DELIMITER $
 
-CREATE PROCEDURE Aggiornamento_Duplicati(IN IN_ID_Collezione integer, IN IN_ID_Disco integer,
-                                         IN tipo_aggiornamento enum ('DELETE','INSERT'))
+CREATE PROCEDURE Gestione_Disco(IN IN_ID_Collezione integer, IN IN_ID_Disco integer,
+                                                    IN tipo_aggiornamento enum ('DELETE','INSERT'))
 BEGIN
     SELECT ID_collezionista FROM collezione WHERE ID = IN_ID_Collezione INTO @ID_collezionista;
     IF (tipo_aggiornamento = 'DELETE') THEN
