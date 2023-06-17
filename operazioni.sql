@@ -11,6 +11,7 @@ drop procedure if exists tracklist_disco;
 drop procedure if exists ricerca_dischi_per;
 drop view if exists lista_dischi;
 drop function if exists verifica_visibilita_collezione;
+drop procedure if exists gestione_disco;
 delimiter $
 
 -- 1
@@ -96,29 +97,29 @@ create procedure ricerca_dischi_per(in titolo varchar(35), in nome_autore varcha
 -- risultati_presenti = 0 se non può essere fatta alcuna ricerca
 begin
     case
-        when titolo = null and nome_autore <> null -- cerco solo autore
+        when titolo IS NULL and nome_autore IS NOT NULL -- cerco solo autore
             then
-                select titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
+                select lista_dischi.titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
                 from lista_dischi
                     join produce_disco on lista_dischi.ID = produce_disco.ID_disco
                     join autore on produce_disco.ID_autore = autore.ID
                 where lower(autore.nome_autore) = lower(nome_autore);
-        when titolo <> null and nome_autore = null -- cerco solo il titolo
+        when titolo IS NOT NULL and nome_autore IS NULL -- cerco solo il titolo
             then
-                select titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
+                select lista_dischi.titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
                 from lista_dischi
                 where lower(lista_dischi.titolo) = lower(titolo);
-        when titolo <> null and nome_autore <> null -- cerca entrambi
+        when titolo IS NOT NULL and nome_autore IS NOT NULL -- cerca entrambi
             then
                 if (esattamente = 1) -- cerca entrambi in modo da avere per ogni riga esattamente il titolo e l'autore
                 then
-                    select titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
+                    select lista_dischi.titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
                         from lista_dischi
                         join produce_disco on lista_dischi.ID = produce_disco.ID_disco
                         join autore on produce_disco.ID_autore = autore.ID
                     where lower(lista_dischi.titolo) = lower(titolo) and lower(autore.nome_autore) = lower(nome_autore);
                 else -- cerca entrambi in modo da avere per ogni riga o il titolo o l'autore
-                    select titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
+                    select lista_dischi.titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
                         from lista_dischi
                         join produce_disco on lista_dischi.ID = produce_disco.ID_disco
                         join autore on produce_disco.ID_autore = autore.ID
@@ -144,4 +145,42 @@ begin
     end if;
     return false;
 end$
+
+
+-- Gestione aggiornamento / cancellazione disco (e duplicati)
+CREATE PROCEDURE gestione_disco(IN IN_ID_Collezione integer, IN IN_ID_Disco integer,
+                                                    IN tipo_aggiornamento enum ('DELETE','INSERT'))
+BEGIN
+    SELECT ID_collezionista FROM collezione WHERE ID = IN_ID_Collezione INTO @ID_collezionista;
+    IF (tipo_aggiornamento = 'DELETE') THEN
+        UPDATE colleziona_dischi
+        SET numero_duplicati=numero_duplicati - 1
+        WHERE colleziona_dischi.ID_disco = IN_ID_Disco
+          AND colleziona_dischi.ID_collezionista = @ID_collezionista;
+        DELETE FROM colleziona_dischi WHERE numero_duplicati = 0;
+    ELSE
+        IF (tipo_aggiornamento = 'INSERT')
+        THEN
+            -- conto il numero di dischi IN_ID_Disco nella collezione del collezionista @ID_collezionista
+            SELECT COUNT(ID_disco)
+            FROM comprende_dischi
+                     JOIN collezione ON ID_collezione = ID
+            WHERE ID_collezionista = @ID_collezionista
+              AND ID_disco = IN_ID_Disco
+            INTO @numero_dischi;
+            CASE
+                WHEN @numero_dischi = 2 -- è stata inserita la prima copia
+                    THEN INSERT INTO colleziona_dischi(ID_collezionista, ID_disco, numero_duplicati)
+                         VALUES (@ID_collezionista, IN_ID_Disco, 1);
+                WHEN @numero_dischi > 2 -- è stata inserita la n-esima copia
+                    THEN UPDATE colleziona_dischi
+                         SET numero_duplicati=numero_duplicati + 1
+                         WHERE colleziona_dischi.ID_disco = IN_ID_Disco
+                           AND colleziona_dischi.ID_collezionista = @ID_collezionista;
+                ELSE SELECT NULL INTO @nullvar; -- è stato inserito il primo disco, quindi non fare nulla
+                END CASE;
+        END IF;
+    END IF;
+END$
+
 delimiter ;

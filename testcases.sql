@@ -96,7 +96,7 @@ VALUES
     (2,1),
     (3,1),
     (4,1),
-    (7,3),
+    (7,2),
     (7,3),
     (7,4),
     (5,5),
@@ -186,3 +186,5 @@ VALUES
     (6, 32),
     (6, 33),
     (6, 34);
+
+CALL ricerca_dischi_per(null, 'BURNOUT SYNDROMES', 0, @result);
