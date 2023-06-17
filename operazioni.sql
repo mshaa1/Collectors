@@ -1,5 +1,16 @@
 use collectors;
-
+drop procedure if exists inserisci_collezione;
+drop procedure if exists inserisci_disco_collezione;
+drop procedure if exists inserisci_tracce_disco;
+drop procedure if exists modifica_flag_collezione;
+drop procedure if exists inserisci_condivisione;
+drop procedure if exists rimozione_disco_collezione;
+drop procedure if exists rimozione_collezione;
+drop procedure if exists lista_dischi_collezione;
+drop procedure if exists tracklist_disco;
+drop procedure if exists ricerca_dischi_per;
+drop view if exists lista_dischi;
+drop function if exists verifica_visibilita_collezione;
 delimiter $
 
 -- 1
@@ -18,10 +29,9 @@ end$
 
 -- 3
 -- aggiunta di tracce a un disco
--- TODO modificare, contiene_tracce non esiste più
-create procedure inserisci_tracce_disco(in ID_disco integer, in ID_traccia integer)
+create procedure inserisci_tracce_disco(in ID_disco integer, in titolo varchar(35), in durata time)
 begin
-    insert into contiene_tracce(ID_disco, ID_traccia) values (ID_disco, ID_disco)
+    insert into traccia(titolo, durata, ID_disco) values (titolo, durata, ID_disco);
 end$
 
 
@@ -29,7 +39,7 @@ end$
 -- Modifica dello stato di pubblicazione di una collezione
 create procedure modifica_flag_collezione(in ID_collezione integer, in flag boolean)
 begin
-    update collezione set flag = flag where ID_collezione = ID; -- flag = 0 - collezione pubblica | flag = 1 - collezione privata
+    update collezione set collezione.flag = flag where ID_collezione = ID; -- flag = 0 - collezione pubblica | flag = 1 - collezione privata
 end$
 
 -- 5
@@ -46,6 +56,7 @@ begin
     delete from comprende_dischi c where c.ID_disco = ID_disco and c.ID_collezione = ID_collezione;
 end$
 
+
 -- Rimozione di una collezione.
 create procedure rimozione_collezione(in ID_collezione integer)
 begin
@@ -61,6 +72,7 @@ create view lista_dischi as
         from disco
             join etichetta on disco.ID_etichetta = etichetta.ID
             join genere on disco.ID_genere = genere.ID;
+
 
 create procedure lista_dischi_collezione(in ID_collezione integer)
 begin
@@ -131,8 +143,5 @@ begin
         return true;
     end if;
     return false;
-end;
 end$
-
-
 delimiter ;
