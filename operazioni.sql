@@ -27,9 +27,9 @@ end$
 
 -- 4
 -- Modifica dello stato di pubblicazione di una collezione
-create procedure modifica_flag_collezione(in ID_collezione integer, in in_flag boolean)
+create procedure modifica_flag_collezione(in ID_collezione integer, in flag boolean)
 begin
-    update collezione set collezione.flag = in_flag where ID_collezione = ID; -- flag = 0 - collezione pubblica | flag = 1 - collezione privata
+    update collezione set flag = flag where ID_collezione = ID; -- flag = 0 - collezione pubblica | flag = 1 - collezione privata
 end$
 
 -- 5
