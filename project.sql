@@ -68,7 +68,7 @@ CREATE TABLE `colleziona_dischi` (
 
 LOCK TABLES `colleziona_dischi` WRITE;
 /*!40000 ALTER TABLE `colleziona_dischi` DISABLE KEYS */;
-INSERT INTO `colleziona_dischi` VALUES (1,1,2),(1,1,3),(1,1,4),(1,2,5),(1,2,6);
+INSERT INTO `colleziona_dischi` VALUES (1,1,2),(1,1,3),(1,1,4),(1,2,5),(1,2,6),(1,1,2),(1,1,3),(1,1,4),(1,2,5),(1,2,6);
 /*!40000 ALTER TABLE `colleziona_dischi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -164,7 +164,7 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `Update_Duplicati_On_Insert_Comprende_Dischi` AFTER INSERT ON `comprende_dischi` FOR EACH ROW BEGIN
-    CALL Gestione_Disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
+    CALL gestione_disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -182,8 +182,8 @@ DELIMITER ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `Update_Duplicati_On_Update_Comprende_Dischi` AFTER UPDATE ON `comprende_dischi` FOR EACH ROW BEGIN
     IF OLD.ID_collezione = NEW.ID_collezione AND OLD.ID_disco <> NEW.ID_disco THEN
-        CALL Gestione_Disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
-        CALL Gestione_Disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
+        CALL gestione_disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
+        CALL gestione_disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
     END IF;
 END */;;
 DELIMITER ;
@@ -201,7 +201,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `Update_Duplicati_On_Delete_Comprende_Dischi` AFTER DELETE ON `comprende_dischi` FOR EACH ROW BEGIN
-    CALL Gestione_Disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
+    CALL gestione_disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -481,4 +481,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-18  0:18:17
+-- Dump completed on 2023-06-18  1:25:20

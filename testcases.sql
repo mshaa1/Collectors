@@ -186,5 +186,3 @@ VALUES
     (6, 32),
     (6, 33),
     (6, 34);
-
-CALL ricerca_dischi_per(null, 'BURNOUT SYNDROMES', 0, @result);
