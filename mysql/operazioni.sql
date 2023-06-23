@@ -8,7 +8,7 @@ drop procedure if exists rimozione_disco_collezione;
 drop procedure if exists rimozione_collezione;
 drop procedure if exists lista_dischi_collezione;
 drop procedure if exists tracklist_disco;
-drop procedure if exists ricerca_dischi_per;
+drop procedure if exists ricerca_dischi_per_titolo_autore;
 drop view if exists lista_dischi;
 drop function if exists verifica_visibilita_collezione;
 drop procedure if exists gestione_disco;
@@ -96,7 +96,7 @@ end$
 
 
 -- 8
-create procedure ricerca_dischi_per(in titolo varchar(35), in nome_autore varchar(25), in esattamente boolean, out risultati_presenti boolean) -- esattamente = true -> fa l'and | esattamente = false -> fa l'or
+create procedure ricerca_dischi_per_titolo_autore(in titolo varchar(35), in nome_autore varchar(25), in esattamente boolean, out risultati_presenti boolean) -- esattamente = true -> fa l'and | esattamente = false -> fa l'or
 -- risultati_presenti = 0 se non può essere fatta alcuna ricerca
 begin
     case
@@ -205,6 +205,7 @@ create procedure statistiche_dischi_per_genere()
 
 
 -- Gestione aggiornamento / cancellazione disco (e duplicati)
+
 create procedure gestione_disco(in IN_ID_Collezione integer, in IN_ID_Disco integer,
                                                     in tipo_aggiornamento enum ('DELETE','INSERT'))
 begin
@@ -219,7 +220,7 @@ begin
         if (tipo_aggiornamento = 'INSERT')
         then
             -- conto il numero di dischi IN_ID_Disco nella collezione del collezionista @ID_collezionista
-            select COUNT(ID_disco)
+            select count(all ID_disco) -- TODO: controllare se effettivamente è un all o se è un distinct
             from comprende_dischi
                      join collezione on ID_collezione = ID
             where ID_collezionista = @ID_collezionista
@@ -239,6 +240,20 @@ begin
         end if;
     end if;
 end$
+
+-- TODO:
+-- Ricerca collezioni per nome e in base al flag della stessa
+create procedure ricerca_collezione(in nome_collezione varchar(50), in IN_ID_collezionista integer)
+
+begin
+    declare ID_collezione integer;
+    declare flag boolean;
+    set ID_collezione = (select collezione.ID from collezione where nome_collezione = collezione.nome);
+    call verifica_visibilita_collezione(ID_Collezione, IN_ID_collezionista);
+    set flag = verifica_visibilita_collezione(ID_collezione, IN_ID_collezionista);
+end $
+
+
 
 
 delimiter ;
