@@ -12,6 +12,11 @@ drop procedure if exists ricerca_dischi_per_titolo_autore;
 drop view if exists lista_dischi;
 drop function if exists verifica_visibilita_collezione;
 drop procedure if exists gestione_disco;
+drop procedure if exists ricerca_collezione;
+drop procedure if exists numero_tracce_distinte_per_autore_collezioni_pubbliche;
+drop function if exists minuti_totali_musica_pubblica_per_autore;
+drop procedure if exists statistiche_dischi_per_genere;
+drop procedure if exists statistiche_numero_collezioni;
 delimiter $
 
 
@@ -19,7 +24,8 @@ delimiter $
 -- inserimento di una nuova collezione.
 create procedure inserisci_collezione(in nome varchar(25), in flag boolean, in ID_collezionista integer)
 begin
-    insert into collezione (nome, flag, ID_collezionista) values (nome, flag, ID_collezionista); -- notare che possono essere create anche collezioni con stesso nome
+    insert into collezione (nome, flag, ID_collezionista)
+    values (nome, flag, ID_collezionista); -- notare che possono essere create anche collezioni con stesso nome
 end$
 
 
@@ -72,18 +78,37 @@ end$
 -- Lista di tutti i dischi in una collezione
 -- creo la view dei dischi
 create view lista_dischi as
-    select disco.ID, titolo, anno_uscita as 'anno di uscita', genere.nome as genere, formato, stato_conservazione, descrizione_conservazione, barcode, etichetta.nome as azienda, sede_legale, email
-        from disco
-            join etichetta on disco.ID_etichetta = etichetta.ID
-            join genere on disco.ID_genere = genere.ID;
+select disco.ID,
+       titolo,
+       anno_uscita    as 'anno di uscita',
+       genere.nome    as genere,
+       formato,
+       stato_conservazione,
+       descrizione_conservazione,
+       barcode,
+       etichetta.nome as azienda,
+       sede_legale,
+       email
+from disco
+         join etichetta on disco.ID_etichetta = etichetta.ID
+         join genere on disco.ID_genere = genere.ID;
 
 
 create procedure lista_dischi_collezione(in ID_collezione integer)
 begin
-    select titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
-        from comprende_dischi
-            join lista_dischi on ID_disco = lista_dischi.ID
-        where comprende_dischi.ID_collezione = ID_collezione;
+    select titolo,
+           'anno di uscita',
+           genere,
+           formato,
+           stato_conservazione,
+           descrizione_conservazione,
+           barcode,
+           azienda,
+           sede_legale,
+           email
+    from comprende_dischi
+             join lista_dischi on ID_disco = lista_dischi.ID
+    where comprende_dischi.ID_collezione = ID_collezione;
 end$
 
 
@@ -91,44 +116,82 @@ end$
 create procedure tracklist_disco(in ID_disco integer)
 begin
     select titolo, durata
-        from traccia where traccia.ID_disco = ID_disco;
+    from traccia
+    where traccia.ID_disco = ID_disco;
 end$
 
 
 -- 8
-create procedure ricerca_dischi_per_titolo_autore(in titolo varchar(35), in nome_autore varchar(25), in esattamente boolean, out risultati_presenti boolean) -- esattamente = true -> fa l'and | esattamente = false -> fa l'or
+create procedure ricerca_dischi_per_titolo_autore(in titolo varchar(35), in nome_autore varchar(25),
+                                                  in esattamente boolean,
+                                                  out risultati_presenti boolean) -- esattamente = true -> fa l'and | esattamente = false -> fa l'or
 -- risultati_presenti = 0 se non può essere fatta alcuna ricerca
 begin
     case
         when titolo IS NULL and nome_autore IS NOT NULL -- cerco solo autore
-            then
-                select lista_dischi.titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
-                from lista_dischi
-                    join produce_disco on lista_dischi.ID = produce_disco.ID_disco
-                    join autore on produce_disco.ID_autore = autore.ID
-                where lower(autore.nome_autore) = lower(nome_autore);
+            then select lista_dischi.titolo,
+                        'anno di uscita',
+                        genere,
+                        formato,
+                        stato_conservazione,
+                        descrizione_conservazione,
+                        barcode,
+                        azienda,
+                        sede_legale,
+                        email
+                 from lista_dischi
+                          join produce_disco on lista_dischi.ID = produce_disco.ID_disco
+                          join autore on produce_disco.ID_autore = autore.ID
+                 where lower(autore.nome_autore) = lower(nome_autore);
         when titolo IS NOT NULL and nome_autore IS NULL -- cerco solo il titolo
-            then
-                select lista_dischi.titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
-                from lista_dischi
-                where lower(lista_dischi.titolo) = lower(titolo);
+            then select lista_dischi.titolo,
+                        'anno di uscita',
+                        genere,
+                        formato,
+                        stato_conservazione,
+                        descrizione_conservazione,
+                        barcode,
+                        azienda,
+                        sede_legale,
+                        email
+                 from lista_dischi
+                 where lower(lista_dischi.titolo) = lower(titolo);
         when titolo IS NOT NULL and nome_autore IS NOT NULL -- cerca entrambi
+            then if (esattamente = 1) -- cerca entrambi in modo da avere per ogni riga esattamente il titolo e l'autore
             then
-                if (esattamente = 1) -- cerca entrambi in modo da avere per ogni riga esattamente il titolo e l'autore
-                then
-                    select lista_dischi.titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
-                        from lista_dischi
-                        join produce_disco on lista_dischi.ID = produce_disco.ID_disco
-                        join autore on produce_disco.ID_autore = autore.ID
-                    where lower(lista_dischi.titolo) = lower(titolo) and lower(autore.nome_autore) = lower(nome_autore);
-                else -- cerca entrambi in modo da avere per ogni riga o il titolo o l'autore
-                    select lista_dischi.titolo, 'anno di uscita', genere, formato, stato_conservazione, descrizione_conservazione, barcode, azienda, sede_legale, email
-                        from lista_dischi
-                        join produce_disco on lista_dischi.ID = produce_disco.ID_disco
-                        join autore on produce_disco.ID_autore = autore.ID
-                    where lower(lista_dischi.titolo) = lower(titolo) or lower(autore.nome_autore) = lower(nome_autore);
-                end if;
-    end case;
+                select lista_dischi.titolo,
+                       'anno di uscita',
+                       genere,
+                       formato,
+                       stato_conservazione,
+                       descrizione_conservazione,
+                       barcode,
+                       azienda,
+                       sede_legale,
+                       email
+                from lista_dischi
+                         join produce_disco on lista_dischi.ID = produce_disco.ID_disco
+                         join autore on produce_disco.ID_autore = autore.ID
+                where lower(lista_dischi.titolo) = lower(titolo)
+                  and lower(autore.nome_autore) = lower(nome_autore);
+            else -- cerca entrambi in modo da avere per ogni riga o il titolo o l'autore
+                select lista_dischi.titolo,
+                       'anno di uscita',
+                       genere,
+                       formato,
+                       stato_conservazione,
+                       descrizione_conservazione,
+                       barcode,
+                       azienda,
+                       sede_legale,
+                       email
+                from lista_dischi
+                         join produce_disco on lista_dischi.ID = produce_disco.ID_disco
+                         join autore on produce_disco.ID_autore = autore.ID
+                where lower(lista_dischi.titolo) = lower(titolo)
+                   or lower(autore.nome_autore) = lower(nome_autore);
+            end if;
+        end case;
 end$
 
 
@@ -136,15 +199,21 @@ end$
 -- verifica della visibilità di una collezione da parte di un collezionista
 
 create function verifica_visibilita_collezione(ID_collezione integer, ID_collezionista integer)
-    returns boolean deterministic
+    returns boolean
+    deterministic
 begin
     if (select flag from collezione where collezione.ID = ID_collezione) = 1 then -- se la collezione ha flag impostato a true allora la collezione è visibile a tutti i collezionisti
         return true;
     end if;
-    if (select ID_collezionista from collezione where collezione.ID = ID_collezione and collezione.ID_collezionista=ID_collezionista) then -- se la collezione appartiene al collezionista, allora può visionarla
+    if (select ID_collezionista
+        from collezione
+        where collezione.ID = ID_collezione
+          and collezione.ID_collezionista = ID_collezionista) then -- se la collezione appartiene al collezionista, allora può visionarla
         return true;
     end if;
-    if (select count(*) from condivide c where c.ID_collezione = ID_collezione and c.ID_collezionista = ID_collezionista) = 1 then
+    if (select count(*)
+        from condivide c
+        where c.ID_collezione = ID_collezione and c.ID_collezionista = ID_collezionista) = 1 then
         return true;
     end if;
     return false;
@@ -155,59 +224,66 @@ end$
 -- numero di tracce di dischi distinti di un certo autore presenti nelle collezioni pubbliche
 
 create procedure numero_tracce_distinte_per_autore_collezioni_pubbliche(in nome_autore varchar(25), out numero_tracce integer)
-    begin
-        select count(distinct traccia.ID) from traccia
-            join disco on traccia.ID_disco = disco.ID
-            join produce_disco on disco.ID = produce_disco.ID_disco
-            join autore on produce_disco.ID_autore = autore.ID
-            join comprende_dischi on disco.ID = comprende_dischi.ID_disco
-            join collezione on comprende_dischi.ID_collezione = collezione.ID
-        where lower(autore.nome_autore) = lower(nome_autore) and collezione.flag = 1;
-    end$
+begin
+    select count(distinct traccia.ID)
+    from traccia
+             join disco on traccia.ID_disco = disco.ID
+             join produce_disco on disco.ID = produce_disco.ID_disco
+             join autore on produce_disco.ID_autore = autore.ID
+             join comprende_dischi on disco.ID = comprende_dischi.ID_disco
+             join collezione on comprende_dischi.ID_collezione = collezione.ID
+    where lower(autore.nome_autore) = lower(nome_autore)
+      and collezione.flag = 1;
+end$
 
 
 -- 11
 -- minuti totali di musica riferibili a un certo autore memorizzati nelle collezioni pubbliche
 
 create function minuti_totali_musica_pubblica_per_autore(nome_autore varchar(25))
-    returns time deterministic
-    begin
-        return(select sum(traccia.durata) from traccia
-            join disco on traccia.ID_disco = disco.ID
-            join produce_disco on disco.ID = produce_disco.ID_disco
-            join autore on produce_disco.ID_autore = autore.ID
-            join comprende_dischi on disco.ID = comprende_dischi.ID_disco
-            join collezione on comprende_dischi.ID_collezione = collezione.ID
-        where lower(autore.nome_autore) = lower(nome_autore) and collezione.flag = 1);
-    end$
+    returns time
+    deterministic
+begin
+    return (select sum(traccia.durata)
+            from traccia
+                     join disco on traccia.ID_disco = disco.ID
+                     join produce_disco on disco.ID = produce_disco.ID_disco
+                     join autore on produce_disco.ID_autore = autore.ID
+                     join comprende_dischi on disco.ID = comprende_dischi.ID_disco
+                     join collezione on comprende_dischi.ID_collezione = collezione.ID
+            where lower(autore.nome_autore) = lower(nome_autore)
+              and collezione.flag = 1);
+end$
 
 
 -- 12a
 -- statistiche: numero collezioni di ciascun collezionista
 
 create procedure statistiche_numero_collezioni()
-    begin
-        select collezionista.nickname, count(all collezione.ID) from collezione
-            join collezionista on collezione.ID_collezionista = collezionista.ID
-        group by nickname;
-    end$
+begin
+    select collezionista.nickname, count(all collezione.ID)
+    from collezione
+             join collezionista on collezione.ID_collezionista = collezionista.ID
+    group by nickname;
+end$
 
 
 -- 12b
 -- statistiche: numero di dischi per genere nel sistema
 
 create procedure statistiche_dischi_per_genere()
-    begin
-        select count(all disco.id), genere.nome from disco
-            join genere on disco.ID_genere = genere.ID
-        group by nome;
-    end$
+begin
+    select count(all disco.id), genere.nome
+    from disco
+             join genere on disco.ID_genere = genere.ID
+    group by nome;
+end$
 
 
 -- Gestione aggiornamento / cancellazione disco (e duplicati)
 
 create procedure gestione_disco(in IN_ID_Collezione integer, in IN_ID_Disco integer,
-                                                    in tipo_aggiornamento enum ('DELETE','INSERT'))
+                                in tipo_aggiornamento enum ('DELETE','INSERT'))
 begin
     select ID_collezionista from collezione where ID = IN_ID_Collezione into @ID_collezionista;
     if (tipo_aggiornamento = 'DELETE') then
@@ -241,19 +317,16 @@ begin
     end if;
 end$
 
--- TODO:
--- Ricerca collezioni per nome e in base al flag della stessa
-create procedure ricerca_collezione(in nome_collezione varchar(50), in IN_ID_collezionista integer)
+-- Ricerca collezioni per nome
+create procedure ricerca_collezione(in nome_collezione varchar(50))
 
 begin
-    declare ID_collezione integer;
-    declare flag boolean;
-    set ID_collezione = (select collezione.ID from collezione where nome_collezione = collezione.nome);
-    call verifica_visibilita_collezione(ID_Collezione, IN_ID_collezionista);
-    set flag = verifica_visibilita_collezione(ID_collezione, IN_ID_collezionista);
-end $
-
-
+    select collezione.nome as nome_collezione,
+           (select collezionista.nickname from collezionista where collezionista.ID = collezione.ID_collezionista) as nome_collezionista,
+           flag
+    from collezione
+    where nome_collezione = collezione.nome;
+end$
 
 
 delimiter ;

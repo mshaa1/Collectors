@@ -186,3 +186,5 @@ VALUES
     (6, 32),
     (6, 33),
     (6, 34);
+
+call ricerca_collezione('Dr.Stone OST');
