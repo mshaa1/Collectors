@@ -395,7 +395,7 @@ begin
                          join collezione c on cd.ID_collezione = c.ID
                          join collezionista c1 on ID_collezionista = c1.ID
                 where lower(d.titolo) = lower(titolo_disco) and lower(a.nome_autore) = lower(nome_autore)
-                  and c.flag = 1 and flag = 2
+                  and c.flag = 1
 
         union
 
@@ -409,7 +409,7 @@ begin
                          join collezione c on cd.ID_collezione = c.ID
                          join collezionista c1 on ID_collezionista = c1.ID
                 where lower(d.titolo) = lower(titolo_disco) and lower(a.nome_autore) = lower(nome_autore)
-                  and c.flag = 0 and flag = 1;
+                  and c.flag = 0;
 
         -- Ricerca dei dischi per nome dell'autore in collezioni pubbliche e private e al di fuori delle collezioni
 
