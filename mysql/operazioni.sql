@@ -17,6 +17,7 @@ drop procedure if exists numero_tracce_distinte_per_autore_collezioni_pubbliche;
 drop function if exists minuti_totali_musica_pubblica_per_autore;
 drop procedure if exists statistiche_dischi_per_genere;
 drop procedure if exists statistiche_numero_collezioni;
+drop procedure if exists ricerca_dischi_per_autore_titolo;
 delimiter $
 
 
@@ -120,7 +121,7 @@ begin
     where traccia.ID_disco = ID_disco;
 end$
 
-
+/*
 -- 8
 create procedure ricerca_dischi_per_titolo_autore(in titolo varchar(35), in nome_autore varchar(25),
                                                   in esattamente boolean,
@@ -192,8 +193,7 @@ begin
                    or lower(autore.nome_autore) = lower(nome_autore);
             end if;
         end case;
-end$
-
+end$ */
 
 -- 9
 -- verifica della visibilità di una collezione da parte di un collezionista
@@ -213,7 +213,8 @@ begin
     end if;
     if (select count(*)
         from condivide c
-        where c.ID_collezione = ID_collezione and c.ID_collezionista = ID_collezionista) = 1 then
+        where c.ID_collezione = ID_collezione
+          and c.ID_collezionista = ID_collezionista) = 1 then
         return true;
     end if;
     return false;
@@ -317,16 +318,496 @@ begin
     end if;
 end$
 
--- Ricerca collezioni per nome
-create procedure ricerca_collezione(in nome_collezione varchar(50))
-
+-- TODO: da testare
+-- Query 8
+create procedure ricerca_dischi_per_autore_titolo(in nome_autore varchar(25), in titolo_disco varchar(50),
+                                                  in ID_collezionista int, in pubblica boolean, in privata boolean)
 begin
-    select collezione.nome as nome_collezione,
-           (select collezionista.nickname from collezionista where collezionista.ID = collezione.ID_collezionista) as nome_collezionista,
-           flag
-    from collezione
-    where nome_collezione = collezione.nome;
-end$
+    case
+        -- Ricerca di dischi per nome dell'autore in collezioni pubbliche e private
 
+        when nome_autore is not null and titolo_disco is null and pubblica and privata then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(a.nome_autore) = lower(nome_autore)
+                  and c.flag = 1
+
+        union
+
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(a.nome_autore) = lower(nome_autore)
+                    and c.flag = 0;
+
+        -- Ricerca di dischi per titolo del disco in collezioni pubbliche e private
+
+        when nome_autore is null and titolo_disco is not null and pubblica and privata then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(d.titolo) = lower(titolo_disco)
+                  and c.flag = 1
+
+        union
+
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(d.titolo) = lower(titolo_disco)
+                  and c.flag = 0;
+
+        -- Ricerca di dischi per nome dell'autore e titolo del disco in collezioni pubbliche e private
+
+        when nome_autore is not null and titolo_disco is not null and pubblica and privata then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(d.titolo) = lower(titolo_disco) and lower(a.nome_autore) = lower(nome_autore)
+                  and c.flag = 1 and flag = 2
+
+        union
+
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(d.titolo) = lower(titolo_disco) and lower(a.nome_autore) = lower(nome_autore)
+                  and c.flag = 0 and flag = 1;
+
+        -- Ricerca dei dischi per nome dell'autore in collezioni pubbliche e private e al di fuori delle collezioni
+
+        when nome_autore is not null and titolo_disco is null and pubblica and privata then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(a.nome_autore) = lower(nome_autore)
+                  and c.flag = 1
+
+        union
+
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(a.nome_autore) = lower(nome_autore)
+                  and c.flag = 0
+
+        union
+
+                select null as nome_collezione,
+                       null as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                where lower(a.nome_autore) = lower(nome_autore);
+
+        -- Ricerca dei dischi per titolo del disco in collezioni pubbliche e private e al di fuori delle collezioni
+
+        when nome_autore is null and titolo_disco is not null and pubblica and privata then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(d.titolo) = lower(titolo_disco)
+                  and c.flag = 1
+
+        union
+
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(d.titolo) = lower(titolo_disco)
+                  and c.flag = 0
+
+        union
+
+                select null as nome_collezione,
+                       null as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                where lower(d.titolo) = lower(titolo_disco);
+
+        -- Ricerca dei dischi per nome dell'autore e titolo del disco in collezioni pubbliche e private e al di fuori delle collezioni
+
+        when nome_autore is not null and titolo_disco is not null and pubblica and privata then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(d.titolo) = lower(titolo_disco) and lower(a.nome_autore) = lower(nome_autore)
+                  and c.flag = 1
+
+        union
+
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(d.titolo) = lower(titolo_disco) and lower(a.nome_autore) = lower(nome_autore)
+                  and c.flag = 0
+
+        union
+
+                select null as nome_collezione,
+                       null as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                where lower(d.titolo) = lower(titolo_disco) and lower(a.nome_autore) = lower(nome_autore);
+
+        -- Ricerca dei dischi per nome dell'autore del disco in collezioni pubbliche e al di fuori delle collezioni
+
+        when nome_autore is not null and titolo_disco is null and pubblica then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(a.nome_autore) = lower(nome_autore)
+                  and c.flag = 0
+
+        union
+
+                select null as nome_collezione,
+                       null as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                where lower(a.nome_autore) = lower(nome_autore);
+
+        -- Ricerca dei dischi per titolo del disco in collezioni pubbliche e al di fuori delle collezioni
+
+        when nome_autore is null and titolo_disco is not null and pubblica then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(d.titolo) = lower(titolo_disco)
+                  and c.flag = 0
+
+        union
+
+                select null as nome_collezione,
+                       null as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                where lower(d.titolo) = lower(titolo_disco);
+
+        -- Ricerca dei dischi per nome dell'autore e titolo del disco in collezioni pubbliche e al di fuori delle collezioni
+
+        when nome_autore is not null and titolo_disco is not null and pubblica then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(a.nome_autore) = lower(nome_autore) and lower(d.titolo) = lower(titolo_disco)
+                  and c.flag = 0
+
+        union
+
+                select null as nome_collezione,
+                       null as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                where lower(a.nome_autore) = lower(nome_autore) and lower(d.titolo) = lower(titolo_disco);
+
+        -- Ricerca dei dischi per nome dell'autore in collezioni private e al di fuori delle collezioni
+
+        when nome_autore is not null and titolo_disco is null and privata then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(a.nome_autore) = lower(nome_autore)
+                  and c.flag = 1
+
+        union
+
+                select null as nome_collezione,
+                       null as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                where lower(a.nome_autore) = lower(nome_autore);
+
+        -- Ricerca dei dischi per titolo del disco in collezioni private e al di fuori delle collezioni
+
+        when nome_autore is null and titolo_disco is not null and privata then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(d.titolo) = lower(titolo_disco)
+                  and c.flag = 1
+
+        union
+
+                select null as nome_collezione,
+                       null as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                where lower(d.titolo) = lower(titolo_disco);
+
+        -- Ricerca dei dischi per nome dell'autore e titolo del disco in collezioni private e al di fuori delle collezioni
+
+        when nome_autore is not null and titolo_disco is not null and privata then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(a.nome_autore) = lower(nome_autore) and lower(d.titolo) = lower(titolo_disco)
+                  and c.flag = 1
+
+        union
+
+                select null as nome_collezione,
+                       null as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                where lower(a.nome_autore) = lower(nome_autore) and lower(d.titolo) = lower(titolo_disco);
+
+        -- Ricerca dei dischi per nome dell'autore in collezioni pubbliche
+
+        when nome_autore is not null and titolo_disco is null and pubblica then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(a.nome_autore) = lower(nome_autore)
+                  and c.flag = 0;
+
+        -- Ricerca dei dischi per titolo del disco in collezioni pubbliche
+
+        when nome_autore is null and titolo_disco is not null and pubblica then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(d.titolo) = lower(titolo_disco)
+                  and c.flag = 0;
+
+        -- Ricerca dei dischi per nome dell'autore e titolo del disco in collezioni pubbliche
+
+        when nome_autore is not null and titolo_disco is not null and pubblica then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(a.nome_autore) = lower(nome_autore) and lower(d.titolo) = lower(titolo_disco)
+                  and c.flag = 0;
+
+        -- Ricerca dei dischi per nome dell'autore in collezioni private
+
+        when nome_autore is not null and titolo_disco is null and privata then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(a.nome_autore) = lower(nome_autore)
+                  and c.flag = 1;
+
+        -- Ricerca dei dischi per titolo del disco in collezioni private
+
+        when nome_autore is null and titolo_disco is not null and privata then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(d.titolo) = lower(titolo_disco)
+                  and c.flag = 1;
+
+        -- Ricerca dei dischi per nome dell'autore e titolo del disco in collezioni private
+
+        when nome_autore is not null and titolo_disco is not null and privata then
+                select c.nome as nome_collezione,
+                       c1.nickname as proprietario_collezione,
+                       d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID
+                where lower(a.nome_autore) = lower(nome_autore) and lower(d.titolo) = lower(titolo_disco)
+                  and c.flag = 1;
+
+        -- Ricerca dei dischi per nome dell'autore fuori dalle collezioni
+
+        when nome_autore is not null and titolo_disco is null then
+                select d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                where lower(a.nome_autore) = lower(nome_autore);
+
+        -- Ricerca dei dischi per titolo del disco fuori dalle collezioni
+
+        when nome_autore is null and titolo_disco is not null then
+                select d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                where lower(d.titolo) = lower(titolo_disco);
+
+        -- Ricerca dei dischi per nome dell'autore e titolo del disco fuori dalle collezioni
+
+        when nome_autore is not null and titolo_disco is not null then
+                select d.*
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                where lower(a.nome_autore) = lower(nome_autore) and lower(d.titolo) = lower(titolo_disco);
+
+    end case;
+end$
 
 delimiter ;

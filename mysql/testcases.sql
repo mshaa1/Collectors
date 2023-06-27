@@ -21,6 +21,7 @@ insert into condivide(ID_collezione, ID_collezionista)
 VALUES
     (2, 4), /*Canzoni -> GuitarHero*/
     (3, 1); /*Anime -> Mr.Why*/
+
 INSERT INTO etichetta(ID, nome, sede_legale, email)
 VALUES
     (1, 'Aniplex', 'Tokyo', 'Aniplex.business@aho.jp'),
@@ -186,5 +187,3 @@ VALUES
     (6, 32),
     (6, 33),
     (6, 34);
-
-call ricerca_collezione('Dr.Stone OST');
