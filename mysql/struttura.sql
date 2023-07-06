@@ -46,7 +46,7 @@ create table genere(
 create table disco(
   ID integer primary key auto_increment not null,
   titolo varchar(35) not null,
-  anno_uscita smallint not null check (year(anno_uscita) <= year(current_date)),
+  anno_uscita smallint not null,
   barcode varchar(128), /*lunghezza massima barcode esistenti*/
   formato enum('vinile', 'cd', 'digitale'),
   stato_conservazione enum ('nuovo', 'come nuovo', 'ottimo', 'buono', 'accettabile'),

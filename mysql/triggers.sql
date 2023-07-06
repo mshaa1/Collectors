@@ -1,33 +1,55 @@
-USE collectors;
-DELIMITER $
+use collectors;
+delimiter $
 
 /* Sezione Update duplicati */
 
-CREATE TRIGGER Update_Duplicati_On_Insert_Comprende_Dischi
-    AFTER INSERT
-    ON Comprende_Dischi
-    FOR EACH ROW
-BEGIN
-    CALL gestione_disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
-END$
+create trigger Update_Duplicati_On_Insert_Comprende_Dischi
+    after insert
+    on Comprende_Dischi
+    for each row
+begin
+    call gestione_disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
+end$
 
-CREATE TRIGGER Update_Duplicati_On_Delete_Comprende_Dischi
-    AFTER DELETE
-    ON Comprende_Dischi
-    FOR EACH ROW
-BEGIN
-    CALL gestione_disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
-END$
+create trigger Update_Duplicati_On_Delete_Comprende_Dischi
+    after delete
+    on Comprende_Dischi
+    for each row
+begin
+    call gestione_disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
+end$
 
-CREATE TRIGGER Update_Duplicati_On_Update_Comprende_Dischi
-    AFTER UPDATE
-    ON Comprende_Dischi
-    FOR EACH ROW
-BEGIN
-    IF OLD.ID_collezione = NEW.ID_collezione AND OLD.ID_disco <> NEW.ID_disco THEN
-        CALL gestione_disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
-        CALL gestione_disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
-    END IF;
-END$
+create trigger Update_Duplicati_On_Update_Comprende_Dischi
+    after update
+    on Comprende_Dischi
+    for each row
+begin
+    if OLD.ID_collezione = NEW.ID_collezione and OLD.ID_disco <> NEW.ID_disco then
+        call gestione_disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
+        call gestione_disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
+    end if;
+end$
 
-DELIMITER ;
+-- Sezione di verifica dell'anno di uscita dei dischi all'inserimento e all'aggiornamento di un disco
+
+create trigger Check_Anno_Uscita_Inserimento_Disco
+    before insert
+    on disco
+    for each row
+begin
+    if NEW.anno_uscita > year(current_date) or NEW.anno_uscita < 1900 then
+        signal sqlstate '45000' set message_text = 'La data inserita non è valida';
+    end if;
+end$
+
+create trigger Check_Anno_Uscita_Aggiornamento_Disco
+    before update
+    on disco
+    for each row
+begin
+    if NEW.anno_uscita > year(current_date) or NEW.anno_uscita < 1900 then
+        signal sqlstate '45000' set message_text = 'La data inserita non è valida';
+    end if;
+end$
+
+delimiter ;
