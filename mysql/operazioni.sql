@@ -352,7 +352,6 @@ end$
 
 -- Altre query
 
--- Aggiunta Autore
 create procedure aggiunta_autore(in nome varchar(25), in cognome varchar(25), in data_nascita date, in nome_autore varchar(25), in info varchar(255), in ruolo varchar(25))
 begin
        insert into autore(nome, cognome, data_nascita, nome_autore, info, ruolo) values (nome, cognome, data_nascita, nome_autore, info, ruolo);
