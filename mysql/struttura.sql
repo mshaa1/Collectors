@@ -17,6 +17,11 @@ drop table if exists comprende_dischi;
 drop table if exists produce_disco;
 drop table if exists realizza_traccia;
 
+drop user if exists 'admin'@'localhost';
+
+create user 'admin'@'localhost' identified by 'admin';
+grant all privileges on collectors.* to 'admin'@'localhost';
+
 create table collezionista(
   ID integer primary key auto_increment not null,
   email varchar(320) unique not null check (email REGEXP '[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+$'),
