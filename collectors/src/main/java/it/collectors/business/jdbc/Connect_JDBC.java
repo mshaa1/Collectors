@@ -23,6 +23,8 @@ public class Connect_JDBC {
     }
 
 
+    // Tale metodo ritorna una nuova connessione al database solo se
+    // la connessione non è già stata aperta precedentemente.
     public Connection getConnection() throws ApplicationException{
         if (this.connection == null) {
             connection = connect();
@@ -30,10 +32,12 @@ public class Connect_JDBC {
         return this.connection;
     }
 
+    // Questo metodo restituisce una nuova connessione ad ogni chiamata
     public Connection newConnection() throws ApplicationException{
         return connect();
     }
 
+    // Metodo che gestisce la connessione al database
     private Connection connect() throws ApplicationException{
         try{
             if(this.username != null && this.password != null){
@@ -47,6 +51,7 @@ public class Connect_JDBC {
         }
     }
 
+    // Metodo che gestisce la disconnessione dal database
     public void disconnect() throws ApplicationException{
         try{
             if(this.connection != null && !this.connection.isClosed()){

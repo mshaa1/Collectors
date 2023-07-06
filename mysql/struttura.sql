@@ -1,7 +1,21 @@
-DROP SCHEMA IF EXISTS collectors;
+drop schema if exists collectors;
 
-create SCHEMA IF not EXISTS collectors;
-USE collectors;
+create schema if not exists collectors;
+use collectors;
+
+drop table if exists collezionista;
+drop table if exists collezione;
+drop table if exists etichetta;
+drop table if exists genere;
+drop table if exists disco;
+drop table if exists traccia;
+drop table if exists autore;
+drop table if exists immagine;
+drop table if exists condivide;
+drop table if exists colleziona_dischi;
+drop table if exists comprende_dischi;
+drop table if exists produce_disco;
+drop table if exists realizza_traccia;
 
 create table collezionista(
   ID integer primary key auto_increment not null,
@@ -32,7 +46,7 @@ create table genere(
 create table disco(
   ID integer primary key auto_increment not null,
   titolo varchar(35) not null,
-  anno_uscita smallint not null,
+  anno_uscita smallint not null check (year(anno_uscita) <= year(current_date)),
   barcode varchar(128), /*lunghezza massima barcode esistenti*/
   formato enum('vinile', 'cd', 'digitale'),
   stato_conservazione enum ('nuovo', 'come nuovo', 'ottimo', 'buono', 'accettabile'),
