@@ -18,6 +18,7 @@ drop function if exists minuti_totali_musica_pubblica_per_autore;
 drop procedure if exists statistiche_dischi_per_genere;
 drop procedure if exists statistiche_numero_collezioni;
 drop procedure if exists ricerca_dischi_per_autore_titolo;
+drop view if exists lista_dischi_generale;
 delimiter $
 
 -- 1
@@ -327,27 +328,26 @@ create view lista_dischi_generale as
                          join collezione c on cd.ID_collezione = c.ID
                          join collezionista c1 on ID_collezionista = c1.ID;
 
-
+-- lasciare null qualsiasi campo eccetto ID_collezionista per non effettuare la ricerca su quel campo
 create procedure ricerca_dischi_per_autore_titolo(in nome_autore varchar(25), in titolo_disco varchar(50),
-                                                  in ID_collezionista int, in flag boolean)
+                                                  in flag boolean, in ID_collezionista int)
 begin
-    select nickname as 'proprietario collezione',
+    select distinct nickname as 'proprietario collezione',
             titolo, anno_uscita as 'anno di uscita', formato, stato_conservazione as 'stato di conservazione',
             lUl.nome_autore as 'nome autore'
     from (
         select *
           from lista_dischi_generale l
-          where
-                l.titolo like titolo_disco
+            where
+                l.titolo like titolo_disco -- ricerca per titolo del disco
 
-          union
+          union -- unione per ottenere entrambe le ricerche
 
         select *
           from lista_dischi_generale l
-
-            where l.nome_autore like nome_autore
+            where l.nome_autore like nome_autore -- ricerca per nome autore
     ) as `lUl`
-    where lUl.flag <> (not flag) and lUl.ID_collezionista = ID_collezionista;
+    where (lUl.flag=flag or flag is null) and lUl.ID_collezionista = ID_collezionista; -- ricerca per flag e costraint del collezionista
 end$
 
 -- Altre query
