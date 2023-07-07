@@ -19,6 +19,8 @@ drop procedure if exists statistiche_dischi_per_genere;
 drop procedure if exists statistiche_numero_collezioni;
 drop procedure if exists ricerca_dischi_per_autore_titolo;
 drop view if exists lista_dischi_generale;
+drop procedure if exists ricerca_dischi_per_titolo_autore;
+
 delimiter $
 
 -- 1
@@ -250,7 +252,7 @@ begin
                      join disco on traccia.ID_disco = disco.ID
                      join produce_disco on disco.ID = produce_disco.ID_disco
                      join autore on produce_disco.ID_autore = autore.ID
-agg                     join comprende_dischi on disco.ID = comprende_dischi.ID_disco
+                     join comprende_dischi on disco.ID = comprende_dischi.ID_disco
                      join collezione on comprende_dischi.ID_collezione = collezione.ID
             where lower(autore.nome_autore) = lower(nome_autore)
               and collezione.flag = 1);
@@ -352,15 +354,21 @@ end$
 
 -- Altre query
 
+drop procedure if exists aggiunta_autore;
+
 create procedure aggiunta_autore(in nome varchar(25), in cognome varchar(25), in data_nascita date, in nome_autore varchar(25), in info varchar(255), in ruolo varchar(25))
 begin
        insert into autore(nome, cognome, data_nascita, nome_autore, info, ruolo) values (nome, cognome, data_nascita, nome_autore, info, ruolo);
 end$
 
+drop procedure if exists aggiunta_genere;
+
 create procedure aggiunta_genere(in nome varchar(25))
 begin
        insert into genere(nome) values (nome);
 end$
+
+drop procedure if exists rimozione_genere;
 
 create procedure rimozione_genere(in ID_genere int)
 begin

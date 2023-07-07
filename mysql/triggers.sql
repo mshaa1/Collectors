@@ -1,3 +1,11 @@
+DROP TRIGGER IF EXISTS Update_Duplicati_On_Insert_Comprende_Dischi;
+DROP TRIGGER IF EXISTS Update_Duplicati_On_Delete_Comprende_Dischi;
+DROP TRIGGER IF EXISTS Update_Duplicati_On_Update_Comprende_Dischi;
+DROP TRIGGER IF EXISTS Check_Anno_Uscita_Inserimento_Disco;
+DROP TRIGGER IF EXISTS Check_Anno_Uscita_Aggiornamento_Disco;
+
+
+
 use collectors;
 delimiter $
 
@@ -51,5 +59,6 @@ begin
         signal sqlstate '45000' set message_text = 'La data inserita non è valida';
     end if;
 end$
+
 
 delimiter ;
