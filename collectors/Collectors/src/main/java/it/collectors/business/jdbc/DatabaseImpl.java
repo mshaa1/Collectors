@@ -12,7 +12,7 @@ public class DatabaseImpl {
 
     private static final String DB_PASSWORD = "admin";
 
-    private Connect_JDBC connect = new Connect_JDBC(CONNECTION_STRING, DB_USER, DB_PASSWORD);
+    private Connect_JDBC connect = new Connect_JDBC(DB_USER, DB_PASSWORD,CONNECTION_STRING);
 
     private Query_JDBC queryJdbc;
 

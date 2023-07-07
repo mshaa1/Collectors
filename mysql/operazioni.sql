@@ -250,7 +250,7 @@ begin
                      join disco on traccia.ID_disco = disco.ID
                      join produce_disco on disco.ID = produce_disco.ID_disco
                      join autore on produce_disco.ID_autore = autore.ID
-                     join comprende_dischi on disco.ID = comprende_dischi.ID_disco
+agg                     join comprende_dischi on disco.ID = comprende_dischi.ID_disco
                      join collezione on comprende_dischi.ID_collezione = collezione.ID
             where lower(autore.nome_autore) = lower(nome_autore)
               and collezione.flag = 1);
@@ -362,7 +362,10 @@ begin
        insert into genere(nome) values (nome);
 end$
 
-
+create procedure rimozione_genere(in ID_genere int)
+begin
+       delete from genere where ID_genere = ID;
+end$
 
 delimiter ;
 

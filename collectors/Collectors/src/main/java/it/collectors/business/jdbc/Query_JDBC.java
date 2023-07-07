@@ -64,15 +64,34 @@ public class Query_JDBC {
             statement.setString(6, ruolo);
 
             statement.execute();
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+    }
 
-            ResultSet rs = statement.getResultSet();
-            System.out.println(rs);
+    public void aggiuntaGenere(String genere){
+        try {
+            CallableStatement statement = connection.prepareCall("{call aggiunta_genere(?)}");
+            statement.setString(1, genere.toLowerCase());
+
+            statement.execute();
 
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
         }
     }
 
+
+    public void rimozioneGenere(int id){
+        try{
+            CallableStatement statement = connection.prepareCall("{call rimozione_genere(?)}");
+            statement.setInt(1,id);
+             statement.execute();
+
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+    }
 
     /*
     //ESEMPIO 1: esecuzione diretta di query e lettura dei risultati

@@ -10,7 +10,7 @@ public class Connect_JDBC {
 
     private final String username;
 
-    private final String password;
+    private String password;
 
     private final String connection_string;
 

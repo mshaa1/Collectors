@@ -24,7 +24,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        BusinessFactory.getImplementation().aggiuntaAutore("Pippo", "Baudo", new Date(2002,06,06), "Italia", "Pippo Baudo è un conduttore televisivo, attore, cantante e comico italiano.", "poliedrico");
+
 
         /*
         try {
