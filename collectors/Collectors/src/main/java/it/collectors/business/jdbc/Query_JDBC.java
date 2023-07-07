@@ -13,11 +13,6 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Giuseppe Della Penna
- *
- */
 public class Query_JDBC {
 
     private Connection connection;
@@ -58,6 +53,28 @@ public class Query_JDBC {
         }
     }
 
+    public void aggiuntaAutore(String nome, String cognome, Date dataNascita, String nomeAutore, String info, String ruolo){
+        try {
+            CallableStatement statement = connection.prepareCall("{call aggiunta_autore(?,?,?,?,?,?)}");
+            statement.setString(1, nome);
+            statement.setString(2, cognome);
+            statement.setDate(3, new java.sql.Date(dataNascita.getTime()));
+            statement.setString(4, nomeAutore);
+            statement.setString(5, info);
+            statement.setString(6, ruolo);
+
+            statement.execute();
+
+            ResultSet rs = statement.getResultSet();
+            System.out.println(rs);
+
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+    }
+
+
+    /*
     //ESEMPIO 1: esecuzione diretta di query e lettura dei risultati
     public void classifica_marcatori(int anno) throws ApplicationException {
         System.out.println("CLASSIFICA MARCATORI " + anno + "-----------------------");
@@ -239,5 +256,14 @@ public class Query_JDBC {
         } else {
             System.out.println("** NON SUPPORTATO **");
         }
-    }
+    }*/
+
+
+
+
+
+
+
+
 }
+

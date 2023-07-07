@@ -6,7 +6,7 @@ public class DatabaseImpl {
 
     //private static final String DB_NAME = "collectors";
 
-    private static final String CONNECTION_STRING = "";
+    private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/collectors?noAccessToProcedureBodies=true&serverTimezone=Europe/Rome";
 
     private static final String DB_USER = "admin";
 

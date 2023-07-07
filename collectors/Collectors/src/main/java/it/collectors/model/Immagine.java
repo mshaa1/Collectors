@@ -10,17 +10,11 @@ public class Immagine {
 
     private final String didascalia;
 
-    private final InputStream content;
-
-    private final byte[] cache;
-
 
     public Immagine(Integer id, String filePath, String descrizione, InputStream content, byte[] cache) {
         this.id = id;
         this.filePath = filePath;
         this.didascalia = descrizione;
-        this.content = content;
-        this.cache = cache;
     }
 
     public Integer getId() {
@@ -33,14 +27,6 @@ public class Immagine {
 
     public String getDidascalia() {
         return didascalia;
-    }
-
-    public InputStream getContent() {
-        return content;
-    }
-
-    public byte[] getCache() {
-        return cache;
     }
 
 }

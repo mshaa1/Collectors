@@ -1,6 +1,7 @@
 package it.collectors.view;
 
-import it.univaq.disim.psvmsa.unify.model.User;
+
+import it.collectors.model.Collezionista;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,13 +21,13 @@ public class ViewDispatcher {
         this.stage = stage;
     }
 
-    public void loggedIn(User user) throws ViewDispatcherException {
+    public void loggedIn(Collezionista collezionista) throws ViewDispatcherException {
         validateStage();
-        View<User> layoutPage = loadView("/ui/views/layout.fxml");
+        View<Collezionista> layoutPage = loadView("/ui/views/home.fxml");
         Parent layoutView = layoutPage.getView();
-        layoutPage.getController().initializeData(user);
+        layoutPage.getController().initializeData(collezionista);
         stage.setScene(new Scene(layoutView));
-        navigateTo(Pages.HOME, user);
+        navigateTo(Pages.HOME, collezionista);
     }
 
     public void showLogin() throws ViewDispatcherException {
@@ -38,7 +39,6 @@ public class ViewDispatcher {
         validateStage();
         View<T> viewToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
         viewToLoad.getController().initializeData(data);
-        layout.setCurrentView(viewToLoad);
     }
 
     public void navigateTo(Pages page) throws ViewDispatcherException {
