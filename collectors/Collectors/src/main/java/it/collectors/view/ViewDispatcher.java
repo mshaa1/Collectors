@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 
 public class ViewDispatcher {
+
     private Stage stage;
 
     private static ViewDispatcher instance = new ViewDispatcher();
@@ -44,7 +45,6 @@ public class ViewDispatcher {
     public void navigateTo(Pages page) throws ViewDispatcherException {
         validateStage();
         View viewToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
-        layout.setCurrentView(viewToLoad);
     }
 
     private void validateStage() throws ViewDispatcherException {
