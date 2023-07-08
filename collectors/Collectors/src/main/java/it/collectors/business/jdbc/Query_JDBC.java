@@ -57,7 +57,7 @@ public class Query_JDBC {
     //********************QUERY***************************//
 
 
-    // agginta autore
+    // aggiunta autore
     public void aggiuntaAutore(String nome, String cognome, Date dataNascita, String nomeAutore, String info, String ruolo){
         try {
             CallableStatement statement = connection.prepareCall("{call aggiunta_autore(?,?,?,?,?,?)}");

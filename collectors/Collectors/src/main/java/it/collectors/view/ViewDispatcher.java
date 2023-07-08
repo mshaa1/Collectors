@@ -32,7 +32,7 @@ public class ViewDispatcher {
     }
 
     public void showLogin() throws ViewDispatcherException {
-        View loginPage = loadView("/ui/views/login.fxml");
+        View loginPage = loadView("/it/collectors/ui/views/login.fxml");
         stage.setScene(new Scene(loginPage.getView()));
     }
 

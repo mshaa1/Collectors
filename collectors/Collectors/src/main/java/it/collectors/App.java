@@ -20,20 +20,17 @@ public class App extends Application {
         launch(args);
     }
 
-    ViewDispatcher dispatcher = ViewDispatcher.getInstance();
-
     @Override
     public void start(Stage stage) throws Exception {
-
-
-        /*
         try {
             ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
             viewDispatcher.setStage(stage);
             viewDispatcher.showLogin();
+            stage.setResizable(false);
+            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Errore");
-        }*/
+        }
+
     }
 }
