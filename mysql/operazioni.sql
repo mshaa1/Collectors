@@ -244,7 +244,7 @@ end$
 -- minuti totali di musica riferibili a un certo autore memorizzati nelle collezioni pubbliche
 
 create function minuti_totali_musica_pubblica_per_autore(ID_autore integer)
-    returns time
+    returns integer
     deterministic
 begin
     return (select sum(traccia.durata)
