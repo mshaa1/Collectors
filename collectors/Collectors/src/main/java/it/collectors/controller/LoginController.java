@@ -1,5 +1,6 @@
 package it.collectors.controller;
 
+import it.collectors.view.Pages;
 import it.collectors.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -55,6 +56,7 @@ public class LoginController implements Initializable, DataInitializable {
         try{
             //User user = this.userService.validate(username.getText(),password.getText());
             ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
+            viewDispatcher.navigateTo(Pages.HOME);
             //viewDispatcher.loggedIn(user);
             //viewDispatcher.navigateTo(Pages.HOME, user);
         }catch(Exception e){

@@ -1,14 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="it.collectors.controller.HomeController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.HomeController">
+   <children>
+      <Label fx:id="loggedInLabel" alignment="CENTER">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </Label>
+      <HBox prefWidth="673.0">
+         <VBox.margin>
+            <Insets left="220.0" top="380.0" />
+         </VBox.margin>
+         <children>
+            <Button alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToCollections" style="-fx-background-color: transparent;" text="Collezioni">
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/collezioni.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets left="40.0" top="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToDisks" style="-fx-background-color: transparent;" text="Dischi">
+               <graphic>
+                  <ImageView fitHeight="39.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/dischi.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets left="10.0" top="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToTracks" style="-fx-background-color: transparent;" text="Tracce">
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/tracce.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets left="10.0" top="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToProfile" style="-fx-background-color: transparent;" text="Profilo">
+               <graphic>
+                  <ImageView fitHeight="41.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/account.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets left="5.0" top="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: transparent;" text="Disconnettiti">
+               <graphic>
+                  <ImageView fitHeight="39.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/disconnetti.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets left="180.0" top="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>

@@ -24,7 +24,7 @@ public class ViewDispatcher {
 
     public void loggedIn(Collezionista collezionista) throws ViewDispatcherException {
         validateStage();
-        View<Collezionista> layoutPage = loadView("/ui/views/home.fxml");
+        View<Collezionista> layoutPage = loadView("/it/collectors/ui/views/home.fxml");
         Parent layoutView = layoutPage.getView();
         layoutPage.getController().initializeData(collezionista);
         stage.setScene(new Scene(layoutView));
@@ -38,13 +38,14 @@ public class ViewDispatcher {
 
     public <T> void navigateTo(Pages page, T data) throws ViewDispatcherException {
         validateStage();
-        View<T> viewToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
+        View<T> viewToLoad = loadView("/it/collectors/ui/views/" + page.toString() + ".fxml");
         viewToLoad.getController().initializeData(data);
     }
 
     public void navigateTo(Pages page) throws ViewDispatcherException {
         validateStage();
-        View viewToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
+        View viewToLoad = loadView("/it/collectors/ui/views/" + page.toString() + ".fxml");
+        this.stage.setScene(new Scene(viewToLoad.getView())); //ci rendiamo conto di quanto sia inefficiente questa cosa
     }
 
     private void validateStage() throws ViewDispatcherException {
@@ -63,4 +64,5 @@ public class ViewDispatcher {
             throw new ViewDispatcherException(e.getMessage());
         }
     }
+
 }
