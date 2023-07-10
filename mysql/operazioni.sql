@@ -335,7 +335,7 @@ create procedure ricerca_dischi_per_autore_titolo(in nome_autore varchar(25), in
                                                   in flag boolean, in ID_collezionista int)
 begin
     select distinct -- nickname as 'proprietario collezione',
-            ID, anno_uscita as 'anno di uscita', barcode, formato, stato_conservazione as 'stato di conservazione', descrizione_conservazione as 'descrizione conservazione'
+            ID, titolo, anno_uscita as 'anno di uscita', barcode, formato, stato_conservazione as 'stato di conservazione', descrizione_conservazione as 'descrizione conservazione'
             -- lUl.nome_autore as 'nome autore'
     from (
         select *
