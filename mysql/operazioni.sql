@@ -243,7 +243,7 @@ end$
 -- 11
 -- minuti totali di musica riferibili a un certo autore memorizzati nelle collezioni pubbliche
 
-create function minuti_totali_musica_pubblica_per_autore(nome_autore varchar(25))
+create function minuti_totali_musica_pubblica_per_autore(ID_autore integer)
     returns time
     deterministic
 begin
@@ -254,7 +254,7 @@ begin
                      join autore on produce_disco.ID_autore = autore.ID
                      join comprende_dischi on disco.ID = comprende_dischi.ID_disco
                      join collezione on comprende_dischi.ID_collezione = collezione.ID
-            where lower(autore.nome_autore) = lower(nome_autore)
+            where autore.ID = ID_autore
               and collezione.flag = 1);
 end$
 
