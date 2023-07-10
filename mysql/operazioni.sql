@@ -63,14 +63,14 @@ begin
     insert into condivide(ID_collezione, ID_collezionista) values (ID_collezione, ID_collezionista);
 end$
 
-
+-- 6
 -- Rimozione di un disco da una collezione
 create procedure rimozione_disco_collezione(in ID_disco integer, in ID_collezione integer)
 begin
     delete from comprende_dischi c where c.ID_disco = ID_disco and c.ID_collezione = ID_collezione;
 end$
 
-
+-- 7
 -- Rimozione di una collezione.
 create procedure rimozione_collezione(in ID_collezione integer)
 begin
@@ -226,9 +226,9 @@ end$
 -- 10
 -- numero di tracce di dischi distinti di un certo autore presenti nelle collezioni pubbliche
 
-create procedure numero_tracce_distinte_per_autore_collezioni_pubbliche(in nome_autore varchar(25), out numero_tracce integer)
+create procedure numero_tracce_distinte_per_autore_collezioni_pubbliche(in ID_autore integer, out numero_tracce integer)
 begin
-    select count(distinct traccia.ID)
+    select count(distinct traccia.ID) into numero_tracce
     from traccia
              join disco on traccia.ID_disco = disco.ID
              join produce_disco on disco.ID = produce_disco.ID_disco
