@@ -243,7 +243,7 @@ end$
 
 -- 11
 -- minuti totali di musica riferibili a un certo autore memorizzati nelle collezioni pubbliche
-
+#TODO: capire come funziona la somma dei tipi time
 create function minuti_totali_musica_pubblica_per_autore(ID_autore integer)
     returns integer
     deterministic
