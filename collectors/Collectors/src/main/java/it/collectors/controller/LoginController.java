@@ -1,5 +1,7 @@
 package it.collectors.controller;
 
+import it.collectors.business.BusinessFactory;
+import it.collectors.business.jdbc.Query_JDBC;
 import it.collectors.view.Pages;
 import it.collectors.view.ViewDispatcher;
 import javafx.fxml.FXML;
@@ -53,12 +55,22 @@ public class LoginController implements Initializable, DataInitializable {
 
     @FXML
     private void login() {
+
+        Query_JDBC queryJdbc = BusinessFactory.getImplementation();
+
+        String nickname = nicknameLabel.getText();
+        String email = emailLabel.getText();
+
+        Boolean accesso;
+        accesso = queryJdbc.convalidaUtente(nickname,email);
+        System.out.println(accesso);
+
         try{
-            //User user = this.userService.validate(username.getText(),password.getText());
-            ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
-            viewDispatcher.navigateTo(Pages.HOME);
-            //viewDispatcher.loggedIn(user);
-            //viewDispatcher.navigateTo(Pages.HOME, user);
+
+            if(accesso){
+                ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
+                viewDispatcher.navigateTo(Pages.HOME);
+            }
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

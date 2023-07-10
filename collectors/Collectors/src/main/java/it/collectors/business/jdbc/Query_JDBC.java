@@ -57,6 +57,26 @@ public class Query_JDBC {
     //********************QUERY***************************//
 
 
+    // convalida accesso utente
+    public Boolean convalidaUtente(String nickname, String email){
+        Boolean risultato = false;
+        try {
+            CallableStatement statement = connection.prepareCall("{call convalida_utente(?,?,?)}");
+            statement.setString(1,nickname);
+            statement.setString(2,email);
+            statement.registerOutParameter(3, Types.BOOLEAN);
+            statement.execute();
+
+            risultato = statement.getBoolean(3);
+            statement.close();
+
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+        
+        return risultato;
+    }
+
     // aggiunta autore
     public void aggiuntaAutore(String nome, String cognome, Date dataNascita, String nomeAutore, String info, String ruolo){
         try {
@@ -286,7 +306,7 @@ public class Query_JDBC {
     public Integer getNumeroTracceDistintePerAutoreCollezioniPubblice(int IDAutore){
         Integer risultato = null;
         try{
-            CallableStatement statement = connection.prepareCall("{call numero_tracce_distinte_per_autore_collezioni_pubbliche(?)}");
+            CallableStatement statement = connection.prepareCall("{call numero_tracce_distinte_per_autore_collezioni_pubbliche(?,?)}");
             statement.setInt(1,IDAutore);
             statement.registerOutParameter(2, Types.INTEGER);
             statement.execute();

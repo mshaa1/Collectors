@@ -376,6 +376,15 @@ begin
        delete from genere where ID_genere = ID;
 end$
 
+drop procedure if exists convalida_utente;
+
+-- convalida l'accesso di un utente
+create procedure convalida_utente(in nickname varchar(25), in email varchar(25), out flag boolean)
+begin
+    select count(*) from collezionista where collezionista.nickname = nickname and collezionista.email = email into flag;
+end$
+
+
 delimiter ;
 
 
