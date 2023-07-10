@@ -12,15 +12,19 @@ public class Disco {
 
     private final String formato;
 
+    private final String statoConservazione;
+
     private final String descrizioneConservazione;
 
 
-    public Disco(Integer id, String titolo, Integer annoUscita, String barcode, String formato, String descrizioneConservazione) {
+
+    public Disco(Integer id, String titolo, Integer annoUscita, String barcode, String formato,String statoConservazione, String descrizioneConservazione) {
         this.id = id;
         this.titolo = titolo;
         this.annoUscita = annoUscita;
         this.barcode = barcode;
         this.formato = formato;
+        this.statoConservazione = statoConservazione;
         this.descrizioneConservazione = descrizioneConservazione;
     }
 
