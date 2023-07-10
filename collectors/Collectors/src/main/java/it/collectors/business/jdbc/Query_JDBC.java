@@ -194,8 +194,8 @@ public class Query_JDBC {
         try{
             CallableStatement statement = connection.prepareCall("{call rimozione_disco_collezione(?,?)}");
 
-            statement.setInt(1,IDDisco);
-            statement.setInt(2,IDCollezione);
+            statement.setInt(1, IDDisco);
+            statement.setInt(2, IDCollezione);
             statement.execute();
             statement.close();
 
