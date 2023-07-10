@@ -2,13 +2,8 @@ package it.collectors.business.jdbc;
 
 import it.collectors.model.Disco;
 
-import java.beans.JavaBean;
-import java.lang.reflect.Type;
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,7 +53,7 @@ public class Query_JDBC {
 
 
     // convalida accesso utente
-    public Boolean convalidaUtente(String nickname, String email){
+    public Boolean getAccesso(String nickname, String email){
         Boolean risultato = false;
         try {
             CallableStatement statement = connection.prepareCall("{call convalida_utente(?,?,?)}");
@@ -75,6 +70,25 @@ public class Query_JDBC {
         }
         
         return risultato;
+    }
+
+    //registrazione utente
+    public boolean registrazioneUtente(String nickname, String email){
+        try{
+            CallableStatement statement = connection.prepareCall("{call registrazione_utente(?,?)}");
+            statement.setString(1,nickname);
+            statement.setString(2,email);
+
+            statement.execute();
+
+
+            statement.close();
+
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     // aggiunta autore

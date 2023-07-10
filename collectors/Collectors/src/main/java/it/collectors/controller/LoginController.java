@@ -34,6 +34,8 @@ public class LoginController implements Initializable, DataInitializable {
     @FXML
     private VBox loginVBox;
 
+    Query_JDBC queryJdbc = BusinessFactory.getImplementation();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.loginButton
@@ -56,13 +58,11 @@ public class LoginController implements Initializable, DataInitializable {
     @FXML
     private void login() {
 
-        Query_JDBC queryJdbc = BusinessFactory.getImplementation();
-
         String nickname = nicknameLabel.getText();
         String email = emailLabel.getText();
 
         Boolean accesso;
-        accesso = queryJdbc.convalidaUtente(nickname,email);
+        accesso = queryJdbc.getAccesso(nickname,email);
         System.out.println(accesso);
 
         try{
@@ -70,6 +70,8 @@ public class LoginController implements Initializable, DataInitializable {
             if(accesso){
                 ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
                 viewDispatcher.navigateTo(Pages.HOME);
+            }else{
+                exceptionLabel.textProperty().set("Nome utente o email sbagliati");
             }
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -78,11 +80,17 @@ public class LoginController implements Initializable, DataInitializable {
 
     @FXML
     private void register() {
+        boolean registrazione;
+        String nickname = nicknameLabel.getText();
+        String email = emailLabel.getText();
+        registrazione = queryJdbc.registrazioneUtente(nickname,email);
         try{
-            //User user = this.userService.validate(username.getText(),password.getText());
-            ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
-            //viewDispatcher.loggedIn(user);
-            //viewDispatcher.navigateTo(Pages.HOME, user);
+            if (registrazione){
+                ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
+                viewDispatcher.navigateTo(Pages.HOME);
+            }else{
+                exceptionLabel.textProperty().set("Nome utente o email sbagliati/utilizzati");
+            }
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

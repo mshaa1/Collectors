@@ -384,6 +384,14 @@ begin
     select count(*) from collezionista where collezionista.nickname = nickname and collezionista.email = email into flag;
 end$
 
+-- Registrazione utente
+drop procedure if exists registrazione_utente;
+
+create procedure registrazione_utente(in nickname varchar(25), in email varchar(25))
+begin
+    insert into collezionista(nickname, email) values (nickname, email);
+end$
+
 
 delimiter ;
 
