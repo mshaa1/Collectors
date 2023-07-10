@@ -195,7 +195,8 @@ begin
                    or lower(autore.nome_autore) = lower(nome_autore);
             end if;
         end case;
-end$ */
+end$
+*/
 
 -- 9
 -- verifica della visibilità di una collezione da parte di un collezionista
@@ -352,7 +353,7 @@ begin
     where (lUl.flag=flag or flag is null) and lUl.ID_collezionista = ID_collezionista; -- ricerca per flag e costraint del collezionista
 end$
 
--- Altre query
+-- *****  Altre query *****
 
 drop procedure if exists aggiunta_autore;
 
@@ -376,6 +377,7 @@ begin
 end$
 
 delimiter ;
+
 
 
 

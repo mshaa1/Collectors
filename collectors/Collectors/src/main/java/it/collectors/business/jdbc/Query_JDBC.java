@@ -2,6 +2,7 @@ package it.collectors.business.jdbc;
 
 import it.collectors.model.Disco;
 
+import java.beans.JavaBean;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.text.DateFormat;
@@ -68,6 +69,7 @@ public class Query_JDBC {
             statement.setString(6, ruolo);
 
             statement.execute();
+            statement.close();
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
         }
@@ -80,6 +82,7 @@ public class Query_JDBC {
             statement.setString(1, genere.toLowerCase());
 
             statement.execute();
+            statement.close();
 
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
@@ -92,6 +95,7 @@ public class Query_JDBC {
             CallableStatement statement = connection.prepareCall("{call rimozione_genere(?)}");
             statement.setInt(1,id);
              statement.execute();
+             statement.close();
 
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
@@ -108,6 +112,7 @@ public class Query_JDBC {
             statement.setInt(3,IDCollezionista);
 
             statement.execute();
+            statement.close();
 
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
@@ -124,7 +129,7 @@ public class Query_JDBC {
             statement.setInt(2,IDCollezione);
 
             statement.execute();
-
+            statement.close();
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
         }
@@ -140,6 +145,7 @@ public class Query_JDBC {
             statement.setTime(3, new java.sql.Time(durataOre, durataMinuti, durataSecondi));
 
             statement.execute();
+            statement.close();
         }
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
@@ -157,6 +163,8 @@ public class Query_JDBC {
             statement.setInt(1,IDCollezione);
             statement.setBoolean(2,flag);
             statement.execute();
+            statement.close();
+
         }catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
@@ -172,6 +180,7 @@ public class Query_JDBC {
             statement.setInt(1,IDCollezione);
             statement.setInt(2,IDCollezionista);
             statement.execute();
+            statement.close();
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
         }
@@ -188,6 +197,7 @@ public class Query_JDBC {
             statement.setInt(1,IDDisco);
             statement.setInt(2,IDCollezione);
             statement.execute();
+            statement.close();
 
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
@@ -202,6 +212,7 @@ public class Query_JDBC {
             statement.setInt(1,IDCollezione);
 
             statement.execute();
+            statement.close();
 
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
@@ -280,11 +291,37 @@ public class Query_JDBC {
             statement.registerOutParameter(2, Types.INTEGER);
             statement.execute();
             risultato =  statement.getInt(2);
+            statement.close();
 
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
         }
         return risultato;
     }
+
+    //minuti totali di musica riferibili a un certo autore memorizzati nelle collezioni pubbliche
+    //Query 11
+    public int getMinutiTotaliMusicaPerAutore(int IDAutore){
+        int minuti = 0;
+        try{
+            PreparedStatement statement = connection.prepareStatement("select minuti_totali_musica_pubblica_per_autore(?)");
+            statement.setInt(1, IDAutore);
+            statement.execute();
+
+            ResultSet resultset = statement.getResultSet();
+            if (resultset.next())
+            {
+                minuti = resultset.getInt(1);
+            }
+
+            statement.close();
+
+        }catch(SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+        return minuti;
+    }
+
+
 }
 

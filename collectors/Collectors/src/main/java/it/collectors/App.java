@@ -25,6 +25,10 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
+        int minuti;
+        minuti = BusinessFactory.getImplementation().getMinutiTotaliMusicaPerAutore(1);
+        System.out.println(minuti);
+
 
         try {
             ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
