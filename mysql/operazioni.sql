@@ -111,7 +111,7 @@ end$
 -- Tracklist di un disco
 create procedure tracklist_disco(in ID_disco integer)
 begin
-    select titolo, durata
+    select id, titolo, durata
     from traccia
     where traccia.ID_disco = ID_disco;
 end$
