@@ -4,23 +4,30 @@ import it.collectors.business.BusinessFactory;
 import it.collectors.business.jdbc.Query_JDBC;
 import it.collectors.model.Collezione;
 import it.collectors.model.Collezionista;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
+
 import java.net.URL;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class CollectionsController implements Initializable, DataInitializable<Collezionista> {
 
     @FXML
-    private TableView<String> collectionsTable;
+    private TableView<Collezione> collectionsTable;
+
+    @FXML
+    private TableColumn<Collezione, String> collectionNameColumn;
+
+    @FXML
+    private TableColumn<Collezione, String> collectionFlagColumn;
 
     private Query_JDBC queryJdbc = BusinessFactory.getImplementation();
 
@@ -32,7 +39,12 @@ public class CollectionsController implements Initializable, DataInitializable<C
 
     @Override
     public void initializeData(Collezionista data) {
-
+        List<Collezione> collezioni = queryJdbc.getCollezioniUtente(data.getId());
+        collectionNameColumn.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        collectionFlagColumn.setCellValueFactory(new PropertyValueFactory<>("flag"));
+        for(int i = 0; i < collezioni.size(); i++) {
+            collectionsTable.getItems().add(collezioni.get(i));
+        }
     }
 
     @FXML

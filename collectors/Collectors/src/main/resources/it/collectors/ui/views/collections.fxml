@@ -11,7 +11,7 @@
       <TableView fx:id="collectionsTable" prefHeight="390.0" prefWidth="800.0">
         <columns>
           <TableColumn fx:id="collectionNameColumn" prefWidth="400.0" text="Nome collezione" />
-          <TableColumn fx:id="collectionFlagColumn" prefWidth="399.0" text="Visibilità" />
+          <TableColumn fx:id="collectionFlagColumn" prefWidth="399.0" text="Visibilità collezione" />
         </columns>
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0">
