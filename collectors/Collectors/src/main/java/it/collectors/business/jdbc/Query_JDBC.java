@@ -51,6 +51,24 @@ public class Query_JDBC {
 
     //********************QUERY***************************//
 
+    // ottieni ID utente
+    public Integer getIDUtente(String nickname, String email){
+        Integer ID = null;
+        try{
+            CallableStatement statement = connection.prepareCall("{call prendi_ID_utente(?,?,?)}");
+            statement.setString(1, nickname);
+            statement.setString(2, email);
+            statement.registerOutParameter(3, Types.INTEGER);
+            statement.execute();
+
+            ID = statement.getInt(3);
+            statement.close();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return ID;
+    }
 
     // convalida accesso utente
     public Boolean getAccesso(String nickname, String email){

@@ -11,4 +11,10 @@ public abstract class BusinessFactory {
         return databaseImpl.getImplementation();
     }
 
+    public static Query_JDBC reOpenConnection() {
+        if (databaseImpl.getImplementation().getConnection() == null){
+            databaseImpl = new DatabaseImpl();
+        }
+        return databaseImpl.getImplementation();
+    }
 }

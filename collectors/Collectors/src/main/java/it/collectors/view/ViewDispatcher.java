@@ -33,13 +33,14 @@ public class ViewDispatcher {
 
     public void showLogin() throws ViewDispatcherException {
         View loginPage = loadView("/it/collectors/ui/views/login.fxml");
-        stage.setScene(new Scene(loginPage.getView()));
+        this.stage.setScene(new Scene(loginPage.getView()));
     }
 
     public <T> void navigateTo(Pages page, T data) throws ViewDispatcherException {
         validateStage();
         View<T> viewToLoad = loadView("/it/collectors/ui/views/" + page.toString() + ".fxml");
         viewToLoad.getController().initializeData(data);
+        this.stage.setScene(new Scene(viewToLoad.getView())); //ci rendiamo conto di quanto sia inefficiente questa cosa
     }
 
     public void navigateTo(Pages page) throws ViewDispatcherException {

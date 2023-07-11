@@ -24,7 +24,6 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
         try {
             ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
             viewDispatcher.setStage(stage);

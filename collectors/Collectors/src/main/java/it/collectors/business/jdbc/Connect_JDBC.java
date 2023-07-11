@@ -23,6 +23,7 @@ public class Connect_JDBC {
     }
 
 
+
     // Tale metodo ritorna una nuova connessione al database solo se
     // la connessione non è già stata aperta precedentemente.
     public Connection getConnection() throws ApplicationException{

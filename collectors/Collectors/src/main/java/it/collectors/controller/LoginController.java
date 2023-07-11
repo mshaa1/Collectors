@@ -1,7 +1,10 @@
 package it.collectors.controller;
 
 import it.collectors.business.BusinessFactory;
+import it.collectors.business.jdbc.Connect_JDBC;
+import it.collectors.business.jdbc.DatabaseImpl;
 import it.collectors.business.jdbc.Query_JDBC;
+import it.collectors.model.Collezionista;
 import it.collectors.view.Pages;
 import it.collectors.view.ViewDispatcher;
 import javafx.fxml.FXML;
@@ -34,6 +37,8 @@ public class LoginController implements Initializable, DataInitializable {
     @FXML
     private VBox loginVBox;
 
+    private Collezionista collezionista;
+
     Query_JDBC queryJdbc = BusinessFactory.getImplementation();
 
     @Override
@@ -49,6 +54,8 @@ public class LoginController implements Initializable, DataInitializable {
         this.registerButton
                 .disableProperty()
                 .bind(this.loginButton.disableProperty());
+
+        this.exceptionLabel.textProperty().set("");
     }
 
     public void initializeData() {
@@ -57,21 +64,26 @@ public class LoginController implements Initializable, DataInitializable {
 
     @FXML
     private void login() {
+        if (queryJdbc.getConnection() == null) {
+            queryJdbc = BusinessFactory.reOpenConnection();
+        }
 
         String nickname = nicknameLabel.getText();
         String email = emailLabel.getText();
 
         Boolean accesso;
+        Integer ID;
         accesso = queryJdbc.getAccesso(nickname,email);
-        System.out.println(accesso);
+        ID = queryJdbc.getIDUtente(nickname, email);
+
+        this.collezionista = new Collezionista(ID, email, nickname);
 
         try{
-
             if(accesso){
                 ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
-                viewDispatcher.navigateTo(Pages.HOME);
+                viewDispatcher.navigateTo(Pages.HOME, this.collezionista);
             }else{
-                exceptionLabel.textProperty().set("Nome utente o email sbagliati");
+                exceptionLabel.textProperty().set("Nome utente o email errati");
             }
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -80,16 +92,26 @@ public class LoginController implements Initializable, DataInitializable {
 
     @FXML
     private void register() {
+        if (queryJdbc.getConnection() == null) {
+            queryJdbc = BusinessFactory.reOpenConnection();
+        }
+
         boolean registrazione;
+        Integer ID;
+
         String nickname = nicknameLabel.getText();
         String email = emailLabel.getText();
         registrazione = queryJdbc.registrazioneUtente(nickname,email);
+        ID = queryJdbc.getIDUtente(nickname, email);
+
+        this.collezionista = new Collezionista(ID, email, nickname);
+
         try{
             if (registrazione){
                 ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
-                viewDispatcher.navigateTo(Pages.HOME);
+                viewDispatcher.navigateTo(Pages.HOME, this.collezionista);
             }else{
-                exceptionLabel.textProperty().set("Nome utente o email sbagliati/utilizzati");
+                exceptionLabel.textProperty().set("Nome utente o email già in utilizzo");
             }
         }catch(Exception e){
             System.out.println(e.getMessage());
