@@ -1,5 +1,7 @@
 package it.collectors.model;
 
+import java.util.Objects;
+
 public class Disco {
 
     private final Integer id;
@@ -52,4 +54,16 @@ public class Disco {
         return descrizioneConservazione;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Disco disco = (Disco) o;
+        return Objects.equals(id, disco.id) && Objects.equals(titolo, disco.titolo) && Objects.equals(annoUscita, disco.annoUscita) && Objects.equals(barcode, disco.barcode) && Objects.equals(formato, disco.formato) && Objects.equals(statoConservazione, disco.statoConservazione) && Objects.equals(descrizioneConservazione, disco.descrizioneConservazione);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, titolo, annoUscita, barcode, formato, statoConservazione, descrizioneConservazione);
+    }
 }

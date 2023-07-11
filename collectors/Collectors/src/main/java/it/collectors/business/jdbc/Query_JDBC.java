@@ -61,7 +61,6 @@ public class Query_JDBC {
     // ottieni collezioni utente
     public List<Collezione> getCollezioniUtente(int IDUtente){
         List<Collezione> collezioni = new ArrayList<>();
-        System.out.print("ciao \n");
         try{
             CallableStatement statement = connection.prepareCall("{call get_collezioni_utente(?)}");
             statement.setInt(1,IDUtente);
@@ -102,7 +101,6 @@ public class Query_JDBC {
             sqlException.printStackTrace();
         }
 
-        System.out.println(ID);
         return ID;
     }
 

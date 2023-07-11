@@ -322,7 +322,7 @@ end$
 
 drop procedure if exists convalida_utente;
 
--- Funzionalità 19
+-- Funzionalità 18
 -- convalida l'accesso di un utente
 
 create procedure convalida_utente(in nickname varchar(25), in email varchar(25), out flag boolean)
