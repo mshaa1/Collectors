@@ -53,6 +53,11 @@ public class Query_JDBC {
 
     //********************QUERY***************************//
 
+    //todo:modifica collezione
+
+
+
+
     // ottieni collezioni utente
     public List<Collezione> getCollezioniUtente(int IDUtente){
         List<Collezione> collezioni = new ArrayList<>();
@@ -404,19 +409,31 @@ public class Query_JDBC {
     // Query 12a
     // statistiche: numero collezioni di ciascun collezionista
     public int getStatisticheNumeroCollezioni(){
-        int stats = 0;
         try {
             CallableStatement statement = connection.prepareCall("{call statistiche_numero_collezioni(?)}");
             statement.registerOutParameter(1,Types.INTEGER);
             statement.execute();
-            stats = statement.getInt(1);
+            return statement.getInt(1);
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
         }
-
-        return stats;
+        return 0;
     }
 
+    // Query 12b
+    // statistiche: numero di dischi per genere nel sistema
+    public int getStatisticheDischiPerGenere(){
+        try {
+            CallableStatement statement = connection.prepareCall("{call statistiche_dischi_per_genere(?)}");
+            statement.registerOutParameter(1,Types.INTEGER);
+            statement.execute();
+            return statement.getInt(1);
+
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+        return 0;
+    }
 
 }
 
