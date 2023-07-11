@@ -292,7 +292,7 @@ public class Query_JDBC {
     }
 
     // Funzionalità 5
-    //Rimozione di una collezione
+    // Rimozione di una collezione
 
     public void rimozioneCollezione(int IDCollezione) {
         try{
@@ -306,9 +306,13 @@ public class Query_JDBC {
             sqlException.printStackTrace();
         }
     }
-    
+
+    // Funzionalità 6
+    // Ottengo tutti i dischi di una collezione
+    public void 
+
     // Funzionalità 8
-    //Ricerca di dischi in base al nome autore e/o titolo del disco
+    // Ricerca di dischi in base al nome autore e/o titolo del disco
 
     public ArrayList<Disco> getRicercaDischiPerAutoreTitolo(String nomeAutore, String titoloDisco, boolean flag, int IDCollezionista) {
         ArrayList<Disco> dischi = new ArrayList<>();

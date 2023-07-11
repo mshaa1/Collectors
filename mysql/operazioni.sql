@@ -356,7 +356,7 @@ drop procedure if exists prendi_collezioni_utente;
 
 create procedure get_collezioni_utente(in ID_utente integer)
 begin
-    select collezione.ID, collezione.nome from collezione where collezione.ID_collezionista = ID_utente;
+    select * from collezione where collezione.ID_collezionista = ID_utente;
 end$
 
 
