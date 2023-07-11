@@ -123,80 +123,6 @@ begin
     where traccia.ID_disco = ID_disco;
 end$
 
-/*
--- 8
-create procedure ricerca_dischi_per_titolo_autore(in titolo varchar(35), in nome_autore varchar(25),
-                                                  in esattamente boolean,
-                                                  out risultati_presenti boolean) -- esattamente = true -> fa l'and | esattamente = false -> fa l'or
--- risultati_presenti = 0 se non può essere fatta alcuna ricerca
-begin
-    case
-        when titolo IS NULL and nome_autore IS NOT NULL -- cerco solo autore
-            then select lista_dischi.titolo,
-                        'anno di uscita',
-                        genere,
-                        formato,
-                        stato_conservazione,
-                        descrizione_conservazione,
-                        barcode,
-                        azienda,
-                        sede_legale,
-                        email
-                 from lista_dischi
-                          join produce_disco on lista_dischi.ID = produce_disco.ID_disco
-                          join autore on produce_disco.ID_autore = autore.ID
-                 where lower(autore.nome_autore) = lower(nome_autore);
-        when titolo IS NOT NULL and nome_autore IS NULL -- cerco solo il titolo
-            then select lista_dischi.titolo,
-                        'anno di uscita',
-                        genere,
-                        formato,
-                        stato_conservazione,
-                        descrizione_conservazione,
-                        barcode,
-                        azienda,
-                        sede_legale,
-                        email
-                 from lista_dischi
-                 where lower(lista_dischi.titolo) = lower(titolo);
-        when titolo IS NOT NULL and nome_autore IS NOT NULL -- cerca entrambi
-            then if (esattamente = 1) -- cerca entrambi in modo da avere per ogni riga esattamente il titolo e l'autore
-            then
-                select lista_dischi.titolo,
-                       'anno di uscita',
-                       genere,
-                       formato,
-                       stato_conservazione,
-                       descrizione_conservazione,
-                       barcode,
-                       azienda,
-                       sede_legale,
-                       email
-                from lista_dischi
-                         join produce_disco on lista_dischi.ID = produce_disco.ID_disco
-                         join autore on produce_disco.ID_autore = autore.ID
-                where lower(lista_dischi.titolo) = lower(titolo)
-                  and lower(autore.nome_autore) = lower(nome_autore);
-            else -- cerca entrambi in modo da avere per ogni riga o il titolo o l'autore
-                select lista_dischi.titolo,
-                       'anno di uscita',
-                       genere,
-                       formato,
-                       stato_conservazione,
-                       descrizione_conservazione,
-                       barcode,
-                       azienda,
-                       sede_legale,
-                       email
-                from lista_dischi
-                         join produce_disco on lista_dischi.ID = produce_disco.ID_disco
-                         join autore on produce_disco.ID_autore = autore.ID
-                where lower(lista_dischi.titolo) = lower(titolo)
-                   or lower(autore.nome_autore) = lower(nome_autore);
-            end if;
-        end case;
-end$
-*/
 
 -- 9
 -- verifica della visibilità di una collezione da parte di un collezionista
@@ -353,9 +279,11 @@ begin
     where (lUl.flag=flag or flag is null) and lUl.ID_collezionista = ID_collezionista; -- ricerca per flag e costraint del collezionista
 end$
 
--- *****  Altre query *****
+-- *****  Altre query per il funzionamento dell' applicazione *****
 
 drop procedure if exists aggiunta_autore;
+
+-- aggiunta di un autore
 
 create procedure aggiunta_autore(in nome varchar(25), in cognome varchar(25), in data_nascita date, in nome_autore varchar(25), in info varchar(255), in ruolo varchar(25))
 begin
@@ -364,6 +292,8 @@ end$
 
 drop procedure if exists aggiunta_genere;
 
+-- aggiunta di un genere
+
 create procedure aggiunta_genere(in nome varchar(25))
 begin
        insert into genere(nome) values (nome);
@@ -371,6 +301,7 @@ end$
 
 drop procedure if exists rimozione_genere;
 
+-- rimozione di un genere
 create procedure rimozione_genere(in ID_genere int)
 begin
        delete from genere where ID_genere = ID;
