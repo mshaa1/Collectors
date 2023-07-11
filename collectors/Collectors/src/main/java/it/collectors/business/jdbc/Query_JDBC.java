@@ -1,10 +1,12 @@
 package it.collectors.business.jdbc;
 
+import it.collectors.model.Collezione;
 import it.collectors.model.Disco;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,6 +52,31 @@ public class Query_JDBC {
 
 
     //********************QUERY***************************//
+
+    // ottieni collezioni utente
+    public List<Collezione> getCollezioniUtente(int IDUtente){
+        List<Collezione> collezioni = new ArrayList<>();
+        try{
+            CallableStatement statement = connection.prepareCall("{call prendi_collezioni_utente(?)}");
+            statement.setInt(1,IDUtente);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                Collezione collezione = new Collezione(
+                        resultSet.getInt("ID"),
+                        resultSet.getString("nome"),
+                        resultSet.getBoolean("flag")
+                );
+                collezioni.add(collezione);
+            }
+            resultSet.close();
+            statement.close();
+
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+        return collezioni;
+    }
 
     // ottieni ID utente
     public Integer getIDUtente(String nickname, String email){
@@ -372,6 +399,22 @@ public class Query_JDBC {
             sqlException.printStackTrace();
         }
         return minuti;
+    }
+
+    // Query 12a
+    // statistiche: numero collezioni di ciascun collezionista
+    public int getStatisticheNumeroCollezioni(){
+        int stats = 0;
+        try {
+            CallableStatement statement = connection.prepareCall("{call statistiche_numero_collezioni(?)}");
+            statement.registerOutParameter(1,Types.INTEGER);
+            statement.execute();
+            stats = statement.getInt(1);
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+
+        return stats;
     }
 
 

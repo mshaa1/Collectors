@@ -189,7 +189,7 @@ end$
 -- 12a
 -- statistiche: numero collezioni di ciascun collezionista
 
-create procedure statistiche_numero_collezioni()
+create procedure statistiche_numero_collezioni(out statistiche integer)
 begin
     select collezionista.nickname, count(all collezione.ID)
     from collezione
@@ -331,6 +331,14 @@ drop procedure if exists prendi_ID_utente;
 create procedure prendi_ID_utente(in nickname varchar(25), in email varchar(25), out ID integer)
 begin
     select collezionista.ID from collezionista where collezionista.nickname = nickname and collezionista.email = email;
+end$
+
+-- prendo tutt le collezioni di un utente
+drop procedure if exists prendi_collezioni_utente;
+
+create procedure get_collezioni_utente(in ID_utente integer)
+begin
+    select collezione.ID, collezione.nome from collezione where collezione.ID_collezionista = ID_utente;
 end$
 
 
