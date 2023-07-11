@@ -202,7 +202,7 @@ create function minuti_totali_musica_pubblica_per_autore(ID_autore integer)
     returns integer
     deterministic
 begin
-    return (select sum(traccia.durata)
+    return (select sum(traccia.durata)/60
             from traccia
                      join disco on traccia.ID_disco = disco.ID
                      join produce_disco on disco.ID = produce_disco.ID_disco
