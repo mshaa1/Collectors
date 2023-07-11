@@ -3,7 +3,6 @@ drop procedure if exists inserisci_collezione;
 drop procedure if exists inserisci_disco_collezione;
 drop procedure if exists inserisci_tracce_disco;
 drop procedure if exists modifica_flag_collezione;
-drop procedure if exists inserisci_condivisione;
 drop procedure if exists rimozione_disco_collezione;
 drop procedure if exists rimozione_collezione;
 drop procedure if exists lista_dischi_collezione;
@@ -23,7 +22,7 @@ drop procedure if exists ricerca_dischi_per_titolo_autore;
 
 delimiter $
 
--- 1
+-- Funzionalità 1
 -- inserimento di una nuova collezione.
 create procedure inserisci_collezione(in nome varchar(25), in flag boolean, in ID_collezionista integer)
 begin
@@ -32,53 +31,47 @@ begin
 end$
 
 
--- 2
--- aggiunta di dischi a una collezione
+-- Funzionalità 2
+-- Aggiunta di dischi a una collezione e di tracce a un disco.
+
 create procedure inserisci_disco_collezione(in ID_disco integer, in ID_collezione integer)
 begin
     insert into comprende_dischi(ID_disco, ID_collezione) values (ID_disco, ID_collezione);
 end$
 
-
--- 3
--- aggiunta di tracce a un disco
 create procedure inserisci_tracce_disco(in ID_disco integer, in titolo varchar(35), in durata time)
 begin
     insert into traccia(titolo, durata, ID_disco) values (titolo, durata, ID_disco);
 end$
 
 
--- 4
--- Modifica dello stato di pubblicazione di una collezione
+-- Funzionalità 3
+-- Modifica dello stato di pubblicazione di una collezione (da privata a pubblica e viceversa) e aggiunta di nuove condivisioni a una collezione.
 create procedure modifica_flag_collezione(in ID_collezione integer, in flag boolean)
 begin
     update collezione set collezione.flag = flag where ID_collezione = ID; -- flag = 0 - collezione pubblica | flag = 1 - collezione privata
 end$
 
 
--- 5
--- Aggiunta di nuove condivisioni a una collezione
-create procedure inserisci_condivisione(in ID_collezione integer, in ID_collezionista integer)
-begin
-    insert into condivide(ID_collezione, ID_collezionista) values (ID_collezione, ID_collezionista);
-end$
 
--- 6
--- Rimozione di un disco da una collezione
+
+-- Funzionalità 4
+-- Rimozione di un disco da una collezione.
 create procedure rimozione_disco_collezione(in ID_disco integer, in ID_collezione integer)
 begin
     delete from comprende_dischi c where c.ID_disco = ID_disco and c.ID_collezione = ID_collezione;
 end$
 
--- 7
+-- Funzionalità 5
 -- Rimozione di una collezione.
 create procedure rimozione_collezione(in ID_collezione integer)
 begin
     delete from collezione where ID = ID_collezione;
 end$
 
-
+-- Funzionalità 6
 -- Lista di tutti i dischi in una collezione
+
 -- creo la view dei dischi
 create view lista_dischi as
 select disco.ID,
@@ -114,7 +107,7 @@ begin
     where comprende_dischi.ID_collezione = ID_collezione;
 end$
 
-
+-- Funzionalità 7
 -- Tracklist di un disco
 create procedure tracklist_disco(in ID_disco integer)
 begin
@@ -123,8 +116,43 @@ begin
     where traccia.ID_disco = ID_disco;
 end$
 
+-- Funzionalità 8
+/* Ricerca di dischi in base a nomi di autori/compositori/interpreti e/o titoli. Si
+potrà decidere di includere nella ricerca le collezioni di un certo collezionista
+e/o quelle condivise con lo stesso collezionista e/o quelle pubbliche. */
 
--- 9
+create view lista_dischi_generale as
+    select c.nome, c1.nickname, d.*, a.nome_autore, c.flag, ID_collezionista
+                from disco d
+                         join produce_disco pd on d.ID = pd.ID_disco
+                         join autore a on pd.ID_autore = a.ID
+                         join comprende_dischi cd on d.ID = cd.ID_disco
+                         join collezione c on cd.ID_collezione = c.ID
+                         join collezionista c1 on ID_collezionista = c1.ID;
+
+-- lasciare null qualsiasi campo eccetto ID_collezionista per non effettuare la ricerca su quel campo
+create procedure ricerca_dischi_per_autore_titolo(in nome_autore varchar(25), in titolo_disco varchar(50),
+                                                  in flag boolean, in ID_collezionista int)
+begin
+    select distinct -- nickname as 'proprietario collezione',
+            ID, titolo, anno_uscita as 'anno di uscita', barcode, formato, stato_conservazione as 'stato di conservazione', descrizione_conservazione as 'descrizione conservazione'
+            -- lUl.nome_autore as 'nome autore'
+    from (
+        select *
+          from lista_dischi_generale l
+            where
+                l.titolo like titolo_disco -- ricerca per titolo del disco
+
+          union -- unione per ottenere entrambe le ricerche
+
+        select *
+          from lista_dischi_generale l
+            where l.nome_autore like nome_autore -- ricerca per nome autore
+    ) as `lUl`
+    where (lUl.flag=flag or flag is null) and lUl.ID_collezionista = ID_collezionista; -- ricerca per flag e costraint del collezionista
+end$
+
+-- Funzionalità 9
 -- verifica della visibilità di una collezione da parte di un collezionista
 
 create function verifica_visibilita_collezione(ID_collezione integer, ID_collezionista integer)
@@ -150,7 +178,7 @@ begin
 end$
 
 
--- 10
+-- Funzionalità 10
 -- numero di tracce di dischi distinti di un certo autore presenti nelle collezioni pubbliche
 
 create procedure numero_tracce_distinte_per_autore_collezioni_pubbliche(in ID_autore integer, out numero_tracce integer)
@@ -167,8 +195,8 @@ begin
 end$
 
 
--- 11
--- minuti totali di musica riferibili a un certo autore memorizzati nelle collezioni pubbliche
+-- Funzionalità 11
+-- Minuti totali di musica riferibili a un certo autore memorizzati nelle collezioni pubbliche
 #TODO: capire come funziona la somma dei tipi time
 create function minuti_totali_musica_pubblica_per_autore(ID_autore integer)
     returns integer
@@ -185,6 +213,7 @@ begin
               and collezione.flag = 1);
 end$
 
+-- Funzionalità 12
 
 -- 12a
 -- statistiche: numero collezioni di ciascun collezionista
@@ -209,7 +238,9 @@ begin
     group by nome;
 end$
 
+-- da qui seguono procedure aggiuntive
 
+-- Funzionalità 14
 -- Gestione aggiornamento / cancellazione disco (e duplicati)
 
 create procedure gestione_disco(in IN_ID_Collezione integer, in IN_ID_Disco integer,
@@ -247,42 +278,22 @@ begin
     end if;
 end$
 
--- Query 8
-create view lista_dischi_generale as
-    select c.nome, c1.nickname, d.*, a.nome_autore, c.flag, ID_collezionista
-                from disco d
-                         join produce_disco pd on d.ID = pd.ID_disco
-                         join autore a on pd.ID_autore = a.ID
-                         join comprende_dischi cd on d.ID = cd.ID_disco
-                         join collezione c on cd.ID_collezione = c.ID
-                         join collezionista c1 on ID_collezionista = c1.ID;
 
--- lasciare null qualsiasi campo eccetto ID_collezionista per non effettuare la ricerca su quel campo
-create procedure ricerca_dischi_per_autore_titolo(in nome_autore varchar(25), in titolo_disco varchar(50),
-                                                  in flag boolean, in ID_collezionista int)
-begin
-    select distinct -- nickname as 'proprietario collezione',
-            ID, titolo, anno_uscita as 'anno di uscita', barcode, formato, stato_conservazione as 'stato di conservazione', descrizione_conservazione as 'descrizione conservazione'
-            -- lUl.nome_autore as 'nome autore'
-    from (
-        select *
-          from lista_dischi_generale l
-            where
-                l.titolo like titolo_disco -- ricerca per titolo del disco
-
-          union -- unione per ottenere entrambe le ricerche
-
-        select *
-          from lista_dischi_generale l
-            where l.nome_autore like nome_autore -- ricerca per nome autore
-    ) as `lUl`
-    where (lUl.flag=flag or flag is null) and lUl.ID_collezionista = ID_collezionista; -- ricerca per flag e costraint del collezionista
-end$
 
 -- *****  Altre query per il funzionamento dell' applicazione *****
 
+drop procedure if exists inserisci_condivisione;
+-- Funzionalità 15
+-- Aggiunta di nuove condivisioni a una collezione'
+
+create procedure inserisci_condivisione(in ID_collezione integer, in ID_collezionista integer)
+begin
+    insert into condivide(ID_collezione, ID_collezionista) values (ID_collezione, ID_collezionista);
+end$
+
 drop procedure if exists aggiunta_autore;
 
+-- Funzionalità 16
 -- aggiunta di un autore
 
 create procedure aggiunta_autore(in nome varchar(25), in cognome varchar(25), in data_nascita date, in nome_autore varchar(25), in info varchar(255), in ruolo varchar(25))
@@ -292,6 +303,7 @@ end$
 
 drop procedure if exists aggiunta_genere;
 
+-- Funzionalità 17
 -- aggiunta di un genere
 
 create procedure aggiunta_genere(in nome varchar(25))
@@ -301,40 +313,46 @@ end$
 
 drop procedure if exists rimozione_genere;
 
+-- Funzionalità 18
 -- rimozione di un genere
 create procedure rimozione_genere(in ID_genere int)
 begin
        delete from genere where ID_genere = ID;
 end$
 
-
--- convalida l'accesso di un utente
 drop procedure if exists convalida_utente;
+
+-- Funzionalità 19
+-- convalida l'accesso di un utente
 
 create procedure convalida_utente(in nickname varchar(25), in email varchar(25), out flag boolean)
 begin
     select count(*) from collezionista where collezionista.nickname = nickname and collezionista.email = email into flag;
 end$
 
--- Registrazione utente
 drop procedure if exists registrazione_utente;
 
+-- Funzionalità 20
+-- Registrazione utente
 create procedure registrazione_utente(in nickname varchar(25), in email varchar(25))
 begin
     insert into collezionista(nickname, email) values (nickname, email);
 end$
 
-
--- ottenimento ID utente per l'interfacciamento con Java
 drop procedure if exists prendi_ID_utente;
+
+-- Funzionalità 21
+-- ottenimento ID utente per l'interfacciamento con Java
 
 create procedure prendi_ID_utente(in nickname varchar(25), in email varchar(25), out ID integer)
 begin
     select collezionista.ID from collezionista where collezionista.nickname = nickname and collezionista.email = email;
 end$
 
--- prendo tutt le collezioni di un utente
 drop procedure if exists prendi_collezioni_utente;
+
+-- Funzionalità 22
+-- prendo tutte le collezioni di un utente
 
 create procedure get_collezioni_utente(in ID_utente integer)
 begin
