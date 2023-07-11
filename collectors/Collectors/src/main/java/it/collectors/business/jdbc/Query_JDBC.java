@@ -53,24 +53,21 @@ public class Query_JDBC {
 
     //********************QUERY***************************//
 
-    //todo:modifica collezione
-
-
-
-
+    // Funzionalità 22
     // ottieni collezioni utente
     public List<Collezione> getCollezioniUtente(int IDUtente){
         List<Collezione> collezioni = new ArrayList<>();
         try{
             CallableStatement statement = connection.prepareCall("{call prendi_collezioni_utente(?)}");
             statement.setInt(1,IDUtente);
-            ResultSet resultSet = statement.executeQuery();
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
 
             while (resultSet.next()){
                 Collezione collezione = new Collezione(
-                        resultSet.getInt("ID"),
-                        resultSet.getString("nome"),
-                        resultSet.getBoolean("flag")
+                        resultSet.getInt("ID"), // ID collezione
+                        resultSet.getString("nome"), // nome collezione
+                        resultSet.getBoolean("flag") // flag collezione
                 );
                 collezioni.add(collezione);
             }
@@ -83,6 +80,7 @@ public class Query_JDBC {
         return collezioni;
     }
 
+    // Funzionalità 21
     // ottieni ID utente
     public Integer getIDUtente(String nickname, String email){
         Integer ID = null;
@@ -102,6 +100,7 @@ public class Query_JDBC {
         return ID;
     }
 
+    // Funzionalità 18
     // convalida accesso utente
     public Boolean getAccesso(String nickname, String email){
         Boolean risultato = false;
@@ -122,6 +121,7 @@ public class Query_JDBC {
         return risultato;
     }
 
+    // Funzionalità 20
     //registrazione utente
     public boolean registrazioneUtente(String nickname, String email){
         try{
@@ -141,6 +141,7 @@ public class Query_JDBC {
         return true;
     }
 
+    // Funzionalità 16
     // aggiunta autore
     public void aggiuntaAutore(String nome, String cognome, Date dataNascita, String nomeAutore, String info, String ruolo){
         try {
@@ -159,6 +160,7 @@ public class Query_JDBC {
         }
     }
 
+    // Funzionalità 17
     // aggiunta genere
     public void aggiuntaGenere(String genere){
         try {
@@ -173,6 +175,7 @@ public class Query_JDBC {
         }
     }
 
+    // Funzionalità 18
     // rimozione genere
     public void rimozioneGenere(int id){
         try{
@@ -187,7 +190,7 @@ public class Query_JDBC {
     }
 
     // inserimento collezione
-    // Query 1
+    // Funzionalità 1
     public void inserimentoCollezione(String nome, boolean flag, int IDCollezionista){
         try{
             CallableStatement statement = connection.prepareCall("{call inserisci_collezione(?,?,?)}");
@@ -204,8 +207,10 @@ public class Query_JDBC {
 
     }
 
+    // Funzionalità 2
+
     // aggiunta di dischi a una collezione
-    // Query 2
+
     public void inserimentoDiscoInCollezione(int IDDisco, int IDCollezione){
         try{
             CallableStatement statement = connection.prepareCall("{call inserisci_disco_collezione(?,?)}");
@@ -220,7 +225,6 @@ public class Query_JDBC {
     }
 
     // aggiunta di tracce ad un disco
-    // Query 3
     public void inserimentoTracceInDisco(int IDDisco, String titolo, int durataOre, int durataMinuti, int durataSecondi) {
         try {
             CallableStatement statement = connection.prepareCall("{call inserisci_tracce_disco(?,?,?)}");
@@ -237,9 +241,9 @@ public class Query_JDBC {
     }
 
 
-
+    // Funzionalità 3
     // Modifica dello stato di pubblicazione di una collezione
-    // Query 4
+
     public void modificaFlagCollezione(int IDCollezione, boolean flag){
 
         try{
@@ -254,9 +258,8 @@ public class Query_JDBC {
         }
     }
 
-
+    // Funzionalità 15
     // Aggiunta di nuove condivisioni a una collezione
-    //Query 5
 
     public void inserisciCondivisione(int IDCollezione, int IDCollezionista){
         try{
@@ -271,9 +274,9 @@ public class Query_JDBC {
     }
 
 
+    // Funzionalità 4
+    // Rimozione di un disco da una collezione
 
-    //Rimozione di un disco da una collezione
-    // Query 6
     public void rimozioneDiscoCollezione(int IDCollezione, int IDDisco){
         try{
             CallableStatement statement = connection.prepareCall("{call rimozione_disco_collezione(?,?)}");
@@ -288,8 +291,9 @@ public class Query_JDBC {
         }
     }
 
+    // Funzionalità 5
     //Rimozione di una collezione
-    //Query 7
+
     public void rimozioneCollezione(int IDCollezione) {
         try{
             CallableStatement statement = connection.prepareCall("{call rimozione_collezione(?)}");
@@ -302,9 +306,10 @@ public class Query_JDBC {
             sqlException.printStackTrace();
         }
     }
-
+    
+    // Funzionalità 8
     //Ricerca di dischi in base al nome autore e/o titolo del disco
-    //Query 8
+
     public ArrayList<Disco> getRicercaDischiPerAutoreTitolo(String nomeAutore, String titoloDisco, boolean flag, int IDCollezionista) {
         ArrayList<Disco> dischi = new ArrayList<>();
         try{
