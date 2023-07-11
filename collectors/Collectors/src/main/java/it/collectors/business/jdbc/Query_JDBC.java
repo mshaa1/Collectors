@@ -1,11 +1,15 @@
 package it.collectors.business.jdbc;
 
+import com.mysql.cj.PreparedQuery;
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import it.collectors.model.Collezione;
 import it.collectors.model.Disco;
+import it.collectors.model.Traccia;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -311,7 +315,58 @@ public class Query_JDBC {
 
     // Funzionalità 6
     // Ottengo tutti i dischi di una collezione
-    // public void
+    public ArrayList<Disco> listaDischiCollezione(int IDCollezione) {
+        ArrayList<Disco> listaDischi = new ArrayList<Disco>();
+        try {
+            CallableStatement statement = connection.prepareCall("{call lista_dischi_collezione(?)}");
+            statement.setInt(1, IDCollezione);
+            statement.execute();
+
+            ResultSet resultSet = statement.getResultSet();
+            while(resultSet.next())
+                listaDischi.add(
+                        new Disco(
+                                resultSet.getInt(1), //ID
+                                resultSet.getString(2), // titolo
+                                resultSet.getInt(3), //anno di uscita
+                                resultSet.getString(4), //barcode
+                                resultSet.getString(5), //formato
+                                resultSet.getString(6), // stato di conservazione
+                                resultSet.getString(7) // descrizione conservazione
+                        )
+                );
+            statement.close();
+            if (listaDischi.isEmpty()) return null;
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return listaDischi;
+    }
+    // Funzionalità 7
+    // Tracklist di un disco
+    public ArrayList<Traccia> tracklistDisco(int IDDisco){
+        ArrayList<Traccia> tracklist = new ArrayList<>();
+        try {
+            CallableStatement statement = connection.prepareCall("{call tracklist_disco(?)}");
+            statement.setInt(1, IDDisco);
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
+            while(resultSet.next())
+                tracklist.add(
+                        new Traccia(
+                                resultSet.getInt(1),
+                                resultSet.getString(2),
+                                resultSet.getTime(3)
+                        )
+                );
+            statement.close();
+            if(tracklist.isEmpty()) return null;
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return tracklist;
+    }
 
     // Funzionalità 8
     // Ricerca di dischi in base al nome autore e/o titolo del disco
@@ -327,7 +382,7 @@ public class Query_JDBC {
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();
-            while(resultSet.next()){
+            while(resultSet.next()) {
                 Disco disco = new Disco(
                         resultSet.getInt(1), //ID
                         resultSet.getString(2), // titolo
@@ -339,21 +394,18 @@ public class Query_JDBC {
                 );
                 dischi.add(disco);
             }
-
             statement.close();
-            return dischi;
+            if(dischi.isEmpty()) return null;
         }
         catch (SQLException sqlException){
             sqlException.printStackTrace();
         }
-        return null;
+        return dischi;
     }
 
-
-
-
+    // Funzionalità 9
     // Verifica della visibilità di una collezione da parte di un collezionista
-    //Query 9
+
     public boolean getVerificaVisibilitaCollezione(int IDCollezione, int IDCollezionista){
         boolean risultato = false;
         try{
@@ -375,8 +427,9 @@ public class Query_JDBC {
         // ritorna falso anche se la tabella restituita non esiste
     }
 
+    // Funzionalità 10
     // numero di tracce di dischi distinti di un certo autore presenti nelle collezioni pubbliche
-    // Query 10
+
 
     public Integer getNumeroTracceDistintePerAutoreCollezioniPubblice(int IDAutore){
         Integer risultato = null;
@@ -394,8 +447,8 @@ public class Query_JDBC {
         return risultato;
     }
 
-    //minuti totali di musica riferibili a un certo autore memorizzati nelle collezioni pubbliche
-    //Query 11
+    // Funzionalità 11
+    // minuti totali di musica riferibili a un certo autore memorizzati nelle collezioni pubbliche
     public int getMinutiTotaliMusicaPerAutore(int IDAutore){
         int minuti = 0;
         try{
@@ -417,21 +470,19 @@ public class Query_JDBC {
         return minuti;
     }
 
-    // Query 12a
+    // Funzionalità 12
     // statistiche: numero collezioni di ciascun collezionista
-    public int getStatisticheNumeroCollezioni(){
+    public int getStatisticheNumeroCollezioni() {
         try {
             CallableStatement statement = connection.prepareCall("{call statistiche_numero_collezioni(?)}");
-            statement.registerOutParameter(1,Types.INTEGER);
+            statement.registerOutParameter(1, Types.INTEGER);
             statement.execute();
             return statement.getInt(1);
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return 0;
     }
-
-    // Query 12b
     // statistiche: numero di dischi per genere nel sistema
     public int getStatisticheDischiPerGenere(){
         try {
@@ -444,6 +495,88 @@ public class Query_JDBC {
             sqlException.printStackTrace();
         }
         return 0;
+    }
+
+    // Funzionalità 13
+    public HashMap<Disco, Integer> dischiSimiliA(String barcode, String titolo, String autore){
+        HashMap<Disco, Integer> dischi = new HashMap<>();
+        try {
+            PreparedStatement queryBarcode = connection.prepareStatement("select * from disco where barcode like ?");
+            PreparedStatement queryTitolo = connection.prepareStatement("select * from disco where titolo like ?");
+            PreparedStatement queryAutore = connection.prepareStatement(
+                        "select d.* from " +
+                            "disco d join produce_disco p on d.ID=p.ID_disco" +
+                            "join autore a on p.ID_autore=a.ID" +
+                            "where nome_autore like ?"
+            );
+
+            queryBarcode.setString(1, barcode);
+            queryTitolo.setString(1, titolo);
+            queryAutore.setString(1, autore);
+
+
+
+            ResultSet barcodeResult = queryBarcode.executeQuery();
+            ResultSet titoloResult = queryTitolo.executeQuery();
+            ResultSet autoreResult = queryAutore.executeQuery();
+
+            while(barcodeResult.next()) {
+                dischi.put(
+                        new Disco(
+                                barcodeResult.getInt(1), //ID
+                                barcodeResult.getString(2), // titolo
+                                barcodeResult.getInt(3), //anno di uscita
+                                barcodeResult.getString(4), //barcode
+                                barcodeResult.getString(5), //formato
+                                barcodeResult.getString(6), // stato di conservazione
+                                barcodeResult.getString(7) // descrizione conservazione
+                        ), 1
+                );
+            }
+
+            while(titoloResult.next()){
+                Disco disco = new Disco(
+
+                        titoloResult.getInt(1), //ID
+                        titoloResult.getString(2), // titolo
+                        titoloResult.getInt(3), //anno di uscita
+                        titoloResult.getString(4), //barcode
+                        titoloResult.getString(5), //formato
+                        titoloResult.getString(6), // stato di conservazione
+                        titoloResult.getString(7) // descrizione conservazione
+                );
+
+                if (dischi.containsKey(disco))
+                    dischi.put(disco, dischi.get(disco) + 1);
+                else
+                    dischi.put(disco, 1);
+            }
+
+            while(autoreResult.next()){
+                Disco disco = new Disco(
+                        autoreResult.getInt(1), //ID
+                        autoreResult.getString(2), // titolo
+                        autoreResult.getInt(3), //anno di uscita
+                        autoreResult.getString(4), //barcode
+                        autoreResult.getString(5), //formato
+                        autoreResult.getString(6), // stato di conservazione
+                        autoreResult.getString(7) // descrizione conservazione
+                );
+                if(dischi.containsKey(disco))
+                    dischi.put(disco, dischi.get(disco) + 1);
+                else
+                    dischi.put(disco, 1);
+            }
+
+            queryBarcode.close();
+            queryTitolo.close();
+            queryAutore.close();
+            if (dischi.isEmpty()) return null;
+
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+        return dischi;
     }
 
 }
