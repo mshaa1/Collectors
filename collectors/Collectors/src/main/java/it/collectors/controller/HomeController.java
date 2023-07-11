@@ -21,6 +21,8 @@ public class HomeController implements Initializable, DataInitializable<Collezio
     @FXML
     public Label loggedInLabel;
 
+    private Collezionista collezionista;
+
     ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 
     Query_JDBC queryJdbc = BusinessFactory.getImplementation();
@@ -34,12 +36,17 @@ public class HomeController implements Initializable, DataInitializable<Collezio
     @Override
     public void initializeData(Collezionista data) {
         loggedInLabel.textProperty().set("Sei attualmente identificato come: "+data.getNickname());
+        this.collezionista = data;
     }
 
 
     @FXML
     private void goToCollections() {
-
+        try {
+            viewDispatcher.navigateTo(Pages.COLLECTIONS, this.collezionista);
+        } catch (ViewDispatcherException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML

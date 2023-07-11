@@ -346,10 +346,10 @@ drop procedure if exists prendi_ID_utente;
 
 create procedure prendi_ID_utente(in nickname varchar(25), in email varchar(25), out ID integer)
 begin
-    select collezionista.ID from collezionista where collezionista.nickname = nickname and collezionista.email = email;
+    select collezionista.ID from collezionista where collezionista.nickname = nickname and collezionista.email = email into ID;
 end$
 
-drop procedure if exists prendi_collezioni_utente;
+drop procedure if exists get_collezioni_utente;
 
 -- Funzionalità 22
 -- prendo tutte le collezioni di un utente

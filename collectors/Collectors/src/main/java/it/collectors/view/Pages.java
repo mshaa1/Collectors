@@ -1,7 +1,8 @@
 package it.collectors.view;
 
 public enum Pages {
-    HOME("home");
+    HOME("home"),
+    COLLECTIONS("collections");
 
 
     private final String name;

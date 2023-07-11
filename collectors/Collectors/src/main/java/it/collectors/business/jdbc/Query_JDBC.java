@@ -57,8 +57,9 @@ public class Query_JDBC {
     // ottieni collezioni utente
     public List<Collezione> getCollezioniUtente(int IDUtente){
         List<Collezione> collezioni = new ArrayList<>();
+        System.out.print("ciao \n");
         try{
-            CallableStatement statement = connection.prepareCall("{call prendi_collezioni_utente(?)}");
+            CallableStatement statement = connection.prepareCall("{call get_collezioni_utente(?)}");
             statement.setInt(1,IDUtente);
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
@@ -97,6 +98,7 @@ public class Query_JDBC {
             sqlException.printStackTrace();
         }
 
+        System.out.println(ID);
         return ID;
     }
 
@@ -309,7 +311,7 @@ public class Query_JDBC {
 
     // Funzionalità 6
     // Ottengo tutti i dischi di una collezione
-    public void 
+    // public void
 
     // Funzionalità 8
     // Ricerca di dischi in base al nome autore e/o titolo del disco
