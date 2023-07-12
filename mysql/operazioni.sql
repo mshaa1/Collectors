@@ -234,7 +234,7 @@ end$
 
 create procedure statistiche_dischi_per_genere()
 begin
-    select genere.nome, count(all disco.id)
+    select genere.*, count(all disco.id)
     from disco
              join genere on disco.ID_genere = genere.ID
     group by nome;
