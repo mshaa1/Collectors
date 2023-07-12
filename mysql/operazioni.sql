@@ -236,7 +236,7 @@ end$
 
 create procedure statistiche_dischi_per_genere()
 begin
-    select count(all disco.id), genere.nome
+    select genere.nome, count(all disco.id)
     from disco
              join genere on disco.ID_genere = genere.ID
     group by nome;
@@ -396,6 +396,7 @@ create procedure statistiche_numero_collezioni_collezionista(in ID_collezionista
     begin
         select count(all collezione.ID) from collezione where collezione.ID_collezionista = ID_collezionista;
     end $
+
 
 delimiter ;
 
