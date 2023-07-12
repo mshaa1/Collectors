@@ -4,13 +4,12 @@ import com.mysql.cj.PreparedQuery;
 import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import it.collectors.model.Collezione;
 import it.collectors.model.Disco;
+import it.collectors.model.Etichetta;
 import it.collectors.model.Traccia;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.sql.Date;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,6 +55,72 @@ public class Query_JDBC {
 
 
     //********************QUERY***************************//
+
+
+    // Funzionalità 24
+    // get etichetta di un disco
+
+    public Etichetta getEtichetta(int IDDisco){
+        Etichetta etichetta = null;
+        try{
+            CallableStatement statement = connection.prepareCall("{call get_etichetta_disco(?)}");
+            statement.setInt(1,IDDisco);
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
+
+            while (resultSet.next()){
+                etichetta = new Etichetta(
+                        resultSet.getInt("ID"),
+                        resultSet.getString("nome"),
+                        resultSet.getString("sede_legale"),
+                        resultSet.getString("email")
+                );
+            }
+            resultSet.close();
+            statement.close();
+
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+        return etichetta;
+    }
+
+
+
+    // Funzionalità 23
+    // get tutti i dichi di un utente
+
+    public List<Disco> getDischiUtente(int IDUtente){
+
+        List<Disco> dischi = new ArrayList<>();
+        try{
+            CallableStatement statement = connection.prepareCall("{call get_dischi_utente(?)}");
+            statement.setInt(1,IDUtente);
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
+
+            while (resultSet.next()){
+                Disco disco = new Disco(
+                        resultSet.getInt("ID"),
+                        resultSet.getString("titolo"),
+                        resultSet.getInt("anno_uscita"),
+                        resultSet.getString("barcode"),
+                        resultSet.getString("formato"),
+                        resultSet.getString("stato_conservazione"),
+                        resultSet.getString("descrizione_conservazione")
+                );
+
+                dischi.add(disco);
+            }
+            resultSet.close();
+            statement.close();
+
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+        return dischi;
+    }
+
 
     // Funzionalità 22
     // ottieni collezioni utente

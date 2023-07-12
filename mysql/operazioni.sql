@@ -359,6 +359,33 @@ begin
     select * from collezione where collezione.ID_collezionista = ID_utente;
 end$
 
+-- Funzionalità 23
+-- tutti i dichi di un utente
+
+drop procedure if exists get_dischi_utente;
+
+create procedure get_dischi_utente(in ID_utente integer)
+begin
+    select distinct *
+    from disco
+    join colleziona_dischi on disco.ID = colleziona_dischi.ID_disco
+    where colleziona_dischi.ID_collezionista = ID_utente;
+end $
+
+-- Funzionalità 24
+-- etichetta di un disco
+
+drop procedure if exists get_etichetta_disco;
+
+create procedure get_etichetta_disco(in ID_disco integer)
+begin
+    select *
+    from etichetta
+    join disco on disco.ID_etichetta = etichetta.ID
+    where disco.ID = ID_disco;
+end $
+
+call get_etichetta_disco(1);
 
 delimiter ;
 

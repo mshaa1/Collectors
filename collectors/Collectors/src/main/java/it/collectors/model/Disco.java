@@ -54,6 +54,10 @@ public class Disco {
         return descrizioneConservazione;
     }
 
+    public String getStatoConservazione() {
+        return statoConservazione;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

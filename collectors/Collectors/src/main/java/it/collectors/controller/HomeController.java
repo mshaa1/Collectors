@@ -51,7 +51,11 @@ public class HomeController implements Initializable, DataInitializable<Collezio
 
     @FXML
     private void goToDisks() {
-
+        try {
+            viewDispatcher.navigateTo(Pages.DISCHI, this.collezionista);
+        } catch (ViewDispatcherException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
