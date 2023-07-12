@@ -218,13 +218,17 @@ end$
 -- 12a
 -- statistiche: numero collezioni di ciascun collezionista
 
-create procedure statistiche_numero_collezioni(out statistiche integer)
+create procedure statistiche_numero_collezioni()
 begin
-    select collezionista.nickname, count(all collezione.ID)
+    /*select collezionista.nickname, count(all collezione.ID)
     from collezione
              join collezionista on collezione.ID_collezionista = collezionista.ID
     group by nickname;
+     */
+
 end$
+
+
 
 
 -- 12b
@@ -385,7 +389,13 @@ begin
     where disco.ID = ID_disco;
 end $
 
-call get_etichetta_disco(1);
+drop procedure if exists statistiche_numero_collezioni_collezionista;
+
+-- numero di collezioni di un collezionista
+create procedure statistiche_numero_collezioni_collezionista(in ID_collezionista integer)
+    begin
+        select count(all collezione.ID) from collezione where collezione.ID_collezionista = ID_collezionista;
+    end $
 
 delimiter ;
 
