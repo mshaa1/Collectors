@@ -2,10 +2,7 @@ package it.collectors.business.jdbc;
 
 import com.mysql.cj.PreparedQuery;
 import com.mysql.cj.x.protobuf.MysqlxPrepare;
-import it.collectors.model.Collezione;
-import it.collectors.model.Disco;
-import it.collectors.model.Etichetta;
-import it.collectors.model.Traccia;
+import it.collectors.model.*;
 
 import java.sql.*;
 import java.sql.Date;
@@ -57,18 +54,69 @@ public class Query_JDBC {
     //********************QUERY***************************//
 
 
-    // Funzionalità 24
-    // get etichetta di un disco
-
-    public Etichetta getEtichetta(int IDDisco){
-        Etichetta etichetta = null;
-        try{
-            CallableStatement statement = connection.prepareCall("{call get_etichetta_disco(?)}");
-            statement.setInt(1,IDDisco);
+    // Funzionalità 26
+    // get autori
+    public List<Autore> getAutori(){
+        List<Autore> autori = new ArrayList<>();
+        try {
+            CallableStatement statement = connection.prepareCall("{call get_autori()}");
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
+                Autore autore = new Autore(
+                        resultSet.getInt("ID"),
+                        resultSet.getString("nome"),
+                        resultSet.getString("cognome"),
+                        resultSet.getDate("data_nascita"),
+                        resultSet.getString("nome_autore"),
+                        resultSet.getString("info"),
+                        resultSet.getString("ruolo")
+                );
+
+                autori.add(autore);
+            }
+            resultSet.close();
+            statement.close();
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return autori;
+    }
+
+    // inserimento collezione
+    // Funzionalità 1
+    public void inserimentoCollezione(String nome, boolean flag, int IDCollezionista) {
+        try {
+            CallableStatement statement = connection.prepareCall("{call inserisci_collezione(?,?,?)}");
+            statement.setString(1, nome);
+            statement.setBoolean(2, flag);
+            statement.setInt(3, IDCollezionista);
+
+            statement.execute();
+            statement.close();
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+    }
+
+
+
+    // Funzionalità 24
+    // get etichetta di un disco
+
+    public Etichetta getEtichetta(int IDDisco) {
+        Etichetta etichetta = null;
+        try {
+            CallableStatement statement = connection.prepareCall("{call get_etichetta_disco(?)}");
+            statement.setInt(1, IDDisco);
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
+
+            while (resultSet.next()) {
                 etichetta = new Etichetta(
                         resultSet.getInt("ID"),
                         resultSet.getString("nome"),
@@ -79,27 +127,45 @@ public class Query_JDBC {
             resultSet.close();
             statement.close();
 
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return etichetta;
     }
 
+    // Funzionalità 25
+    // numero di collezoni totali per il singolo utente loggato
+    public int numeroCollezioniCollezionista(int IDCollezionista) {
+        try {
+            CallableStatement statement = connection.prepareCall("{call statistiche_numero_collezioni_collezionista(?)}");
+            statement.setInt(1, IDCollezionista);
+            statement.execute();
+            ResultSet set = statement.getResultSet();
+            int num = -2;
+            if (set.next()) num = set.getInt(1);
+            statement.close();
+            return num;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        return -1;
+
+    }
 
     // Funzionalità 23
     // get tutti i dichi di un utente
 
-    public List<Disco> getDischiUtente(int IDUtente){
+    public List<Disco> getDischiUtente(int IDUtente) {
 
         List<Disco> dischi = new ArrayList<>();
-        try{
+        try {
             CallableStatement statement = connection.prepareCall("{call get_dischi_utente(?)}");
-            statement.setInt(1,IDUtente);
+            statement.setInt(1, IDUtente);
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Disco disco = new Disco(
                         resultSet.getInt("ID"),
                         resultSet.getString("titolo"),
@@ -115,7 +181,7 @@ public class Query_JDBC {
             resultSet.close();
             statement.close();
 
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return dischi;
@@ -124,15 +190,15 @@ public class Query_JDBC {
 
     // Funzionalità 22
     // ottieni collezioni utente
-    public List<Collezione> getCollezioniUtente(int IDUtente){
+    public List<Collezione> getCollezioniUtente(int IDUtente) {
         List<Collezione> collezioni = new ArrayList<>();
-        try{
+        try {
             CallableStatement statement = connection.prepareCall("{call get_collezioni_utente(?)}");
-            statement.setInt(1,IDUtente);
+            statement.setInt(1, IDUtente);
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Collezione collezione = new Collezione(
                         resultSet.getInt("ID"), // ID collezione
                         resultSet.getString("nome"), // nome collezione
@@ -143,7 +209,7 @@ public class Query_JDBC {
             resultSet.close();
             statement.close();
 
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return collezioni;
@@ -151,9 +217,9 @@ public class Query_JDBC {
 
     // Funzionalità 21
     // ottieni ID utente
-    public Integer getIDUtente(String nickname, String email){
+    public Integer getIDUtente(String nickname, String email) {
         Integer ID = null;
-        try{
+        try {
             CallableStatement statement = connection.prepareCall("{call prendi_ID_utente(?,?,?)}");
             statement.setString(1, nickname);
             statement.setString(2, email);
@@ -171,39 +237,39 @@ public class Query_JDBC {
 
     // Funzionalità 18
     // convalida accesso utente
-    public Boolean getAccesso(String nickname, String email){
+    public Boolean getAccesso(String nickname, String email) {
         Boolean risultato = false;
         try {
             CallableStatement statement = connection.prepareCall("{call convalida_utente(?,?,?)}");
-            statement.setString(1,nickname);
-            statement.setString(2,email);
+            statement.setString(1, nickname);
+            statement.setString(2, email);
             statement.registerOutParameter(3, Types.BOOLEAN);
             statement.execute();
 
             risultato = statement.getBoolean(3);
             statement.close();
 
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-        
+
         return risultato;
     }
 
     // Funzionalità 20
     //registrazione utente
-    public boolean registrazioneUtente(String nickname, String email){
-        try{
+    public boolean registrazioneUtente(String nickname, String email) {
+        try {
             CallableStatement statement = connection.prepareCall("{call registrazione_utente(?,?)}");
-            statement.setString(1,nickname);
-            statement.setString(2,email);
+            statement.setString(1, nickname);
+            statement.setString(2, email);
 
             statement.execute();
 
 
             statement.close();
 
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
             return false;
         }
@@ -212,7 +278,7 @@ public class Query_JDBC {
 
     // Funzionalità 16
     // aggiunta autore
-    public void aggiuntaAutore(String nome, String cognome, Date dataNascita, String nomeAutore, String info, String ruolo){
+    public void aggiuntaAutore(String nome, String cognome, Date dataNascita, String nomeAutore, String info, String ruolo) {
         try {
             CallableStatement statement = connection.prepareCall("{call aggiunta_autore(?,?,?,?,?,?)}");
             statement.setString(1, nome);
@@ -224,14 +290,14 @@ public class Query_JDBC {
 
             statement.execute();
             statement.close();
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
     }
 
     // Funzionalità 17
     // aggiunta genere
-    public void aggiuntaGenere(String genere){
+    public void aggiuntaGenere(String genere) {
         try {
             CallableStatement statement = connection.prepareCall("{call aggiunta_genere(?)}");
             statement.setString(1, genere.toLowerCase());
@@ -239,56 +305,40 @@ public class Query_JDBC {
             statement.execute();
             statement.close();
 
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
     }
 
     // Funzionalità 18
     // rimozione genere
-    public void rimozioneGenere(int id){
-        try{
+    public void rimozioneGenere(int id) {
+        try {
             CallableStatement statement = connection.prepareCall("{call rimozione_genere(?)}");
-            statement.setInt(1,id);
-             statement.execute();
-             statement.close();
-
-        }catch (SQLException sqlException){
-            sqlException.printStackTrace();
-        }
-    }
-
-    // inserimento collezione
-    // Funzionalità 1
-    public void inserimentoCollezione(String nome, boolean flag, int IDCollezionista){
-        try{
-            CallableStatement statement = connection.prepareCall("{call inserisci_collezione(?,?,?)}");
-            statement.setString(1,nome);
-            statement.setBoolean(2,flag);
-            statement.setInt(3,IDCollezionista);
-
+            statement.setInt(1, id);
             statement.execute();
             statement.close();
 
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-
     }
+
+
 
     // Funzionalità 2
 
     // aggiunta di dischi a una collezione
 
-    public void inserimentoDiscoInCollezione(int IDDisco, int IDCollezione){
-        try{
+    public void inserimentoDiscoInCollezione(int IDDisco, int IDCollezione) {
+        try {
             CallableStatement statement = connection.prepareCall("{call inserisci_disco_collezione(?,?)}");
-            statement.setInt(1,IDDisco);
-            statement.setInt(2,IDCollezione);
+            statement.setInt(1, IDDisco);
+            statement.setInt(2, IDCollezione);
 
             statement.execute();
             statement.close();
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
     }
@@ -303,8 +353,7 @@ public class Query_JDBC {
 
             statement.execute();
             statement.close();
-        }
-        catch(SQLException sqlException) {
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
     }
@@ -313,16 +362,16 @@ public class Query_JDBC {
     // Funzionalità 3
     // Modifica dello stato di pubblicazione di una collezione
 
-    public void modificaFlagCollezione(int IDCollezione, boolean flag){
+    public void modificaFlagCollezione(int IDCollezione, boolean flag) {
 
-        try{
+        try {
             CallableStatement statement = connection.prepareCall("{call modifica_flag_collezione(?,?)}");
-            statement.setInt(1,IDCollezione);
-            statement.setBoolean(2,flag);
+            statement.setInt(1, IDCollezione);
+            statement.setBoolean(2, flag);
             statement.execute();
             statement.close();
 
-        }catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
     }
@@ -330,14 +379,14 @@ public class Query_JDBC {
     // Funzionalità 15
     // Aggiunta di nuove condivisioni a una collezione
 
-    public void inserisciCondivisione(int IDCollezione, int IDCollezionista){
-        try{
+    public void inserisciCondivisione(int IDCollezione, int IDCollezionista) {
+        try {
             CallableStatement statement = connection.prepareCall("{call inserisci_condivisione(?,?)}");
-            statement.setInt(1,IDCollezione);
-            statement.setInt(2,IDCollezionista);
+            statement.setInt(1, IDCollezione);
+            statement.setInt(2, IDCollezionista);
             statement.execute();
             statement.close();
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
     }
@@ -346,8 +395,8 @@ public class Query_JDBC {
     // Funzionalità 4
     // Rimozione di un disco da una collezione
 
-    public void rimozioneDiscoCollezione(int IDCollezione, int IDDisco){
-        try{
+    public void rimozioneDiscoCollezione(int IDCollezione, int IDDisco) {
+        try {
             CallableStatement statement = connection.prepareCall("{call rimozione_disco_collezione(?,?)}");
 
             statement.setInt(1, IDDisco);
@@ -355,7 +404,7 @@ public class Query_JDBC {
             statement.execute();
             statement.close();
 
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
     }
@@ -364,14 +413,14 @@ public class Query_JDBC {
     // Rimozione di una collezione
 
     public void rimozioneCollezione(int IDCollezione) {
-        try{
+        try {
             CallableStatement statement = connection.prepareCall("{call rimozione_collezione(?)}");
-            statement.setInt(1,IDCollezione);
+            statement.setInt(1, IDCollezione);
 
             statement.execute();
             statement.close();
 
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
     }
@@ -386,7 +435,7 @@ public class Query_JDBC {
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();
-            while(resultSet.next())
+            while (resultSet.next())
                 listaDischi.add(
                         new Disco(
                                 resultSet.getInt(1), //ID
@@ -405,16 +454,17 @@ public class Query_JDBC {
         }
         return listaDischi;
     }
+
     // Funzionalità 7
     // Tracklist di un disco
-    public ArrayList<Traccia> tracklistDisco(int IDDisco){
+    public ArrayList<Traccia> tracklistDisco(int IDDisco) {
         ArrayList<Traccia> tracklist = new ArrayList<>();
         try {
             CallableStatement statement = connection.prepareCall("{call tracklist_disco(?)}");
             statement.setInt(1, IDDisco);
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
-            while(resultSet.next())
+            while (resultSet.next())
                 tracklist.add(
                         new Traccia(
                                 resultSet.getInt(1),
@@ -423,7 +473,7 @@ public class Query_JDBC {
                         )
                 );
             statement.close();
-            if(tracklist.isEmpty()) return null;
+            if (tracklist.isEmpty()) return null;
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -436,7 +486,7 @@ public class Query_JDBC {
 
     public ArrayList<Disco> getRicercaDischiPerAutoreTitolo(String nomeAutore, String titoloDisco, boolean flag, int IDCollezionista) {
         ArrayList<Disco> dischi = new ArrayList<>();
-        try{
+        try {
             CallableStatement statement = connection.prepareCall("{call ricerca_dischi_per_autore_titolo(?,?,?,?)}");
             statement.setString(1, nomeAutore);
             statement.setString(2, titoloDisco);
@@ -445,7 +495,7 @@ public class Query_JDBC {
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 Disco disco = new Disco(
                         resultSet.getInt(1), //ID
                         resultSet.getString(2), // titolo
@@ -458,9 +508,8 @@ public class Query_JDBC {
                 dischi.add(disco);
             }
             statement.close();
-            if(dischi.isEmpty()) return null;
-        }
-        catch (SQLException sqlException){
+            if (dischi.isEmpty()) return null;
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return dischi;
@@ -469,21 +518,21 @@ public class Query_JDBC {
     // Funzionalità 9
     // Verifica della visibilità di una collezione da parte di un collezionista
 
-    public boolean getVerificaVisibilitaCollezione(int IDCollezione, int IDCollezionista){
+    public boolean getVerificaVisibilitaCollezione(int IDCollezione, int IDCollezionista) {
         boolean risultato = false;
-        try{
+        try {
             PreparedStatement statement = connection.prepareStatement("select verifica_visibilita_collezione(?,?)");
-            statement.setInt(1,IDCollezione);
-            statement.setInt(2,IDCollezionista);
+            statement.setInt(1, IDCollezione);
+            statement.setInt(2, IDCollezionista);
             statement.execute();
             ResultSet rs = statement.getResultSet();
 
-            if(rs.next()){
-                 risultato = rs.getBoolean(1);
+            if (rs.next()) {
+                risultato = rs.getBoolean(1);
             }
             statement.close();
-         }catch (SQLException sqlException){
-        sqlException.printStackTrace();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
         return risultato;
 
@@ -494,17 +543,17 @@ public class Query_JDBC {
     // numero di tracce di dischi distinti di un certo autore presenti nelle collezioni pubbliche
 
 
-    public Integer getNumeroTracceDistintePerAutoreCollezioniPubblice(int IDAutore){
+    public Integer getNumeroTracceDistintePerAutoreCollezioniPubblice(int IDAutore) {
         Integer risultato = null;
-        try{
+        try {
             CallableStatement statement = connection.prepareCall("{call numero_tracce_distinte_per_autore_collezioni_pubbliche(?,?)}");
-            statement.setInt(1,IDAutore);
+            statement.setInt(1, IDAutore);
             statement.registerOutParameter(2, Types.INTEGER);
             statement.execute();
-            risultato =  statement.getInt(2);
+            risultato = statement.getInt(2);
             statement.close();
 
-        }catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return risultato;
@@ -512,22 +561,21 @@ public class Query_JDBC {
 
     // Funzionalità 11
     // minuti totali di musica riferibili a un certo autore memorizzati nelle collezioni pubbliche
-    public int getMinutiTotaliMusicaPerAutore(int IDAutore){
+    public int getMinutiTotaliMusicaPerAutore(int IDAutore) {
         int minuti = 0;
-        try{
+        try {
             PreparedStatement statement = connection.prepareStatement("select minuti_totali_musica_pubblica_per_autore(?)");
             statement.setInt(1, IDAutore);
             statement.execute();
 
             ResultSet resultset = statement.getResultSet();
-            if (resultset.next())
-            {
+            if (resultset.next()) {
                 minuti = resultset.getInt(1);
             }
 
             statement.close();
 
-        }catch(SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return minuti;
@@ -535,39 +583,61 @@ public class Query_JDBC {
 
     // Funzionalità 12
     // statistiche: numero collezioni di ciascun collezionista
-    public int getStatisticheNumeroCollezioni() {
+    public Map<Collezionista, Integer> getStatisticheNumeroCollezioni() {
         try {
-            CallableStatement statement = connection.prepareCall("{call statistiche_numero_collezioni(?)}");
-            statement.registerOutParameter(1, Types.INTEGER);
+            HashMap<Collezionista, Integer> stats = new HashMap<>();
+            CallableStatement statement = connection.prepareCall("{call statistiche_numero_collezioni()}");
             statement.execute();
-            return statement.getInt(1);
+            ResultSet resultSet = statement.getResultSet();
+            while (resultSet.next()){
+                stats.put(new Collezionista(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3)
+                ), resultSet.getInt(4));
+            }
+            statement.close();
+            return stats;
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-        return 0;
+        return null;
     }
-    // statistiche: numero di dischi per genere nel sistema
-    public int getStatisticheDischiPerGenere(){
-        try {
-            CallableStatement statement = connection.prepareCall("{call statistiche_dischi_per_genere(?)}");
-            statement.registerOutParameter(1,Types.INTEGER);
-            statement.execute();
-            return statement.getInt(1);
 
-        }catch (SQLException sqlException){
+
+    // statistiche: numero di dischi per genere nel sistema
+    public Map<Genere, Integer> getStatisticheDischiPerGenere() {
+        HashMap<Genere, Integer> genereNumeroDischi = new HashMap<>();
+        try {
+            CallableStatement statement = connection.prepareCall("{call statistiche_dischi_per_genere()}");
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
+            while (resultSet.next()){
+                genereNumeroDischi.put(
+                        new Genere(
+                            resultSet.getInt(1),
+                            resultSet.getString(2)
+                            ),
+                        resultSet.getInt(3)
+                );
+            }
+            statement.close();
+            return genereNumeroDischi;
+
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-        return 0;
+        return null;
     }
 
     // Funzionalità 13
-    public HashMap<Disco, Integer> dischiSimiliA(String barcode, String titolo, String autore){
+    public HashMap<Disco, Integer> dischiSimiliA(String barcode, String titolo, String autore) {
         HashMap<Disco, Integer> dischi = new HashMap<>();
         try {
             PreparedStatement queryBarcode = connection.prepareStatement("select * from disco where barcode like ?");
             PreparedStatement queryTitolo = connection.prepareStatement("select * from disco where titolo like ?");
             PreparedStatement queryAutore = connection.prepareStatement(
-                        "select d.* from " +
+                    "select d.* from " +
                             "disco d join produce_disco p on d.ID=p.ID_disco" +
                             "join autore a on p.ID_autore=a.ID" +
                             "where nome_autore like ?"
@@ -578,12 +648,11 @@ public class Query_JDBC {
             queryAutore.setString(1, autore);
 
 
-
             ResultSet barcodeResult = queryBarcode.executeQuery();
             ResultSet titoloResult = queryTitolo.executeQuery();
             ResultSet autoreResult = queryAutore.executeQuery();
 
-            while(barcodeResult.next()) {
+            while (barcodeResult.next()) {
                 dischi.put(
                         new Disco(
                                 barcodeResult.getInt(1), //ID
@@ -597,7 +666,7 @@ public class Query_JDBC {
                 );
             }
 
-            while(titoloResult.next()){
+            while (titoloResult.next()) {
                 Disco disco = new Disco(
 
                         titoloResult.getInt(1), //ID
@@ -615,7 +684,7 @@ public class Query_JDBC {
                     dischi.put(disco, 1);
             }
 
-            while(autoreResult.next()){
+            while (autoreResult.next()) {
                 Disco disco = new Disco(
                         autoreResult.getInt(1), //ID
                         autoreResult.getString(2), // titolo
@@ -625,7 +694,7 @@ public class Query_JDBC {
                         autoreResult.getString(6), // stato di conservazione
                         autoreResult.getString(7) // descrizione conservazione
                 );
-                if(dischi.containsKey(disco))
+                if (dischi.containsKey(disco))
                     dischi.put(disco, dischi.get(disco) + 1);
                 else
                     dischi.put(disco, 1);
@@ -636,11 +705,12 @@ public class Query_JDBC {
             queryAutore.close();
             if (dischi.isEmpty()) return null;
 
-        } catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return dischi;
     }
 
-}
 
+
+}

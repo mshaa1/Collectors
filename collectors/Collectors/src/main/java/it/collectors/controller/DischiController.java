@@ -56,7 +56,6 @@ public class DischiController implements Initializable, DataInitializable<Collez
     public void initializeData(Collezionista data) {
         this.collezionista = data;
         List<Disco> dischi = queryJdbc.getDischiUtente(data.getId());
-        System.out.println(dischi);
         titolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         annoUscita.setCellValueFactory(new PropertyValueFactory<>("annoUscita"));
         barcode.setCellValueFactory(new PropertyValueFactory<>("barcode"));
@@ -69,12 +68,12 @@ public class DischiController implements Initializable, DataInitializable<Collez
     }
 
     @FXML
-    public void addCollection() {
+    public void add() {
 
     }
 
     @FXML
-    public void removeCollection() {
+    public void remove() {
 
     }
 

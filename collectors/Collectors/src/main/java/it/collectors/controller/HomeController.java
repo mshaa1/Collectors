@@ -60,12 +60,21 @@ public class HomeController implements Initializable, DataInitializable<Collezio
 
     @FXML
     private void goToTracks() {
+        try {
+            viewDispatcher.navigateTo(Pages.TRACCE, this.collezionista);
+        } catch (ViewDispatcherException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
     @FXML
     private void goToProfile() {
-
+        try {
+            viewDispatcher.navigateTo(Pages.PROFILO, this.collezionista);
+        } catch (ViewDispatcherException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
