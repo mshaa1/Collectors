@@ -2,10 +2,7 @@ package it.collectors.controller;
 
 import it.collectors.business.BusinessFactory;
 import it.collectors.business.jdbc.Query_JDBC;
-import it.collectors.model.Collezione;
-import it.collectors.model.Collezionista;
-import it.collectors.model.Disco;
-import it.collectors.model.Etichetta;
+import it.collectors.model.*;
 import it.collectors.view.Pages;
 import it.collectors.view.ViewDispatcher;
 import javafx.fxml.FXML;
@@ -15,37 +12,101 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class DischiController implements Initializable, DataInitializable<Collezionista>{
 
     @FXML
-    private TableView<Disco> table;
+    private TableView<DiscoWrapper> table;
 
     @FXML
-    private TableColumn<Disco, String> titolo;
+    private TableColumn<DiscoWrapper, String> titolo;
 
     @FXML
-    private TableColumn<Disco, String> annoUscita;
+    private TableColumn<DiscoWrapper, String> annoUscita;
 
     @FXML
-    private TableColumn<Disco, String> barcode;
+    private TableColumn<DiscoWrapper, String> barcode;
 
     @FXML
-    private TableColumn<Disco, String> formato;
+    private TableColumn<DiscoWrapper, String> formato;
 
     @FXML
-    private TableColumn<Disco, String> statoConservazione;
+    private TableColumn<DiscoWrapper, String> statoConservazione;
 
     @FXML
-    private TableColumn<Disco, String> descrizione;
+    private TableColumn<DiscoWrapper, String> descrizione;
+
+    @FXML
+    private TableColumn<DiscoWrapper, String> etichetta;
+
+    @FXML
+    private TableColumn<DiscoWrapper, String> genere;
 
     private Query_JDBC queryJdbc = BusinessFactory.getImplementation();
 
     Collezionista collezionista;
+
+    protected class DiscoWrapper {
+        private Disco disco;
+        private Etichetta etichetta;
+        private Genere genere;
+
+        public DiscoWrapper(Disco disco, Etichetta etichetta, Genere genere) {
+            this.disco = disco;
+            this.etichetta = etichetta;
+            this.genere = genere;
+        }
+
+        public Disco getDisco() {
+            return disco;
+        }
+
+        public String getEtichetta() {
+            return etichetta.getNome();
+        }
+
+        public String getGenere() {
+            return genere.getNome();
+        }
+
+        public String getTitolo() {
+            return disco.getTitolo();
+        }
+
+        public Integer getAnnoUscita() {
+            return disco.getAnnoUscita();
+        }
+
+        public String getBarcode() {
+            return disco.getBarcode();
+        }
+
+        public String getFormato() {
+            return disco.getFormato();
+        }
+
+        public String getStatoConservazione() {
+            return disco.getStatoConservazione();
+        }
+
+        public String getDescrizioneConservazione() {
+            return disco.getDescrizioneConservazione();
+        }
+
+        public Integer getIdDisco() {
+            return disco.getId();
+        }
+
+        public Integer getIdEtichetta() {
+            return etichetta.getId();
+        }
+
+        public Integer getIdGenere() {
+            return genere.getId();
+        }
+
+    }
 
 
     @Override
@@ -55,15 +116,30 @@ public class DischiController implements Initializable, DataInitializable<Collez
     @Override
     public void initializeData(Collezionista data) {
         this.collezionista = data;
-        List<Disco> dischi = queryJdbc.getDischiUtente(data.getId());
+
+
+        Map<Disco,Etichetta> dischiEtichetta = queryJdbc.getDischiUtenteEtichetta(data.getId());
+        List<DiscoWrapper> dischi = new ArrayList<>();
+
+        for(Map.Entry<Disco,Etichetta> entry: dischiEtichetta.entrySet()){
+            dischi.add(new DiscoWrapper(
+                            entry.getKey(),
+                            entry.getValue(),
+                            queryJdbc.getGenere(entry.getKey().getId())
+                    )
+            );
+        }
+
         titolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         annoUscita.setCellValueFactory(new PropertyValueFactory<>("annoUscita"));
         barcode.setCellValueFactory(new PropertyValueFactory<>("barcode"));
         formato.setCellValueFactory(new PropertyValueFactory<>("formato"));
         statoConservazione.setCellValueFactory(new PropertyValueFactory<>("statoConservazione"));
         descrizione.setCellValueFactory(new PropertyValueFactory<>("descrizioneConservazione"));
-        for(int i = 0; i < dischi.size(); i++) {
-            table.getItems().add(dischi.get(i));
+        etichetta.setCellValueFactory(new PropertyValueFactory<>("etichetta"));
+        genere.setCellValueFactory(new PropertyValueFactory<>("genere"));
+        for(DiscoWrapper d: dischi){
+            table.getItems().add(d);
         }
     }
 

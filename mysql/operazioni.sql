@@ -362,17 +362,19 @@ begin
 end$
 
 -- Funzionalità 23
--- tutti i dichi di un utente
+-- tutti i dichi di un utente con etichetta
 
-drop procedure if exists get_dischi_utente;
+drop procedure if exists get_dischi_utente_etichetta;
 
-create procedure get_dischi_utente(in ID_utente integer)
+create procedure get_dischi_utente_etichetta(in ID_utente integer)
 begin
-    select distinct *
+    select distinct disco.ID, titolo, anno_uscita, barcode, formato, stato_conservazione, descrizione_conservazione, etichetta.ID as etichetta_id, nome, sede_legale, email
     from disco
     join colleziona_dischi on disco.ID = colleziona_dischi.ID_disco
+    join etichetta on disco.ID_etichetta = etichetta.ID
     where colleziona_dischi.ID_collezionista = ID_utente;
 end $
+
 
 -- Funzionalità 24
 -- etichetta di un disco
@@ -404,6 +406,33 @@ drop procedure if exists get_autori;
 create procedure get_autori()
 begin
     select * from autore;
+end $
+
+-- Funzionalità 27
+-- get genere di un disco
+
+drop procedure if exists get_genere_disco;
+
+create procedure get_genere_disco(in ID_disco integer)
+begin
+    select genere.ID, genere.nome
+    from genere
+    join disco on disco.ID_genere = genere.ID
+    where disco.ID = ID_disco;
+end $
+
+
+-- Funzionalità 28
+-- tutti i dischi di un utente
+
+drop procedure if exists get_dischi_utente;
+
+create procedure get_dischi_utente(in ID_utente integer)
+begin
+    select distinct *
+    from disco
+    join colleziona_dischi on disco.ID = colleziona_dischi.ID_disco
+    where colleziona_dischi.ID_collezionista = ID_utente;
 end $
 
 

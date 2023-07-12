@@ -53,6 +53,65 @@ public class Query_JDBC {
 
     //********************QUERY***************************//
 
+    // Funzionalità 28
+    // get tutti i dichi di un utente
+
+    public List<Disco> getDischiUtente(int IDUtente){
+
+        List<Disco> dischi = new ArrayList<>();
+        try{
+            CallableStatement statement = connection.prepareCall("{call get_dischi_utente(?)}");
+            statement.setInt(1,IDUtente);
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
+
+            while (resultSet.next()){
+                Disco disco = new Disco(
+                        resultSet.getInt("ID"),
+                        resultSet.getString("titolo"),
+                        resultSet.getInt("anno_uscita"),
+                        resultSet.getString("barcode"),
+                        resultSet.getString("formato"),
+                        resultSet.getString("stato_conservazione"),
+                        resultSet.getString("descrizione_conservazione")
+                );
+
+                dischi.add(disco);
+            }
+            resultSet.close();
+            statement.close();
+
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+        return dischi;
+    }
+
+// Funzionalità 27
+    // get genere di un disco
+
+    public Genere getGenere(int IDDisco) {
+        Genere genere = null;
+        try {
+            CallableStatement statement = connection.prepareCall("{call get_genere_disco(?)}");
+            statement.setInt(1, IDDisco);
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
+
+            while (resultSet.next()) {
+                genere = new Genere(
+                        resultSet.getInt("ID"),
+                        resultSet.getString("nome")
+                );
+            }
+            resultSet.close();
+            statement.close();
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return genere;
+    }
 
     // Funzionalità 26
     // get autori
@@ -85,23 +144,26 @@ public class Query_JDBC {
         return autori;
     }
 
-    // inserimento collezione
-    // Funzionalità 1
-    public void inserimentoCollezione(String nome, boolean flag, int IDCollezionista) {
+    // Funzionalità 25
+    // numero di collezoni totali per il singolo utente loggato
+    public int numeroCollezioniCollezionista(int IDCollezionista) {
         try {
-            CallableStatement statement = connection.prepareCall("{call inserisci_collezione(?,?,?)}");
-            statement.setString(1, nome);
-            statement.setBoolean(2, flag);
-            statement.setInt(3, IDCollezionista);
-
+            CallableStatement statement = connection.prepareCall("{call statistiche_numero_collezioni_collezionista(?)}");
+            statement.setInt(1, IDCollezionista);
             statement.execute();
+            ResultSet set = statement.getResultSet();
+            int num = -2;
+            if (set.next()) num = set.getInt(1);
             statement.close();
-
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            return num;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
+        return -1;
+
     }
+
 
 
 
@@ -133,59 +195,47 @@ public class Query_JDBC {
         return etichetta;
     }
 
-    // Funzionalità 25
-    // numero di collezoni totali per il singolo utente loggato
-    public int numeroCollezioniCollezionista(int IDCollezionista) {
-        try {
-            CallableStatement statement = connection.prepareCall("{call statistiche_numero_collezioni_collezionista(?)}");
-            statement.setInt(1, IDCollezionista);
-            statement.execute();
-            ResultSet set = statement.getResultSet();
-            int num = -2;
-            if (set.next()) num = set.getInt(1);
-            statement.close();
-            return num;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return -1;
-
-    }
 
     // Funzionalità 23
-    // get tutti i dichi di un utente
+    // get tutti i dichi di un utente con etichetta
 
-    public List<Disco> getDischiUtente(int IDUtente) {
+    public Map<Disco,Etichetta> getDischiUtenteEtichetta(int IDUtente) {
 
-        List<Disco> dischi = new ArrayList<>();
+        //ID, titolo, anno_uscita, barcode, formato, stato_conservazione, descrizione_conservazione, etichetta_id, nome, sede_legale, email
+
+        Map<Disco,Etichetta> dischiEtichetta = new HashMap<>();
         try {
-            CallableStatement statement = connection.prepareCall("{call get_dischi_utente(?)}");
+            CallableStatement statement = connection.prepareCall("{call get_dischi_utente_etichetta(?)}");
             statement.setInt(1, IDUtente);
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
-
             while (resultSet.next()) {
-                Disco disco = new Disco(
-                        resultSet.getInt("ID"),
-                        resultSet.getString("titolo"),
-                        resultSet.getInt("anno_uscita"),
-                        resultSet.getString("barcode"),
-                        resultSet.getString("formato"),
-                        resultSet.getString("stato_conservazione"),
-                        resultSet.getString("descrizione_conservazione")
+                dischiEtichetta.put(
+                        new Disco(
+                                resultSet.getInt("ID"),
+                                resultSet.getString("titolo"),
+                                resultSet.getInt("anno_uscita"),
+                                resultSet.getString("barcode"),
+                                resultSet.getString("formato"),
+                                resultSet.getString("stato_conservazione"),
+                                resultSet.getString("descrizione_conservazione")
+                        ), new Etichetta(
+                                resultSet.getInt("etichetta_id"),
+                                resultSet.getString("nome"),
+                                resultSet.getString("sede_legale"),
+                                resultSet.getString("email")
+                                )
                 );
-
-                dischi.add(disco);
             }
-            resultSet.close();
             statement.close();
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-        return dischi;
+        return dischiEtichetta;
     }
+
+
 
 
     // Funzionalità 22
@@ -234,8 +284,27 @@ public class Query_JDBC {
 
         return ID;
     }
+    // Funzionalità 20
+    //registrazione utente
+    public boolean registrazioneUtente(String nickname, String email) {
+        try {
+            CallableStatement statement = connection.prepareCall("{call registrazione_utente(?,?)}");
+            statement.setString(1, nickname);
+            statement.setString(2, email);
 
-    // Funzionalità 18
+            statement.execute();
+
+
+            statement.close();
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    // Funzionalità 19
     // convalida accesso utente
     public Boolean getAccesso(String nickname, String email) {
         Boolean risultato = false;
@@ -256,25 +325,6 @@ public class Query_JDBC {
         return risultato;
     }
 
-    // Funzionalità 20
-    //registrazione utente
-    public boolean registrazioneUtente(String nickname, String email) {
-        try {
-            CallableStatement statement = connection.prepareCall("{call registrazione_utente(?,?)}");
-            statement.setString(1, nickname);
-            statement.setString(2, email);
-
-            statement.execute();
-
-
-            statement.close();
-
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-            return false;
-        }
-        return true;
-    }
 
     // Funzionalità 16
     // aggiunta autore
@@ -711,6 +761,22 @@ public class Query_JDBC {
         return dischi;
     }
 
+    // inserimento collezione
+    // Funzionalità 1
+    public void inserimentoCollezione(String nome, boolean flag, int IDCollezionista) {
+        try {
+            CallableStatement statement = connection.prepareCall("{call inserisci_collezione(?,?,?)}");
+            statement.setString(1, nome);
+            statement.setBoolean(2, flag);
+            statement.setInt(3, IDCollezionista);
 
+            statement.execute();
+            statement.close();
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+    }
 
 }

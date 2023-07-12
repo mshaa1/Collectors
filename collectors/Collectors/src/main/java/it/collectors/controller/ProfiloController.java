@@ -58,7 +58,7 @@ public class ProfiloController implements Initializable, DataInitializable<Colle
         public String getGenere() {
             return genere.getNome();
         }
-        
+
         public int getNumero() {
             return numero;
         }
