@@ -218,14 +218,12 @@ end$
 -- 12a
 -- statistiche: numero collezioni di ciascun collezionista
 
-create procedure statistiche_numero_collezioni()
+create procedure statistiche_numero_collezioni(out numero_collezioni integer)
 begin
-    /*select collezionista.nickname, count(all collezione.ID)
+    select collezionista.nickname, count(all collezione.ID) into numero_collezioni
     from collezione
              join collezionista on collezione.ID_collezionista = collezionista.ID
     group by nickname;
-     */
-
 end$
 
 
@@ -391,11 +389,22 @@ end $
 
 drop procedure if exists statistiche_numero_collezioni_collezionista;
 
+-- Funzionalità 25
 -- numero di collezioni di un collezionista
 create procedure statistiche_numero_collezioni_collezionista(in ID_collezionista integer)
     begin
         select count(all collezione.ID) from collezione where collezione.ID_collezionista = ID_collezionista;
     end $
+
+-- Funzionalità 26
+-- get tutti autori
+
+drop procedure if exists get_autori;
+
+create procedure get_autori()
+begin
+    select * from autore;
+end $
 
 
 delimiter ;
