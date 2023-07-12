@@ -218,9 +218,9 @@ end$
 -- 12a
 -- statistiche: numero collezioni di ciascun collezionista
 
-create procedure statistiche_numero_collezioni(out numero_collezioni integer)
+create procedure statistiche_numero_collezioni()
 begin
-    select collezionista.nickname, count(all collezione.ID) into numero_collezioni
+    select collezionista.*, count(all collezione.ID)
     from collezione
              join collezionista on collezione.ID_collezionista = collezionista.ID
     group by nickname;
