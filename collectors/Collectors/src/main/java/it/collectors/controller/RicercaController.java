@@ -150,6 +150,11 @@ public class RicercaController implements Initializable, DataInitializable<Colle
         flag.setValue("Tutti");
     }
 
+    private String regexify(String string) {
+        if (string == null || string.isBlank()) return null;
+        return "^.*"+string+".*$";
+    }
+
     @FXML
     public void filtra() {
 
@@ -167,7 +172,10 @@ public class RicercaController implements Initializable, DataInitializable<Colle
             condivisi = null;
         }
 
-        List<Disco> dischi = db.getRicercaDischiPerAutoreTitolo(autoreField.getText(), discoField.getText(), condivisi, collezionista.getId());
+        String autore = regexify(autoreField.getText());
+        String titolo = regexify(discoField.getText());
+
+        List<Disco> dischi = db.getRicercaDischiPerAutoreTitolo(autore, titolo, condivisi, collezionista.getId());
 
         if (dischi==null) return;
 
