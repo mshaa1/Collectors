@@ -435,6 +435,19 @@ begin
     where colleziona_dischi.ID_collezionista = ID_utente;
 end $
 
+-- Funzionalità 29
+-- get autore di un disco
+
+drop procedure if exists get_autore_disco;
+
+create procedure get_autori_disco(in ID_disco integer)
+begin
+    select *
+    from disco d
+    join produce_disco on ID=produce_disco.ID_disco
+    join autore a on ID_autore=a.ID
+    where d.ID=ID_disco;
+end $
 
 delimiter ;
 
