@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.RicercaController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.RicercaController">
    <children>
       <TableView fx:id="risultatiRicerca" prefHeight="390.0" prefWidth="800.0">
          <columns>
@@ -34,9 +34,9 @@
          <children>
             <VBox prefHeight="95.0" prefWidth="183.0">
                <children>
-                  <TextField fx:id="discoField" promptText="Titolo disco" />
+                  <TextField fx:id="discoField" onKeyTyped="#filtra" promptText="Titolo disco" />
                   <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
-                  <TextField fx:id="autoreField" layoutX="16.0" layoutY="16.0" promptText="Nome autore">
+                  <TextField fx:id="autoreField" layoutX="16.0" layoutY="16.0" onKeyTyped="#filtra" promptText="Nome autore">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -51,21 +51,6 @@
                   <Insets left="15.0" right="15.0" />
                </HBox.margin>
             </ChoiceBox>
-            <Button fx:id="filtra" alignment="CENTER" contentDisplay="TOP" layoutX="97.0" layoutY="54.0" mnemonicParsing="false" onAction="#filtra" prefHeight="0.0" prefWidth="66.0" style="-fx-background-color: transparent;" text="Cerca">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <graphic>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateY="-12.0">
-                     <image>
-                        <Image url="@../images/search.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <HBox.margin>
-                  <Insets top="30.0" />
-               </HBox.margin>
-            </Button>
             <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" style="-fx-background-color: transparent;" text="Vai alla Home">
                <cursor>

@@ -148,6 +148,7 @@ public class RicercaController implements Initializable, DataInitializable<Colle
         autore.setCellValueFactory(new PropertyValueFactory<>("autori"));
         flag.getItems().addAll("Condivisi", "Privati", "Tutti");
         flag.setValue("Tutti");
+        flag.setOnAction(event -> {filtra();});
     }
 
     private String regexify(String string) {
