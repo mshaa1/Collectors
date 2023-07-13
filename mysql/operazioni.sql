@@ -141,13 +141,13 @@ begin
         select *
           from lista_dischi_generale l
             where
-                l.titolo like titolo_disco -- ricerca per titolo del disco
+                lower(l.titolo) regexp lower(titolo_disco) -- ricerca per titolo del disco
 
           union -- unione per ottenere entrambe le ricerche
 
         select *
           from lista_dischi_generale l
-            where l.nome_autore like nome_autore -- ricerca per nome autore
+            where lower(l.nome_autore) regexp lower(nome_autore) -- ricerca per nome autore
     ) as `lUl`
     where (lUl.flag=flag or flag is null) and lUl.ID_collezionista = ID_collezionista; -- ricerca per flag e costraint del collezionista
 end$
@@ -438,7 +438,7 @@ end $
 -- Funzionalità 29
 -- get autore di un disco
 
-drop procedure if exists get_autore_disco;
+drop procedure if exists get_autori_disco;
 
 create procedure get_autori_disco(in ID_disco integer)
 begin
