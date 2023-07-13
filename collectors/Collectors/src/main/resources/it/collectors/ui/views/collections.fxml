@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.CollectionsController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.CollectionsController">
    <children>
       <TableView fx:id="collectionsTable" prefHeight="390.0" prefWidth="800.0">
         <columns>
@@ -14,7 +18,7 @@
           <TableColumn fx:id="collectionFlagColumn" prefWidth="399.0" text="Visibilità collezione" />
         </columns>
       </TableView>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#addCollection" style="-fx-background-color: transparent;" text="Aggiungi">
                <cursor>
@@ -28,7 +32,7 @@
                   </ImageView>
                </graphic>
                <HBox.margin>
-                  <Insets left="10.0" top="10.0" />
+                  <Insets />
                </HBox.margin>
             </Button>
             <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#removeCollection" style="-fx-background-color: transparent;" text="Rimuovi">
@@ -43,9 +47,10 @@
                   </ImageView>
                </graphic>
                <HBox.margin>
-                  <Insets left="10.0" top="44.0" />
+                  <Insets />
                </HBox.margin>
             </Button>
+            <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" style="-fx-background-color: transparent;" text="Vai alla Home">
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -58,7 +63,7 @@
                   </ImageView>
                </graphic>
                <HBox.margin>
-                  <Insets left="550.0" top="10.0" />
+                  <Insets />
                </HBox.margin>
             </Button>
          </children>
