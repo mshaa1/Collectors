@@ -52,6 +52,41 @@ public class Query_JDBC {
 
 
     //********************QUERY***************************//
+    //TODO c'è un gap vuoto, non ci sta la funzionalita 14
+
+    // Funzionalità 29
+    // Get Autori di un disco
+
+    public List<Autore> getAutoriDisco(int IDDisco){
+        CallableStatement statement = null;
+        List<Autore> autori = new ArrayList<>();
+        try {
+            statement = connection.prepareCall("{call get_autori_disco(?)}");
+            statement.setInt(1, IDDisco);
+
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+
+            while (result.next()) {
+                Autore autore = new Autore(
+                        result.getInt("ID"),
+                        result.getString("nome"),
+                        result.getString("cognome"),
+                        result.getDate("data_nascita"),
+                        result.getString("nome_autore"),
+                        result.getString("info"),
+                        result.getString("ruolo")
+                );
+                autori.add(autore);
+            }
+            result.close();
+            statement.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return autori;
+    }
 
     // Funzionalità 28
     // get tutti i dichi di un utente
@@ -552,6 +587,7 @@ public class Query_JDBC {
 
             ResultSet resultSet = statement.getResultSet();
             while (resultSet.next()) {
+
                 Disco disco = new Disco(
                         resultSet.getInt(1), //ID
                         resultSet.getString(2), // titolo
@@ -561,6 +597,7 @@ public class Query_JDBC {
                         resultSet.getString(6), // stato di conservazione
                         resultSet.getString(7) // descrizione conservazione
                 );
+                //System.out.println(disco.getTitolo());
                 dischi.add(disco);
             }
             statement.close();
@@ -568,6 +605,7 @@ public class Query_JDBC {
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+        //System.out.println(dischi.size());
         return dischi;
     }
 

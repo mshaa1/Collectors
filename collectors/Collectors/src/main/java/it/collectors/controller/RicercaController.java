@@ -35,10 +35,11 @@ public class RicercaController implements Initializable, DataInitializable<Colle
         private Genere genere;
         private List<Autore> autori;
 
-        public DiscoWrapper(Disco disco, Etichetta etichetta, Genere genere) {
+        public DiscoWrapper(Disco disco, Etichetta etichetta, Genere genere, List<Autore> autori) {
             this.disco = disco;
             this.etichetta = etichetta;
             this.genere = genere;
+            this.autori = autori;
         }
 
         public Disco getDisco() {
@@ -96,38 +97,37 @@ public class RicercaController implements Initializable, DataInitializable<Colle
             }
             return concat;
         }
-
     }
 
     @FXML
     private TableView<DiscoWrapper> risultatiRicerca;
 
     @FXML
-    private TableColumn<DischiController.DiscoWrapper, String> titolo;
+    private TableColumn<DiscoWrapper, String> titolo;
 
     @FXML
-    private TableColumn<DischiController.DiscoWrapper, String> annoUscita;
+    private TableColumn<DiscoWrapper, String> annoUscita;
 
     @FXML
-    private TableColumn<DischiController.DiscoWrapper, String> barcode;
+    private TableColumn<DiscoWrapper, String> barcode;
 
     @FXML
-    private TableColumn<DischiController.DiscoWrapper, String> formato;
+    private TableColumn<DiscoWrapper, String> formato;
 
     @FXML
-    private TableColumn<DischiController.DiscoWrapper, String> statoConservazione;
+    private TableColumn<DiscoWrapper, String> statoConservazione;
 
     @FXML
-    private TableColumn<DischiController.DiscoWrapper, String> descrizione;
+    private TableColumn<DiscoWrapper, String> descrizione;
 
     @FXML
-    private TableColumn<DischiController.DiscoWrapper, String> etichetta;
+    private TableColumn<DiscoWrapper, String> etichetta;
 
     @FXML
-    private TableColumn<DischiController.DiscoWrapper, String> genere;
+    private TableColumn<DiscoWrapper, String> genere;
 
     @FXML
-    private TableColumn<DischiController.DiscoWrapper, String> autore;
+    private TableColumn<DiscoWrapper, String> autore;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -145,14 +145,17 @@ public class RicercaController implements Initializable, DataInitializable<Colle
         descrizione.setCellValueFactory(new PropertyValueFactory<>("descrizioneConservazione"));
         etichetta.setCellValueFactory(new PropertyValueFactory<>("etichetta"));
         genere.setCellValueFactory(new PropertyValueFactory<>("genere"));
-        autore.setCellValueFactory(new PropertyValueFactory<>("nomeAutore"));
+        autore.setCellValueFactory(new PropertyValueFactory<>("autori"));
         flag.getItems().addAll("Condivisi", "Privati", "Tutti");
         flag.setValue("Tutti");
-
     }
 
     @FXML
     public void filtra() {
+
+        if (risultatiRicerca!= null) {
+            risultatiRicerca.getItems().clear();
+        }
 
         Boolean condivisi = null;
 
@@ -165,6 +168,8 @@ public class RicercaController implements Initializable, DataInitializable<Colle
         }
 
         List<Disco> dischi = db.getRicercaDischiPerAutoreTitolo(autoreField.getText(), discoField.getText(), condivisi, collezionista.getId());
+
+        if (dischi==null) return;
 
         List<DiscoWrapper> dischiWrapper = new ArrayList<>();
 
