@@ -113,10 +113,10 @@ public class DischiController implements Initializable, DataInitializable<Collez
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
+
     @Override
     public void initializeData(Collezionista data) {
         this.collezionista = data;
-
 
         Map<Disco,Etichetta> dischiEtichetta = queryJdbc.getDischiUtenteEtichetta(data.getId());
         List<DiscoWrapper> dischi = new ArrayList<>();
@@ -151,6 +151,17 @@ public class DischiController implements Initializable, DataInitializable<Collez
     @FXML
     public void remove() {
 
+    }
+
+    @FXML
+    public void ricerca() {
+        ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
+        try {
+            viewDispatcher.navigateTo(Pages.RICERCA, collezionista);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

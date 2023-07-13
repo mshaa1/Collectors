@@ -534,7 +534,7 @@ public class Query_JDBC {
     // Funzionalità 8
     // Ricerca di dischi in base al nome autore e/o titolo del disco
 
-    public ArrayList<Disco> getRicercaDischiPerAutoreTitolo(String nomeAutore, String titoloDisco, boolean flag, int IDCollezionista) {
+    public ArrayList<Disco> getRicercaDischiPerAutoreTitolo(String nomeAutore, String titoloDisco, Boolean flag, int IDCollezionista) {
         ArrayList<Disco> dischi = new ArrayList<>();
         try {
             CallableStatement statement = connection.prepareCall("{call ricerca_dischi_per_autore_titolo(?,?,?,?)}");
