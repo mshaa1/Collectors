@@ -33,7 +33,7 @@ public class RicercaController implements Initializable, DataInitializable<Colle
         private Disco disco;
         private Etichetta etichetta;
         private Genere genere;
-        private Autore autore;
+        private List<Autore> autori;
 
         public DiscoWrapper(Disco disco, Etichetta etichetta, Genere genere) {
             this.disco = disco;
@@ -89,8 +89,12 @@ public class RicercaController implements Initializable, DataInitializable<Colle
             return genere.getId();
         }
 
-        public String getNomeAutore() {
-            return autore.getNome_dAutore();
+        public String getAutori() {
+            String concat = " ";
+            for (Autore a : autori) {
+                concat += a.getNome_dAutore()+" ";
+            }
+            return concat;
         }
 
     }
@@ -167,10 +171,13 @@ public class RicercaController implements Initializable, DataInitializable<Colle
         for (Disco disco : dischi) {
             Etichetta e = db.getEtichetta(disco.getId());
             Genere g = db.getGenere(disco.getId());
+            List<Autore> a = db.getAutoriDisco(disco.getId());
+
             DiscoWrapper discoWrapper = new DiscoWrapper(
                     disco,
                     e,
-                    g
+                    g,
+                    a
             );
             dischiWrapper.add(discoWrapper);
         }

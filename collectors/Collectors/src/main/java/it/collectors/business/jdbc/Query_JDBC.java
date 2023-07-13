@@ -538,9 +538,15 @@ public class Query_JDBC {
         ArrayList<Disco> dischi = new ArrayList<>();
         try {
             CallableStatement statement = connection.prepareCall("{call ricerca_dischi_per_autore_titolo(?,?,?,?)}");
+            if(nomeAutore==null) statement.setNull(1, Types.VARCHAR);
             statement.setString(1, nomeAutore);
-            statement.setString(2, titoloDisco);
-            statement.setBoolean(3, flag);
+
+            if(titoloDisco == null) statement.setNull(2, Types.VARCHAR);
+            else statement.setString(2, titoloDisco);
+
+            if (flag == null) statement.setNull(3, Types.BOOLEAN);
+            else statement.setBoolean(3, flag);
+
             statement.setInt(4, IDCollezionista);
             statement.execute();
 
