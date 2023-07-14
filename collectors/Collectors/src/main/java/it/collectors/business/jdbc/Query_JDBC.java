@@ -569,20 +569,21 @@ public class Query_JDBC {
     // Funzionalità 8
     // Ricerca di dischi in base al nome autore e/o titolo del disco
 
-    public ArrayList<Disco> getRicercaDischiPerAutoreTitolo(String nomeAutore, String titoloDisco, Boolean flag, int IDCollezionista) {
+    public ArrayList<Disco> getRicercaDischiPerAutoreTitolo(String nomeAutore, String titoloDisco, Boolean pubbliche , Boolean condivise, Boolean private_, int IDCollezionista) {
         ArrayList<Disco> dischi = new ArrayList<>();
         try {
-            CallableStatement statement = connection.prepareCall("{call ricerca_dischi_per_autore_titolo(?,?,?,?)}");
+            CallableStatement statement = connection.prepareCall("{call ricerca_dischi_per_autore_titolo(?,?,?,?,?,?)}");
             if(nomeAutore==null) statement.setNull(1, Types.VARCHAR);
             statement.setString(1, nomeAutore);
 
             if(titoloDisco == null) statement.setNull(2, Types.VARCHAR);
             else statement.setString(2, titoloDisco);
 
-            if (flag == null) statement.setNull(3, Types.BOOLEAN);
-            else statement.setBoolean(3, flag);
+            statement.setBoolean(3, pubbliche);
+            statement.setBoolean(4, condivise);
+            statement.setBoolean(5, private_);
 
-            statement.setInt(4, IDCollezionista);
+            statement.setInt(6, IDCollezionista);
             statement.execute();
 
             ResultSet resultSet = statement.getResultSet();
@@ -822,5 +823,6 @@ public class Query_JDBC {
         }
 
     }
+
 
 }

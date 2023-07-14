@@ -132,7 +132,7 @@ create view lista_dischi_generale as
 
 -- lasciare null qualsiasi campo eccetto ID_collezionista per non effettuare la ricerca su quel campo
 create procedure ricerca_dischi_per_autore_titolo(in nome_autore varchar(25), in titolo_disco varchar(50),
-                                                  in flag boolean, in ID_collezionista int)
+                                                  in pubbliche boolean, in condivise boolean, in private boolean, in ID_collezionista int)
 begin
     select distinct -- nickname as 'proprietario collezione',
             ID, titolo, anno_uscita as 'anno di uscita', barcode, formato, stato_conservazione as 'stato di conservazione', descrizione_conservazione as 'descrizione conservazione'
@@ -141,15 +141,37 @@ begin
         select *
           from lista_dischi_generale l
             where
-                lower(l.titolo) regexp lower(titolo_disco) -- ricerca per titolo del disco
+                (
+                    lower(l.titolo) regexp lower(titolo_disco) or lower(l.nome_autore) regexp lower(nome_autore)
+                    )
+                and  l.ID_collezionista = ID_collezionista and private = 1
+                       -- ricerca nelle collezioni del collezionista
 
           union -- unione per ottenere entrambe le ricerche
 
         select *
           from lista_dischi_generale l
-            where lower(l.nome_autore) regexp lower(nome_autore) -- ricerca per nome autore
+            where
+                (
+                    lower(l.titolo) regexp lower(titolo_disco) or lower(l.nome_autore) regexp lower(nome_autore)
+                    )
+                and flag = 1 and pubbliche = 1
+                -- ricerca nelle collezioni pubbliche
+
+            union
+
+        select ldg.*
+          from collezione c
+              join condivide cd on c.ID = cd.ID_collezione
+              join comprende_dischi d on c.ID = d.ID_collezione
+              join lista_dischi_generale ldg on d.ID_disco = ldg.ID
+            where
+                (
+                    lower(ldg.titolo) regexp lower(titolo_disco) or lower(ldg.nome_autore) regexp lower(nome_autore)
+                    )
+            and cd.ID_collezionista = ID_collezionista and condivise=1 -- ricerca nelle condivise
     ) as `lUl`
-    where (lUl.flag=flag or flag is null) and lUl.ID_collezionista = ID_collezionista; -- ricerca per flag e costraint del collezionista
+    ;
 end$
 
 -- Funzionalità 9

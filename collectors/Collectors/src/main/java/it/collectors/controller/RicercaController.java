@@ -20,7 +20,13 @@ public class RicercaController implements Initializable, DataInitializable<Colle
     Query_JDBC db = BusinessFactory.getImplementation();
     Collezionista collezionista;
     @FXML
-    private ChoiceBox<String> flag;
+    private CheckBox pubblicheCheck;
+
+    @FXML
+    private CheckBox condiviseCheck;
+
+    @FXML
+    private CheckBox privateCheck;
 
     @FXML
     private TextField discoField;
@@ -146,9 +152,11 @@ public class RicercaController implements Initializable, DataInitializable<Colle
         etichetta.setCellValueFactory(new PropertyValueFactory<>("etichetta"));
         genere.setCellValueFactory(new PropertyValueFactory<>("genere"));
         autore.setCellValueFactory(new PropertyValueFactory<>("autori"));
-        flag.getItems().addAll("Condivisi", "Privati", "Tutti");
-        flag.setValue("Tutti");
-        flag.setOnAction(event -> {filtra();});
+        privateCheck.setSelected(true); // per default cerco le private
+        privateCheck.setAllowIndeterminate(false);
+        pubblicheCheck.setAllowIndeterminate(false); // impedisco di avere il quadratino nel check
+        condiviseCheck.setAllowIndeterminate(false);
+        //flag.setOnAction(event -> {filtra();});
     }
 
     private String regexify(String string) {
@@ -163,20 +171,14 @@ public class RicercaController implements Initializable, DataInitializable<Colle
             risultatiRicerca.getItems().clear();
         }
 
-        Boolean condivisi = null;
-
-        if (flag.getValue().equals("Condivisi")) {
-            condivisi = true;
-        } else if (flag.getValue().equals("Privati")) {
-            condivisi = false;
-        } else if (flag.getValue().equals("Tutti")) {
-            condivisi = null;
-        }
+        Boolean pubbliche = pubblicheCheck.isSelected();
+        Boolean condivise = condiviseCheck.isSelected();
+        Boolean private_ = privateCheck.isSelected();
 
         String autore = regexify(autoreField.getText());
         String titolo = regexify(discoField.getText());
 
-        List<Disco> dischi = db.getRicercaDischiPerAutoreTitolo(autore, titolo, condivisi, collezionista.getId());
+        List<Disco> dischi = db.getRicercaDischiPerAutoreTitolo(autore, titolo, pubbliche, condivise, private_, collezionista.getId());
 
         if (dischi==null) return;
 

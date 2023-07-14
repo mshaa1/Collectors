@@ -6,12 +6,16 @@ import it.collectors.business.jdbc.DatabaseImpl;
 import it.collectors.business.jdbc.Query_JDBC;
 import it.collectors.model.Collezionista;
 import it.collectors.view.Pages;
+import it.collectors.view.View;
 import it.collectors.view.ViewDispatcher;
+import it.collectors.view.ViewDispatcherException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -60,6 +64,11 @@ public class LoginController implements Initializable, DataInitializable {
 
     public void initializeData() {
 
+    }
+    @FXML
+    private void loginOnEnter(KeyEvent event){
+        if(event.getCode()== KeyCode.ENTER) login();
+        return;
     }
 
     @FXML
