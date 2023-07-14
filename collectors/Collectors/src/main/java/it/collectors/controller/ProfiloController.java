@@ -87,7 +87,8 @@ public class ProfiloController implements Initializable, DataInitializable<Colle
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        genere.setReorderable(false);
+        numero.setReorderable(false);
     }
 
     @Override

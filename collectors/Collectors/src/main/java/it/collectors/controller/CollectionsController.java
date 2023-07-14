@@ -38,7 +38,8 @@ public class CollectionsController implements Initializable, DataInitializable<C
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        collectionNameColumn.setReorderable(false);
+        collectionFlagColumn.setReorderable(false);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class CollectionsController implements Initializable, DataInitializable<C
     public void goToHome() {
         ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
         try {
-            viewDispatcher.navigateTo(Pages.HOME, collezionista);
+            viewDispatcher.navigateTo(Pages.HOME, this.collezionista);
         }catch (Exception e) {
             e.printStackTrace();
         }

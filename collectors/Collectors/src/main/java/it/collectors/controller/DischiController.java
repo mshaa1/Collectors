@@ -111,7 +111,14 @@ public class DischiController implements Initializable, DataInitializable<Collez
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        titolo.setReorderable(false);
+        annoUscita.setReorderable(false);
+        barcode.setReorderable(false);
+        formato.setReorderable(false);
+        statoConservazione.setReorderable(false);
+        descrizione.setReorderable(false);
+        etichetta.setReorderable(false);
+        genere.setReorderable(false);
     }
 
     @Override
