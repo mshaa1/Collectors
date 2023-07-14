@@ -520,6 +520,25 @@ begin
     end if;
 
 end $
+
+
+-- funzionalità 31
+-- get collezioni condivise con un utente
+
+drop procedure if exists get_collezioni_condivise_e_proprietario;
+
+create procedure get_collezioni_condivise_e_proprietario(in ID_utente integer)
+begin
+    select c.ID as ID_collezione, c.nome, c.flag, prop.ID as ID_propietario, prop.email, prop.nickname
+    from collezione c
+    join condivide con on c.ID=con.ID_collezione
+    join collezionista col on con.ID_collezionista=col.ID
+    join collezionista prop on c.ID = prop.ID
+    where con.ID_collezionista = ID_utente;
+end $
+
+delimiter ;
+
 delimiter ;
 
 
