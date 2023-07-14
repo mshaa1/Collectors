@@ -89,7 +89,7 @@ public class Query_JDBC {
     }
 
     // Funzionalità 28
-    // get tutti i dichi di un utente
+    // get tutti i dischi di un utente
 
     public List<Disco> getDischiUtente(int IDUtente){
 

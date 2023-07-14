@@ -37,7 +37,8 @@ public class TracceController implements Initializable, DataInitializable<Collez
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        titolo.setReorderable(false);
+        durata.setReorderable(false);
     }
 
     @Override
