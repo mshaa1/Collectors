@@ -11,32 +11,33 @@ delimiter $
 
 /* Sezione Update duplicati */
 
-create trigger Update_Duplicati_On_Insert_Comprende_Dischi
-    after insert
-    on Comprende_Dischi
-    for each row
-begin
-    call gestione_disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
-end$
 
-create trigger Update_Duplicati_On_Delete_Comprende_Dischi
-    after delete
-    on Comprende_Dischi
-    for each row
-begin
-    call gestione_disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
-end$
-
-create trigger Update_Duplicati_On_Update_Comprende_Dischi
-    after update
-    on Comprende_Dischi
-    for each row
-begin
-    if OLD.ID_collezione = NEW.ID_collezione and OLD.ID_disco <> NEW.ID_disco then
-        call gestione_disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
-        call gestione_disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
-    end if;
-end$
+# create trigger Update_Duplicati_On_Insert_Comprende_Dischi
+#     after insert
+#     on Comprende_Dischi
+#     for each row
+# begin
+#     call gestione_disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
+# end$
+#
+# create trigger Update_Duplicati_On_Delete_Comprende_Dischi
+#     after delete
+#     on Comprende_Dischi
+#     for each row
+# begin
+#     call gestione_disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
+# end$
+#
+# create trigger Update_Duplicati_On_Update_Comprende_Dischi
+#     after update
+#     on Comprende_Dischi
+#     for each row
+# begin
+#     if OLD.ID_collezione = NEW.ID_collezione and OLD.ID_disco <> NEW.ID_disco then
+#         call gestione_disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
+#         call gestione_disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
+#     end if;
+# end$
 
 -- Sezione di verifica dell'anno di uscita dei dischi all'inserimento e all'aggiornamento di un disco
 
