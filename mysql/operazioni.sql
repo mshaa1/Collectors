@@ -390,13 +390,15 @@ drop procedure if exists get_dischi_utente_etichetta;
 
 create procedure get_dischi_utente_etichetta(in ID_utente integer)
 begin
-    select distinct disco.ID, titolo, anno_uscita, barcode, formato, stato_conservazione, descrizione_conservazione, etichetta.ID as etichetta_id, nome, sede_legale, email
-    from disco
-    join colleziona_dischi on disco.ID = colleziona_dischi.ID_disco
-    join etichetta on disco.ID_etichetta = etichetta.ID
-    where colleziona_dischi.ID_collezionista = ID_utente;
+    select distinct d.ID, titolo, anno_uscita, barcode, formato, stato_conservazione, descrizione_conservazione, e.ID as etichetta_id, e.nome, sede_legale, e.email
+    from disco d
+    join comprende_dischi cds on d.ID = cds.ID_disco
+    join collezione c on cds.ID_collezione = c.ID
+    join etichetta e on d.ID_etichetta = e.ID
+    where c.ID_collezionista = ID_utente;
 end $
 
+call get_dischi_utente_etichetta(3);
 
 -- Funzionalità 24
 -- etichetta di un disco
@@ -452,9 +454,10 @@ drop procedure if exists get_dischi_utente;
 create procedure get_dischi_utente(in ID_utente integer)
 begin
     select distinct *
-    from disco
-    join colleziona_dischi on disco.ID = colleziona_dischi.ID_disco
-    where colleziona_dischi.ID_collezionista = ID_utente;
+    from disco d
+    join comprende_dischi cds on d.ID = cds.ID_disco
+    join collezione c on cds.ID_collezione = c.ID
+    where c.ID_collezionista = ID_utente;
 end $
 
 -- Funzionalità 29
