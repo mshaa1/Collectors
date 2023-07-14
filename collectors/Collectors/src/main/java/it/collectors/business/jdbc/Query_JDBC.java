@@ -415,7 +415,7 @@ public class Query_JDBC {
 
     // Funzionalità 17
     // aggiunta genere
-    public void aggiuntaGenere(String genere) {
+    public boolean aggiuntaGenere(String genere) {
         try {
             CallableStatement statement = connection.prepareCall("{call aggiunta_genere(?)}");
             statement.setString(1, genere.toLowerCase());
@@ -423,9 +423,11 @@ public class Query_JDBC {
             statement.execute();
             statement.close();
 
+            return true;
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+        return false;
     }
 
     // Funzionalità 18
@@ -854,8 +856,44 @@ public class Query_JDBC {
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-
     }
 
+        // inserimento di una nuova etichetta
+        // Funzionalità 32
+        public boolean inserimentoEtichetta(String nome, String sede_legale, String email) {
+            try {
+                CallableStatement statement = connection.prepareCall("{call aggiunta_etichetta(?,?,?)}");
+                statement.setString(1, nome);
+                statement.setString(2, sede_legale);
+                statement.setString(3, email);
 
-}
+                statement.execute();
+                statement.close();
+                return true;
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            return false;
+        }
+
+        public boolean inserisciDisco(String titolo, Integer annoUscita, String barcode, String formato, String statoConservazione, String descrizioneConservazione, Integer idEtichetta, Integer idGenere) {
+            try {
+                CallableStatement statement = connection.prepareCall("{call inserisci_disco(?,?,?,?,?,?,?,?)}");
+                statement.setString(1, titolo);
+                statement.setInt(2, annoUscita);
+                statement.setString(3, barcode);
+                statement.setString(4, formato);
+                statement.setString(5, statoConservazione);
+                statement.setString(6, descrizioneConservazione);
+                statement.setInt(7, idEtichetta);
+                statement.setInt(8, idGenere);
+
+                statement.execute();
+                statement.close();
+                return true;
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            return false;
+        }
+ }

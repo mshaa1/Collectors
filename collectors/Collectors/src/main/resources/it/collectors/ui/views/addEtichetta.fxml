@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.EtichettaController">
+    <children>
+        <TextField fx:id="nomeField" maxWidth="220.0" minWidth="220.0" promptText="Inserisci nome dell'etichetta">
+            <cursor>
+                <Cursor fx:constant="TEXT" />
+            </cursor>
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+        </TextField>
+        <TextField fx:id="sedeField" maxWidth="220.0" minWidth="220.0" promptText="Inserisci la sede legale dell'etichetta">
+            <cursor>
+                <Cursor fx:constant="TEXT" />
+            </cursor>
+            <VBox.margin>
+                <Insets top="5.0" />
+            </VBox.margin>
+        </TextField>
+        <TextField fx:id="emailField" maxWidth="220.0" minWidth="200.0" promptText="Inserisci l'email dell'etichetta">
+            <cursor>
+                <Cursor fx:constant="TEXT" />
+            </cursor>
+            <VBox.margin>
+                <Insets top="5.0" />
+            </VBox.margin>
+        </TextField>
+        <Label fx:id="exceptionLabel">
+            <VBox.margin>
+                <Insets bottom="10.0" top="10.0" />
+            </VBox.margin>
+        </Label>
+        <HBox alignment="CENTER">
+            <children>
+                <Button mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="65.0" text="Annulla">
+                    <HBox.margin>
+                        <Insets right="50.0" />
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="addButton" mnemonicParsing="false" onAction="#addEtichetta" text="Aggiungi" />
+            </children>
+        </HBox>
+    </children>
+</VBox>

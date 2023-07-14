@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.EditDiscoController">
+   <children>
+      <TextField fx:id="titoloDisco" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" promptText="Inserisci titolo disco" />
+       <TextField fx:id="annoUscita" maxWidth="300.0" minWidth="300.0" promptText="Inserisci anno di uscita del disco">
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin></TextField>
+       <TextField fx:id="barcodeDisco" maxWidth="300.0" minWidth="300.0" promptText="Inserisci barcode del disco">
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin></TextField>
+       <TextField fx:id="descrizioneConservazione" maxWidth="300.0" minWidth="300.0" promptText="Descrizione conservazione">
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin></TextField>
+      <HBox alignment="CENTER" prefHeight="24.0" prefWidth="800.0" />
+      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="800.0">
+         <children>
+            <ComboBox fx:id="statoConservazioneComboBox" prefWidth="150.0" promptText="Stato conservazione">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </ComboBox>
+            <ComboBox fx:id="genereComboBox" prefWidth="150.0" promptText="Seleziona genere">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin></ComboBox>
+            <ComboBox fx:id="etichettaComboBox" prefWidth="150.0" promptText="Seleziona etichetta">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin></ComboBox>
+            <ComboBox fx:id="formatoComboBox" prefWidth="150.0" promptText="Seleziona formato" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="addGenereButton" mnemonicParsing="false" onAction="#addGenere" prefHeight="25.0" prefWidth="114.0" text="Aggiungi genere">
+               <HBox.margin>
+                  <Insets left="110.0" right="135.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="addEtichettaButton" mnemonicParsing="false" onAction="#addEtichetta" text="Aggiungi etichetta">
+               <HBox.margin>
+                  <Insets left="-90.0" right="185.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets right="75.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER">
+         <children>
+            <Label fx:id="exceptionLabel" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="96.0" text="Annulla">
+               <HBox.margin>
+                  <Insets right="200.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="addDiskButton" mnemonicParsing="false" onAction="#addDisk" text="Aggiungi disco" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

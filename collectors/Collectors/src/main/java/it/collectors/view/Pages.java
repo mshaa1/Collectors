@@ -7,7 +7,7 @@ public enum Pages {
     TRACCE("tracce"),
     PROFILO("profilo"),
     RICERCA("ricerca"),
-
+    ADD_DISCO("addDisco"),
     QUERIES("queries"),
 
     COLLEZIONICONDIVISE("collezioniCondivise");

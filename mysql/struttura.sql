@@ -53,7 +53,7 @@ create table disco(
   titolo varchar(35) not null,
   anno_uscita smallint not null,
   barcode varchar(128), /*lunghezza massima barcode esistenti*/
-  formato enum('vinile', 'cd', 'digitale'),
+  formato enum('vinile', 'cd', 'digitale', 'cassetta'),
   stato_conservazione enum ('nuovo', 'come nuovo', 'ottimo', 'buono', 'accettabile'),
   descrizione_conservazione varchar(255),
   ID_etichetta integer, 

@@ -34,4 +34,19 @@ public class Etichetta {
         return email;
     }
 
+    @Override
+    public String toString() {
+        return nome;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+    	if(obj instanceof Etichetta) {
+    		Etichetta etichetta = (Etichetta) obj;
+    		return etichetta.getNome().equals(this.getNome()) && etichetta.getSedeLegale().equals(this.getSedeLegale()) &&
+                    etichetta.getEmail().equals(this.getEmail());
+    	}
+    	return false;
+    }
+
 }

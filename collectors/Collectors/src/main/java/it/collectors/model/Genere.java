@@ -20,4 +20,18 @@ public class Genere {
         return nome;
     }
 
+    @Override
+    public String toString() {
+        return nome;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+    	if(obj instanceof Genere) {
+    		Genere genere = (Genere) obj;
+    		return genere.getNome().equals(this.getNome());
+    	}
+    	return false;
+    }
+
 }

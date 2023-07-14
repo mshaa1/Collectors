@@ -21,14 +21,14 @@
       </Label>
       <TextField fx:id="nicknameLabel" maxWidth="200.0" minWidth="200.0" onKeyPressed="#loginOnEnter" promptText="Inserisci nickname">
          <cursor>
-            <Cursor fx:constant="HAND" />
+            <Cursor fx:constant="TEXT" />
          </cursor></TextField>
       <TextField fx:id="emailLabel" maxWidth="200.0" minWidth="200.0" onKeyPressed="#loginOnEnter" promptText="Inserisci email">
          <VBox.margin>
             <Insets bottom="20.0" top="20.0" />
          </VBox.margin>
          <cursor>
-            <Cursor fx:constant="HAND" />
+            <Cursor fx:constant="TEXT" />
          </cursor>
       </TextField>
       <Label fx:id="exceptionLabel" />
