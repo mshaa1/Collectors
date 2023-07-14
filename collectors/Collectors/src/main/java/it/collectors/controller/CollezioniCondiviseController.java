@@ -64,7 +64,7 @@ public class CollezioniCondiviseController implements Initializable, DataInitial
         nomeCollezionista.setCellValueFactory(new PropertyValueFactory<>("collezionista"));
 
         List<CollezioneCollezionistaWrapper> collezioneCollezionistaWrappers = new ArrayList<>();
-        Map<Collezione,Collezionista> map = new HashMap<>();
+        Map<Collezione,Collezionista> map;
 
         map = db.getCollezioniCondivisePropietario(this.collezionista.getId());
 
