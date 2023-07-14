@@ -2,7 +2,7 @@ package it.collectors.view;
 
 public enum Pages {
     HOME("home"),
-    COLLECTIONS("collections"),
+    COLLECTIONS("collezioni"),
     DISCHI("dischi"),
     TRACCE("tracce"),
     PROFILO("profilo"),
