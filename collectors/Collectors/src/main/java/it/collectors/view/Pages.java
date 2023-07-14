@@ -6,7 +6,9 @@ public enum Pages {
     DISCHI("dischi"),
     TRACCE("tracce"),
     PROFILO("profilo"),
-    RICERCA("ricerca");
+    RICERCA("ricerca"),
+
+    QUERIES("queries");
 
     private final String name;
 

@@ -76,6 +76,14 @@ public class HomeController implements Initializable, DataInitializable<Collezio
             throw new RuntimeException(e);
         }
     }
+    @FXML
+    private void goToQueries(){
+        try {
+            viewDispatcher.navigateTo(Pages.QUERIES, this.collezionista);
+        } catch (ViewDispatcherException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @FXML
     private void logout() {
