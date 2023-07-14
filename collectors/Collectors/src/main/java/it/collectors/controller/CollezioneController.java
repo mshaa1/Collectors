@@ -58,6 +58,9 @@ public class CollezioneController implements Initializable, DataInitializable<Co
 
     @FXML
     public void removeCollection() {
+        Collezione collezione = collectionsTable.getSelectionModel().getSelectedItem();
+        queryJdbc.removeCollezione(collezione.getId());
+        collectionsTable.getItems().remove(collezione);
 
     }
 

@@ -54,7 +54,44 @@ public class Query_JDBC {
     //********************QUERY***************************//
     //TODO c'è un gap vuoto, non ci sta la funzionalita 14
 
-    // Funzionalitò 31
+    // FUnzionalità 34
+    // rimozione di un collezione dal database
+    public void removeCollezione(int IDCollezione){
+        try {
+            CallableStatement statement = connection.prepareCall("{call rimuovi_collezione(?)}");
+            statement.setInt(1, IDCollezione);
+            statement.execute();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    // Funzionalità 33
+    // rimozione di una traccia nel database
+    public void removeTraccia(int IDTraccia){
+        try {
+            CallableStatement statement = connection.prepareCall("{call rimuovi_traccia(?)}");
+            statement.setInt(1, IDTraccia);
+            statement.execute();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    // Funzionalità 32
+    // rimozione di un disco nel database
+    public void removeDisco(int IDDisco){
+        try {
+            CallableStatement statement = connection.prepareCall("{call rimuovi_disco(?)}");
+            statement.setInt(1, IDDisco);
+            statement.execute();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    // Funzionalità 31
     // Get tutte le collezioni condivise con singolo utente e il nome del proprietario
 
     public Map<Collezione,Collezionista> getCollezioniCondivisePropietario(int IDCollezionista){

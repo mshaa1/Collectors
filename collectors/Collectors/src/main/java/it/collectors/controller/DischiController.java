@@ -169,6 +169,10 @@ public class DischiController implements Initializable, DataInitializable<Collez
     @FXML
     public void remove() {
 
+        Disco disco = table.getSelectionModel().getSelectedItem().getDisco();
+        queryJdbc.removeDisco(disco.getId());
+        table.getItems().remove(table.getSelectionModel().getSelectedItem());
+
     }
 
     @FXML

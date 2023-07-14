@@ -398,7 +398,6 @@ begin
     where c.ID_collezionista = ID_utente;
 end $
 
-call get_dischi_utente_etichetta(3);
 
 -- Funzionalità 24
 -- etichetta di un disco
@@ -478,7 +477,7 @@ drop procedure if exists inserisci_disco;
 
 -- Funzionalità 30
 
-create procedure inserisci_disco(in ID_collezionista varchar(25), in titolo varchar(25), in anno_uscita int, in barcode varchar(25), in formato varchar(25), in stato_conservazione varchar(25), in descrizione_conservazione varchar(255), in ID_etichetta integer, in ID_genere integer)
+create procedure inserisci_disco(in ID_collezionista varchar(25), in titolo varchar(25), in anno_uscita date, in barcode varchar(25), in formato varchar(25), in stato_conservazione varchar(25), in descrizione_conservazione varchar(255), in ID_etichetta integer, in ID_genere integer)
 begin
     select ID from disco where
     disco.titolo = titolo and
@@ -537,15 +536,35 @@ begin
     where con.ID_collezionista = ID_utente;
 end $
 
+-- funzionalità 32
+-- rimozione del disco in tutto il database
 
--- Funzionalità 32
--- inserisci una nuova etichetta
-create procedure aggiunta_etichetta(in nome varchar(25), in sede_legale varchar(255), in email varchar(320))
+drop procedure if exists rimuovi_disco;
+
+create procedure rimuovi_disco(in ID_disco integer)
 begin
-       insert into etichetta(nome, sede_legale, email) values (nome, sede_legale, email);
-end$
+    delete from disco where disco.ID = ID_disco;
+end $
 
-delimiter ;
+-- funzionalità 33
+-- rimozione di una traccia in tutto il database
+
+drop procedure if exists rimuovi_traccia;
+
+create procedure rimuovi_traccia(in ID_traccia integer)
+begin
+    delete from traccia where traccia.ID = ID_traccia;
+end $
+
+-- funzionalità 34
+-- rimozione di una collezione in tutto il database
+
+drop procedure if exists rimuovi_collezione;
+
+create procedure rimuovi_collezione(in ID_collezione integer)
+begin
+    delete from collezione where collezione.ID = ID_collezione;
+end $
 
 delimiter ;
 

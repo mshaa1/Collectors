@@ -63,7 +63,9 @@ public class TracceController implements Initializable, DataInitializable<Collez
 
     @FXML
     public void remove() {
-
+        Traccia traccia = table.getSelectionModel().getSelectedItem();
+        queryJdbc.removeTraccia(traccia.getId());
+        table.getItems().remove(traccia);
     }
 
     @FXML
