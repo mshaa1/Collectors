@@ -50,6 +50,18 @@
                   <Insets />
                </HBox.margin>
             </Button>
+            <Button alignment="CENTER" contentDisplay="TOP" layoutX="76.0" layoutY="59.0" mnemonicParsing="false" onAction="#condivise" style="-fx-background-color: transparent;" text="Condivisi con te">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" translateY="-12.0">
+                     <image>
+                        <Image url="@../images/share.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" style="-fx-background-color: transparent;" text="Vai alla Home">
                <cursor>

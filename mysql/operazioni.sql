@@ -267,40 +267,40 @@ end$
 -- Funzionalità 14
 -- Gestione aggiornamento / cancellazione disco (e duplicati)
 
-# create procedure gestione_disco(in IN_ID_Collezione integer, in IN_ID_Disco integer,
-#                                 in tipo_aggiornamento enum ('DELETE','INSERT'))
-# begin
-#     select ID_collezionista from collezione where ID = IN_ID_Collezione into @ID_collezionista;
-#     if (tipo_aggiornamento = 'DELETE') then
-#         update colleziona_dischi
-#         set numero_duplicati=numero_duplicati - 1
-#         where colleziona_dischi.ID_disco = IN_ID_Disco
-#           and colleziona_dischi.ID_collezionista = @ID_collezionista;
-#         delete from colleziona_dischi where numero_duplicati = -1;
-#     else
-#         if (tipo_aggiornamento = 'INSERT')
-#         then
-#             -- conto il numero di dischi IN_ID_Disco nella collezione del collezionista @ID_collezionista
-#             select count(all ID_disco) -- TODO: controllare se effettivamente è un all o se è un distinct
-#             from comprende_dischi
-#                      join collezione on ID_collezione = ID
-#             where ID_collezionista = @ID_collezionista
-#               and ID_disco = IN_ID_Disco
-#             into @numero_dischi;
-#             case
-#                 when @numero_dischi = 1 -- è stata inserita la prima copia
-#                     then insert into colleziona_dischi(ID_collezionista, ID_disco, numero_duplicati)
-#                          values (@ID_collezionista, IN_ID_Disco, 1);
-#                 when @numero_dischi > 1 -- è stata inserita la n-esima copia
-#                     then update colleziona_dischi
-#                          set numero_duplicati=numero_duplicati + 1
-#                          where colleziona_dischi.ID_disco = IN_ID_Disco
-#                            and colleziona_dischi.ID_collezionista = @ID_collezionista;
-#                 else select null into @nullvar; -- è stato inserito il primo disco, quindi non fare nulla
-#                 end case;
-#         end if;
-#     end if;
-# end$
+create procedure gestione_disco(in IN_ID_Collezione integer, in IN_ID_Disco integer,
+                                in tipo_aggiornamento enum ('DELETE','INSERT'))
+begin
+    select ID_collezionista from collezione where ID = IN_ID_Collezione into @ID_collezionista;
+    if (tipo_aggiornamento = 'DELETE') then
+        update colleziona_dischi
+        set numero_duplicati=numero_duplicati - 1
+        where colleziona_dischi.ID_disco = IN_ID_Disco
+          and colleziona_dischi.ID_collezionista = @ID_collezionista;
+        delete from colleziona_dischi where numero_duplicati = 0;
+    else
+        if (tipo_aggiornamento = 'INSERT')
+        then
+            -- conto il numero di dischi IN_ID_Disco nella collezione del collezionista @ID_collezionista
+            select count(all ID_disco) -- TODO: controllare se effettivamente è un all o se è un distinct
+            from comprende_dischi
+                     join collezione on ID_collezione = ID
+            where ID_collezionista = @ID_collezionista
+              and ID_disco = IN_ID_Disco
+            into @numero_dischi;
+            case
+                when @numero_dischi = 2 -- è stata inserita la prima copia
+                    then insert into colleziona_dischi(ID_collezionista, ID_disco, numero_duplicati)
+                         values (@ID_collezionista, IN_ID_Disco, 1);
+                when @numero_dischi > 2 -- è stata inserita la n-esima copia
+                    then update colleziona_dischi
+                         set numero_duplicati=numero_duplicati + 1
+                         where colleziona_dischi.ID_disco = IN_ID_Disco
+                           and colleziona_dischi.ID_collezionista = @ID_collezionista;
+                else select null into @nullvar; -- è stato inserito il primo disco, quindi non fare nulla
+                end case;
+        end if;
+    end if;
+end$
 
 
 
@@ -398,8 +398,6 @@ begin
     where c.ID_collezionista = ID_utente;
 end $
 
-call get_dischi_utente_etichetta(3);
-
 -- Funzionalità 24
 -- etichetta di un disco
 
@@ -474,52 +472,23 @@ begin
     where d.ID=ID_disco;
 end $
 
-drop procedure if exists inserisci_disco;
 
--- Funzionalità 30
 
-create procedure inserisci_disco(in ID_collezionista varchar(25), in titolo varchar(25), in anno_uscita date, in barcode varchar(25), in formato varchar(25), in stato_conservazione varchar(25), in descrizione_conservazione varchar(255), in ID_etichetta integer, in ID_genere integer)
+-- funzionalità 31
+-- get collezioni condivise con un utente
+
+drop procedure if exists get_collezioni_condivise_e_proprietario;
+
+create procedure get_collezioni_condivise_e_proprietario(in ID_utente integer)
 begin
-    select ID from disco where
-    disco.titolo = titolo and
-    disco.anno_uscita = anno_uscita and
-    disco.barcode = barcode and
-    disco.formato = formato and
-    disco.stato_conservazione = stato_conservazione and
-    disco.descrizione_conservazione = descrizione_conservazione and
-    disco.ID_etichetta = ID_etichetta and
-    disco.ID_genere = ID_genere
-    into @ID_disco;
-
-    if (@ID_disco is null) then
-        insert into disco(titolo, anno_uscita, barcode, formato, stato_conservazione, descrizione_conservazione, ID_etichetta, ID_genere)
-        values (titolo, anno_uscita, barcode, formato, stato_conservazione, descrizione_conservazione, ID_etichetta, ID_genere);
-
-        select ID from disco where
-        disco.titolo = titolo and
-        disco.anno_uscita = anno_uscita and
-        disco.barcode = barcode and
-        disco.formato = formato and
-        disco.stato_conservazione = stato_conservazione and
-        disco.descrizione_conservazione = descrizione_conservazione and
-        disco.ID_etichetta = ID_etichetta and
-        disco.ID_genere = ID_genere
-            into @ID_disco;
-        end if;
-
-
-    select numero_duplicati
-        from colleziona_dischi
-            where colleziona_dischi.ID_collezionista = ID_collezionista
-                and colleziona_dischi.ID_disco = @ID_disco
-                    into @numero_duplicati;
-
-    if (@numero_duplicati is null)
-            then insert into colleziona_dischi (ID_collezionista, ID_disco, numero_duplicati) values (ID_collezionista, @ID_disco, 0);
-    else update colleziona_dischi set numero_duplicati = numero_duplicati + 1 where colleziona_dischi.ID_collezionista = ID_collezionista and colleziona_dischi.ID_disco = @ID_disco;
-    end if;
-
+    select c.ID as ID_collezione, c.nome, c.flag, prop.ID as ID_propietario, prop.email, prop.nickname
+    from collezione c
+    join condivide con on c.ID=con.ID_collezione
+    join collezionista col on con.ID_collezionista=col.ID
+    join collezionista prop on c.ID = prop.ID
+    where con.ID_collezionista = ID_utente;
 end $
+
 delimiter ;
 
 

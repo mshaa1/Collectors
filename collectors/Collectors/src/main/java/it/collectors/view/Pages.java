@@ -8,7 +8,9 @@ public enum Pages {
     PROFILO("profilo"),
     RICERCA("ricerca"),
 
-    QUERIES("queries");
+    QUERIES("queries"),
+
+    COLLEZIONICONDIVISE("collezioniCondivise");
 
     private final String name;
 

@@ -35,6 +35,8 @@ public class CollectionsController implements Initializable, DataInitializable<C
 
     Collezionista collezionista;
 
+    ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -66,13 +68,21 @@ public class CollectionsController implements Initializable, DataInitializable<C
 
     @FXML
     public void goToHome() {
-        ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
         try {
             viewDispatcher.navigateTo(Pages.HOME, this.collezionista);
         }catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+
+    public void condivise(){
+        try {
+            viewDispatcher.navigateTo(Pages.COLLEZIONICONDIVISE, this.collezionista);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

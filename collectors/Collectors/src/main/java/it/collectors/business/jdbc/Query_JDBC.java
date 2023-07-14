@@ -54,6 +54,39 @@ public class Query_JDBC {
     //********************QUERY***************************//
     //TODO c'è un gap vuoto, non ci sta la funzionalita 14
 
+    // Funzionalitò 31
+    // Get tutte le collezioni condivise con singolo utente e il nome del proprietario
+
+    public Map<Collezione,Collezionista> getCollezioniCondivisePropietario(int IDCollezionista){
+        Map<Collezione,Collezionista> collezioni = new HashMap<>();
+
+        try{
+            CallableStatement statement = connection.prepareCall("{call get_collezioni_condivise_e_proprietario(?)}");
+             statement.setInt(1, IDCollezionista);
+             statement.execute();
+
+            ResultSet result = statement.getResultSet();
+            while (result.next()){
+                Collezione collezione = new Collezione(
+                        result.getInt(1),
+                        result.getString(2),
+                        result.getBoolean(3)
+                );
+                Collezionista proprietario = new Collezionista(
+                        result.getInt(4),
+                        result.getString(5),
+                        result.getString(6)
+                );
+                collezioni.put(collezione,proprietario);
+            }
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return collezioni;
+    }
+
     // Funzionalità 29
     // Get Autori di un disco
 
@@ -83,7 +116,7 @@ public class Query_JDBC {
             statement.close();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return autori;
     }
