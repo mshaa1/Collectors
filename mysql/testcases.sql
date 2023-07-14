@@ -77,8 +77,16 @@ VALUES
     (1,2,1), /*Mr.Why -> Dr. Stone Original Soundtrack*/
     (1,3,1), /*Mr. Why -> Dr. Stone Original Soundtrack 2*/
     (1,4,1), /*Mr.Why -> Dr. Stone Original Soundtrack 3*/
+    (2,2,0), /*TeamNapoli -> Dr. Stone Original Soundtrack*/
+    (2,3,0), /*TeamNapoli -> Dr. Stone Original Soundtrack 2*/
+    (2,1,0), /*TeamNapoli -> kessoku*/
     (2,5,1), /*TeamNapoli -> Tobu collection*/
-    (2,6,1); /*TeamNapoli -> Janji*/
+    (2,6,1), /*TeamNapoli -> Janji*/
+    (3,2,0), /*SupaHacka -> Dr. Stone Original Soundtrack*/
+    (3,3,0), /*SupaHacka -> Dr. Stone Original Soundtrack 2*/
+    (3,4,0), /*SupaHacka -> Dr. Stone Original Soundtrack 3*/
+    (3,1,0), /*SupaHacka -> kessoku*/
+    (4,1,0); /* GuitarHero -> kessoku bando album*/
     /*ha 2 dischi di ognuno*/
 
 
