@@ -19,6 +19,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddCollezioneController implements Initializable, DataInitializable<Collezionista> {
+
+    private Collezionista collezionista;
+    protected void setCollezionista(Collezionista c){
+        this.collezionista=c;
+    }
     @FXML
     private TextField nome;
 
@@ -58,11 +63,10 @@ public class AddCollezioneController implements Initializable, DataInitializable
 
     }
 
-    @Override
-    public void initializeData(Collezionista data) {
-        //Window.
+    protected void loadTable() {
         Query_JDBC db = BusinessFactory.getImplementation();
-        //List<Disco> dischi = db.getDischiUtente()
+        List<Disco> dischi = db.getDischiUtente(collezionista.getId());
+        dischiTable.getItems().addAll(dischi);
     }
 
     @FXML
