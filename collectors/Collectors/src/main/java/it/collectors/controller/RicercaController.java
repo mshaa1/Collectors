@@ -212,10 +212,10 @@ public class RicercaController implements Initializable, DataInitializable<Colle
     }
 
     @FXML
-    public void goToHome() {
+    public void goToDischi() {
         ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
         try {
-            viewDispatcher.navigateTo(Pages.HOME, collezionista);
+            viewDispatcher.navigateTo(Pages.DISCHI, collezionista);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -398,7 +398,6 @@ begin
     where c.ID_collezionista = ID_utente;
 end $
 
-call get_dischi_utente_etichetta(3);
 
 -- Funzionalità 24
 -- etichetta di un disco
@@ -537,7 +536,35 @@ begin
     where con.ID_collezionista = ID_utente;
 end $
 
-delimiter ;
+-- funzionalità 32
+-- rimozione del disco in tutto il database
+
+drop procedure if exists rimuovi_disco;
+
+create procedure rimuovi_disco(in ID_disco integer)
+begin
+    delete from disco where disco.ID = ID_disco;
+end $
+
+-- funzionalità 33
+-- rimozione di una traccia in tutto il database
+
+drop procedure if exists rimuovi_traccia;
+
+create procedure rimuovi_traccia(in ID_traccia integer)
+begin
+    delete from traccia where traccia.ID = ID_traccia;
+end $
+
+-- funzionalità 34
+-- rimozione di una collezione in tutto il database
+
+drop procedure if exists rimuovi_collezione;
+
+create procedure rimuovi_collezione(in ID_collezione integer)
+begin
+    delete from collezione where collezione.ID = ID_collezione;
+end $
 
 delimiter ;
 

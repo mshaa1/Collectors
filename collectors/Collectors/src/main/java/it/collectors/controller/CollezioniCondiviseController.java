@@ -89,7 +89,4 @@ public class CollezioniCondiviseController implements Initializable, DataInitial
 
     }
 
-
-
-
 }
