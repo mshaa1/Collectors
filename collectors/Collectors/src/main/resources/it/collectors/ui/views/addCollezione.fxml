@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="410.0" prefWidth="436.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.AddCollezioneController">
+   <children>
+       <TextField fx:id="nome" layoutX="144.0" layoutY="20.0" promptText="Nome collezione" />
+      <ChoiceBox fx:id="flag" layoutX="165.0" layoutY="82.0" prefHeight="25.0" prefWidth="108.0" />
+      <Label alignment="CENTER" layoutX="196.0" layoutY="65.0" text="Visibilità" textAlignment="CENTER" />
+      <TableView fx:id="dischiTable" layoutX="16.0" layoutY="144.0" prefHeight="200.0" prefWidth="149.0">
+        <columns>
+          <TableColumn fx:id="titoloDischiColumn" prefWidth="75.0" text="Titolo" />
+          <TableColumn fx:id="barcodeDischiColumn" prefWidth="75.0" text="Barcode" />
+        </columns>
+      </TableView>
+      <TableView layoutX="273.0" layoutY="144.0" prefHeight="200.0" prefWidth="149.0">
+        <columns>
+          <TableColumn fx:id="titoloCollezioneColumn" prefWidth="75.0" text="Titolo" />
+          <TableColumn fx:id="barcodeCollezioneColumn" prefWidth="75.0" text="Barcode" />
+        </columns>
+      </TableView>
+      <Button layoutX="202.0" layoutY="205.0" mnemonicParsing="false" text="&gt;&gt;" />
+      <Button layoutX="396.0" layoutY="344.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="26.0" text="x" />
+      <Button alignment="CENTER" contentDisplay="TOP" layoutX="177.0" layoutY="357.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Aggiungi" textAlignment="CENTER">
+         <graphic>
+            <ImageView fitHeight="73.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/add-icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label alignment="CENTER" layoutX="29.0" layoutY="120.0" prefHeight="17.0" prefWidth="124.0" text="Dischi disponibili" textAlignment="CENTER" />
+      <Label alignment="CENTER" layoutX="260.0" layoutY="107.0" prefHeight="43.0" prefWidth="176.0" text="Dischi da mettere in collezione" textAlignment="CENTER" wrapText="true" />
+   </children>
+</AnchorPane>
