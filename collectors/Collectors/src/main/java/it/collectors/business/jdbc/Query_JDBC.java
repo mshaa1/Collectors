@@ -913,6 +913,9 @@ public class Query_JDBC {
             return false;
         }
 
+    // inserimento di una nuovo disco
+    // Funzionalità 33
+
         public boolean inserisciDisco(String titolo, Integer annoUscita, String barcode, String formato, String statoConservazione, String descrizioneConservazione, Integer idEtichetta, Integer idGenere) {
             try {
                 CallableStatement statement = connection.prepareCall("{call inserisci_disco(?,?,?,?,?,?,?,?)}");
@@ -933,4 +936,42 @@ public class Query_JDBC {
             }
             return false;
         }
+
+
+    // ottenimento generi del sistema
+    // Funzionalità 34
+
+    public Set<Genere> get_Generi_Sistema() {
+        Set<Genere> generi = new HashSet<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("select * from genere");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                generi.add(new Genere(resultSet.getInt(1), resultSet.getString(2)));
+            }
+            statement.close();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return generi;
+    }
+
+    // ottenimento id genere
+    // Funzionalità 35
+
+    public Integer get_ID_Genere(String nomeGenere) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("select ID from genere where nome like ?");
+            statement.setString(1, nomeGenere);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+            statement.close();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
+    }
+
  }

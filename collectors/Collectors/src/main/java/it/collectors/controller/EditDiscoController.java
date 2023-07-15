@@ -12,8 +12,10 @@ import it.collectors.view.ViewDispatcherException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -63,7 +65,7 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
 
     private Collezionista collezionista;
 
-    private List<Genere> generi = new ArrayList<>();
+    private Set<Genere> generi = new HashSet<>();
 
     private List<Etichetta> etichette = new ArrayList<>();
 
@@ -71,8 +73,9 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
 
     private ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 
-    private Stage stage;
+    private GenereController genereController;
 
+    private Stage stage;
 
 
     @Override
@@ -100,12 +103,12 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
 
     //TODO: implementare il metodo
     private void popolamentoGenereComboBox() {
-
+        this.generi = query_jdbc.get_Generi_Sistema();
+        this.genereComboBox.getItems().addAll(generi);
     }
 
     //TODO: implementare il metodo
     private void popolamentoEtichettaComboBox() {
-
     }
 
     private void popolamentoFormatoComboBox() {
@@ -117,53 +120,22 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
     }
 
     @FXML
-    private void addGenere() {
-        try{
-            if (stage == null) {
-                stage = new Stage();
-            }
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/it/collectors/ui/views/addGenere.fxml"));
-            Scene scene = new Scene(loader.load(), 300,300);
-            stage.resizableProperty().setValue(false);
-            stage.setTitle("Aggiungi genere");
-            stage.setScene(scene);
-            stage.show();
-
-            GenereController controller = GenereController.getGenereController();
-            controller.setUpdateCallback(() -> {
-                this.genereComboBox.getItems().clear();
-                popolamentoGenereComboBox();
-            });
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    private void addGenere() throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/collectors/ui/views/addGenere.fxml"));
+        Parent root = loader.load();
+        genereController = loader.getController();
+        stage.resizableProperty().setValue(Boolean.FALSE);
+        stage.setTitle("Aggiungi genere");
+        stage.setScene(new Scene(root));
+        stage.initOwner(this.addGenereButton.getScene().getWindow());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
     }
 
     @FXML
     private void addEtichetta() {
-        try{
-            if (stage == null) {
-                stage = new Stage();
-            }
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/it/collectors/ui/views/addEtichetta.fxml"));
-            Scene scene = new Scene(loader.load(), 300,300);
-            stage.resizableProperty().setValue(false);
-            stage.setTitle("Aggiungi etichetta");
-            stage.setScene(scene);
-            stage.show();
 
-            EtichettaController controller = EtichettaController.getEtichettaController();
-            controller.setUpdateCallback(() -> {
-                this.etichettaComboBox.getItems().clear();
-                popolamentoEtichettaComboBox();
-            });
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @FXML
