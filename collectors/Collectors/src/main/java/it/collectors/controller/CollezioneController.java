@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -33,6 +34,9 @@ public class CollezioneController implements Initializable, DataInitializable<Co
     @FXML
     private TableColumn<Collezione, String> collezioneFlagColonna;
 
+    @FXML
+    private Label erroreRimozioneLabel;
+
     private Query_JDBC queryJdbc = BusinessFactory.getImplementation();
 
     private Collezionista collezionista;
@@ -44,6 +48,9 @@ public class CollezioneController implements Initializable, DataInitializable<Co
     public void initialize(URL url, ResourceBundle resourceBundle) {
         collezioneNomeColonna.setReorderable(false);
         collezioneFlagColonna.setReorderable(false);
+        collezioneTable.setOnMouseClicked(event -> {
+            erroreRimozioneLabel.setVisible(false);
+        });
     }
 
     @Override
@@ -77,9 +84,11 @@ public class CollezioneController implements Initializable, DataInitializable<Co
     @FXML
     public void removeCollection() {
         Collezione collezione = collezioneTable.getSelectionModel().getSelectedItem();
+        if (collezione == null) {
+            erroreRimozioneLabel.setVisible(true);
+        }
         queryJdbc.removeCollezione(collezione.getId());
         collezioneTable.getItems().remove(collezione);
-
     }
 
     @FXML
