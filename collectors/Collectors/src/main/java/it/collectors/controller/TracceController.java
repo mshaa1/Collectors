@@ -22,6 +22,8 @@ import java.util.ResourceBundle;
 
 public class TracceController implements Initializable, DataInitializable<Collezionista>{
 
+    ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
+
     @FXML
     private TableView<Traccia> table;
 
@@ -58,6 +60,12 @@ public class TracceController implements Initializable, DataInitializable<Collez
 
     @FXML
     public void add() {
+        try {
+            viewDispatcher.navigateTo(Pages.ADDTRACK, collezionista);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -70,7 +78,6 @@ public class TracceController implements Initializable, DataInitializable<Collez
 
     @FXML
     public void goToHome() {
-        ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
         try {
             viewDispatcher.navigateTo(Pages.HOME, collezionista);
         }catch (Exception e) {

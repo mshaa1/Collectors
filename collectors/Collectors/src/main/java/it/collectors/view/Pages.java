@@ -7,10 +7,10 @@ public enum Pages {
     TRACCE("tracce"),
     PROFILO("profilo"),
     RICERCA("ricerca"),
-    ADD_DISCO("addDisco"),
+    ADDDISCO("addDisco"),
     QUERIES("queries"),
-
-    COLLEZIONICONDIVISE("collezioniCondivise");
+    COLLEZIONICONDIVISE("collezioniCondivise"),
+    ADDTRACK("aggiuntaTraccia");
 
     private final String name;
 

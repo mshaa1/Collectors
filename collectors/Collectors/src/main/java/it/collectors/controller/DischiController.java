@@ -7,15 +7,11 @@ import it.collectors.view.Pages;
 import it.collectors.view.ViewDispatcher;
 import it.collectors.view.ViewDispatcherException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -159,7 +155,7 @@ public class DischiController implements Initializable, DataInitializable<Collez
     @FXML
     public void add(){
         try{
-            this.viewDispatcher.navigateTo(Pages.ADD_DISCO, this.collezionista);
+            this.viewDispatcher.navigateTo(Pages.ADDDISCO, this.collezionista);
         } catch (ViewDispatcherException e) {
             e.printStackTrace();
         }
