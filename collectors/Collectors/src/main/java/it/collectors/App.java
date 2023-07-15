@@ -12,6 +12,7 @@ import it.collectors.view.ViewDispatcherException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
@@ -21,12 +22,18 @@ import java.util.ArrayList;
 
 public class App extends Application {
 
+    private Stage stage;
+
+    private static final String COLLECTORS_ICON = "ui/images/logo.png";
+
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
+        this.stage=stage;
         boolean loginVeloce = true; // mettere true per skippare la pagina di login
         try {
             ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
@@ -41,6 +48,7 @@ public class App extends Application {
             }
             else viewDispatcher.showLogin();
             stage.setResizable(false);
+            stage.getIcons().add(new Image(getClass().getResource(COLLECTORS_ICON).toString()));
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
