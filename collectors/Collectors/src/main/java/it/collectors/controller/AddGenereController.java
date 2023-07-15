@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GenereController implements Initializable, DataInitializable<Genere> {
+public class AddGenereController implements Initializable, DataInitializable<Genere> {
 
     @FXML
     private TextField textField;

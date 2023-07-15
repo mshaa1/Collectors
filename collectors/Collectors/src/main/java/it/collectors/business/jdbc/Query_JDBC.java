@@ -920,17 +920,18 @@ public class Query_JDBC {
     // inserimento di una nuovo disco
     // Funzionalità 33
 
-        public boolean inserisciDisco(String titolo, Integer annoUscita, String barcode, String formato, String statoConservazione, String descrizioneConservazione, Integer idEtichetta, Integer idGenere) {
+        public boolean inserisciDisco(Integer idUtente, String titolo, Integer annoUscita, String barcode, String formato, String statoConservazione, String descrizioneConservazione, Integer idEtichetta, Integer idGenere) {
             try {
-                CallableStatement statement = connection.prepareCall("{call inserisci_disco(?,?,?,?,?,?,?,?)}");
-                statement.setString(1, titolo);
-                statement.setInt(2, annoUscita);
-                statement.setString(3, barcode);
-                statement.setString(4, formato);
-                statement.setString(5, statoConservazione);
-                statement.setString(6, descrizioneConservazione);
-                statement.setInt(7, idEtichetta);
-                statement.setInt(8, idGenere);
+                CallableStatement statement = connection.prepareCall("{call inserisci_disco(?,?,?,?,?,?,?,?,?)}");
+                statement.setInt(1, idUtente);
+                statement.setString(2, titolo);
+                statement.setInt(3, annoUscita);
+                statement.setString(4, barcode);
+                statement.setString(5, formato);
+                statement.setString(6, statoConservazione);
+                statement.setString(7, descrizioneConservazione);
+                statement.setInt(8, idEtichetta);
+                statement.setInt(9, idGenere);
 
                 statement.execute();
                 statement.close();
@@ -960,22 +961,24 @@ public class Query_JDBC {
         return generi;
     }
 
-    // ottenimento id genere
+    // ottenimento etichette del sistema
     // Funzionalità 35
 
-    public Integer get_ID_Genere(String nomeGenere) {
+    public Set<Etichetta> get_Etichette_Sistema() {
+        Set<Etichetta> etichette = new HashSet<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("select ID from genere where nome like ?");
-            statement.setString(1, nomeGenere);
+            PreparedStatement statement = connection.prepareStatement("select * from etichetta");
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
+            while (resultSet.next()) {
+                etichette.add(new Etichetta(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4)));
             }
             statement.close();
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-        return null;
+        return etichette;
     }
+
+
 
  }

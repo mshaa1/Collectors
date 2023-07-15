@@ -481,7 +481,7 @@ drop procedure if exists inserisci_disco;
 
 -- Funzionalità 30
 
-create procedure inserisci_disco(in ID_collezionista varchar(25), in titolo varchar(25), in anno_uscita date, in barcode varchar(25), in formato varchar(25), in stato_conservazione varchar(25), in descrizione_conservazione varchar(255), in ID_etichetta integer, in ID_genere integer)
+create procedure inserisci_disco(in ID_collezionista varchar(25), in titolo varchar(25), in anno_uscita int, in barcode varchar(25), in formato varchar(25), in stato_conservazione varchar(25), in descrizione_conservazione varchar(255), in ID_etichetta integer, in ID_genere integer)
 begin
     select ID from disco where
     disco.titolo = titolo and
@@ -569,6 +569,17 @@ create procedure rimuovi_collezione(in ID_collezione integer)
 begin
     delete from collezione where collezione.ID = ID_collezione;
 end $
+
+-- funzionalità 35
+-- aggiunta di una etichetta al database
+
+drop procedure if exists aggiunta_etichetta;
+
+create procedure aggiunta_etichetta(in nome varchar(25), in sede_legale varchar(255), in email varchar(320))
+    begin
+        insert into etichetta(nome, sede_legale, email) values (nome, sede_legale, email);
+    end$
+
 
 delimiter ;
 
