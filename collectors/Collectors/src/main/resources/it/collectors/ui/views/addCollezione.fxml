@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -7,7 +8,10 @@
 <AnchorPane prefHeight="410.0" prefWidth="436.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.AddCollezioneController">
    <children>
        <TextField fx:id="nome" layoutX="144.0" layoutY="20.0" promptText="Nome collezione" />
-      <ChoiceBox fx:id="flag" layoutX="165.0" layoutY="82.0" prefHeight="25.0" prefWidth="108.0" />
+      <ChoiceBox fx:id="flag" layoutX="165.0" layoutY="82.0" prefHeight="25.0" prefWidth="108.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></ChoiceBox>
       <Label alignment="CENTER" layoutX="196.0" layoutY="65.0" text="Visibilità" textAlignment="CENTER" />
       <TableView fx:id="dischiTable" layoutX="16.0" layoutY="144.0" prefHeight="200.0" prefWidth="149.0">
         <columns>
@@ -21,7 +25,10 @@
           <TableColumn fx:id="barcodeCollezioneColumn" prefWidth="75.0" text="Barcode" />
         </columns>
       </TableView>
-      <Button layoutX="202.0" layoutY="203.0" mnemonicParsing="false" onAction="#caricaInCollezione" text="&gt;&gt;" />
+      <Button layoutX="202.0" layoutY="203.0" mnemonicParsing="false" onAction="#caricaInCollezione" text="&gt;&gt;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
       <Button alignment="CENTER" contentDisplay="TOP" layoutX="177.0" layoutY="357.0" mnemonicParsing="false" onAction="#aggiungiCollezione" style="-fx-background-color: transparent;" text="Aggiungi" textAlignment="CENTER">
          <graphic>
             <ImageView fitHeight="73.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
@@ -30,10 +37,16 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
       <Label alignment="CENTER" layoutX="29.0" layoutY="120.0" prefHeight="17.0" prefWidth="124.0" text="Dischi disponibili" textAlignment="CENTER" />
       <Label alignment="CENTER" layoutX="260.0" layoutY="107.0" prefHeight="43.0" prefWidth="176.0" text="Dischi da mettere in collezione" textAlignment="CENTER" wrapText="true" />
-      <Button layoutX="203.0" layoutY="253.0" mnemonicParsing="false" onAction="#rimuoviDaCollezione" text="&lt;&lt;" />
+      <Button layoutX="203.0" layoutY="253.0" mnemonicParsing="false" onAction="#rimuoviDaCollezione" text="&lt;&lt;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
       <Label fx:id="erroreNomeCollezioneLabel" layoutX="264.0" layoutY="413.0" text="Inserire il nome della collezione" visible="false" />
    </children>
 </AnchorPane>

@@ -94,16 +94,13 @@ from disco
 
 create procedure lista_dischi_collezione(in ID_collezione integer)
 begin
-    select titolo,
-           'anno di uscita',
-           genere,
+    select id,
+           titolo,
+           lista_dischi.`anno di uscita`,
+           barcode,
            formato,
            stato_conservazione,
-           descrizione_conservazione,
-           barcode,
-           azienda,
-           sede_legale,
-           email
+           descrizione_conservazione
     from comprende_dischi
              join lista_dischi on ID_disco = lista_dischi.ID
     where comprende_dischi.ID_collezione = ID_collezione;
@@ -388,6 +385,8 @@ create procedure get_collezioni_utente(in ID_utente integer)
 begin
     select * from collezione where collezione.ID_collezionista = ID_utente;
 end$
+
+
 
 -- Funzionalità 23
 -- tutti i dichi di un utente con etichetta
