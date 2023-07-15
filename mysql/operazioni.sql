@@ -585,7 +585,7 @@ create procedure aggiunta_etichetta(in nome varchar(25), in sede_legale varchar(
 
 drop procedure if exists get_numero_duplicati_dischi;
 
-    create procedure get_numero_duplicati_dischi(in ID_collezionista integer)
+create procedure get_numero_duplicati_dischi(in ID_collezionista integer)
 begin
     select colleziona_dischi.numero_duplicati, disco.ID, titolo, anno_uscita, barcode, formato, stato_conservazione, descrizione_conservazione, ID_etichetta, ID_genere
     from colleziona_dischi

@@ -6,18 +6,41 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.HomeController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.HomeController">
    <children>
-      <Label fx:id="loggedInLabel" alignment="CENTER" translateY="-194.0">
+      <Label fx:id="loggedInLabel" alignment="CENTER">
          <VBox.margin>
-            <Insets />
+            <Insets bottom="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <ButtonBar prefHeight="66.0" prefWidth="50.0" translateY="200.0">
+      <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <TableView fx:id="tabellCollezioni" prefHeight="361.0" prefWidth="246.0">
+              <columns>
+                <TableColumn fx:id="colonnaCollezioni" prefWidth="187.20000612735748" text="Collezioni" />
+              </columns>
+            </TableView>
+            <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <TableView fx:id="tabellaDischi" prefHeight="200.0" prefWidth="246.0">
+              <columns>
+                <TableColumn fx:id="colonnaDischi" prefWidth="187.2000305056572" text="Dischi" />
+              </columns>
+            </TableView>
+            <HBox prefHeight="100.0" prefWidth="200.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin>
+      </HBox>
+      <ButtonBar prefHeight="66.0" prefWidth="50.0">
         <buttons>
             <Button alignment="TOP_CENTER" contentDisplay="TOP" graphicTextGap="0.0" mnemonicParsing="false" onAction="#goToQueries" style="-fx-background-color: transparent;" text="Queries" textAlignment="CENTER" translateX="-30.0">
                <graphic>
