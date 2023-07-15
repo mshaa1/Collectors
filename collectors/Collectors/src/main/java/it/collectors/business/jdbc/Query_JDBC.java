@@ -2,6 +2,7 @@ package it.collectors.business.jdbc;
 
 import com.mysql.cj.PreparedQuery;
 import com.mysql.cj.x.protobuf.MysqlxPrepare;
+import it.collectors.controller.RicercaController;
 import it.collectors.model.*;
 
 import java.sql.*;
@@ -455,14 +456,14 @@ public class Query_JDBC {
     public boolean aggiuntaGenere(String genere) {
         try {
             CallableStatement statement = connection.prepareCall("{call aggiunta_genere(?)}");
-            statement.setString(1, genere.toLowerCase());
-
+            statement.setString(1, genere);
             statement.execute();
             statement.close();
 
             return true;
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            if(sqlException.getSQLState().equals("45001")) return false;
+            else sqlException.printStackTrace();
         }
         return false;
     }

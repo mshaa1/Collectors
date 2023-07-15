@@ -332,7 +332,11 @@ drop procedure if exists aggiunta_genere;
 
 create procedure aggiunta_genere(in nome varchar(25))
 begin
-       insert into genere(nome) values (nome);
+        select count(nome) from genere g where lower(g.nome) = lower ('syh') into @nome;
+        if(@nome = 0) then
+            insert into genere(nome) values (nome);
+        else signal sqlstate '45001';
+        end if;
 end$
 
 drop procedure if exists rimozione_genere;

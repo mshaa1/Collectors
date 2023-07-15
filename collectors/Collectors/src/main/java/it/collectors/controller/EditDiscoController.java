@@ -3,12 +3,12 @@ package it.collectors.controller;
 import it.collectors.business.BusinessFactory;
 import it.collectors.business.jdbc.Query_JDBC;
 import it.collectors.model.Collezionista;
-import it.collectors.model.Disco;
 import it.collectors.model.Etichetta;
 import it.collectors.model.Genere;
 import it.collectors.view.Pages;
 import it.collectors.view.ViewDispatcher;
 import it.collectors.view.ViewDispatcherException;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -104,7 +104,8 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
     //TODO: implementare il metodo
     private void popolamentoGenereComboBox() {
         this.generi = query_jdbc.get_Generi_Sistema();
-        this.genereComboBox.getItems().addAll(generi);
+        //this.genereComboBox.getItems().setAll(generi);
+        genereComboBox.setItems(FXCollections.observableList(generi.stream().toList()));
     }
 
     //TODO: implementare il metodo
@@ -128,9 +129,13 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
         stage.resizableProperty().setValue(Boolean.FALSE);
         stage.setTitle("Aggiungi genere");
         stage.setScene(new Scene(root));
+        /*stage.setOnCloseRequest(event ->{
+            popolamentoGenereComboBox();
+        });*/
         stage.initOwner(this.addGenereButton.getScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
+        popolamentoGenereComboBox();
     }
 
     @FXML
