@@ -38,10 +38,19 @@ public class ProfiloController implements Initializable, DataInitializable<Colle
     private TableView<GenereNumeroDischi> table;
 
     @FXML
+    private TableView<DiscoDuplicati> dischiDuplicati;
+
+    @FXML
     private TableColumn<GenereNumeroDischi, String> genere;
 
     @FXML
     private TableColumn<GenereNumeroDischi, String> numero;
+
+    @FXML
+    private TableColumn<DiscoDuplicati, String> nomeDisco;
+
+    @FXML
+    private TableColumn<DiscoDuplicati, String> duplicatiDisco;
 
 
     Collezionista collezionista;
@@ -64,6 +73,23 @@ public class ProfiloController implements Initializable, DataInitializable<Colle
         }
 
     }
+    protected class DiscoDuplicati{
+        private Disco disco;
+        private int numeroDuplicati;
+
+        public DiscoDuplicati(Disco disco, int numeroDuplicati) {
+            this.disco = disco;
+            this.numeroDuplicati = numeroDuplicati;
+        }
+
+        public String getNomeDisco() {
+            return disco.getTitolo();
+        }
+
+        public int getNumeroDuplicati() {
+            return numeroDuplicati;
+        }
+    }
 
     public int minutiTotaliSistema(){
         int minuti=0;
@@ -85,6 +111,17 @@ public class ProfiloController implements Initializable, DataInitializable<Colle
         return genereNumeroDischi;
     }
 
+    public List<DiscoDuplicati> getNumeroDischiDuplicati(){
+        Map<Disco,Integer> dischi = queryJdbc.getNumeroDuplicatiDischi(collezionista.getId());
+        List<DiscoDuplicati> discoDuplicati = new ArrayList<>();
+
+        for(Map.Entry<Disco,Integer> entry : dischi.entrySet()){
+            discoDuplicati.add(new DiscoDuplicati(entry.getKey(),entry.getValue()));
+        }
+        return discoDuplicati;
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         genere.setReorderable(false);
@@ -101,9 +138,19 @@ public class ProfiloController implements Initializable, DataInitializable<Colle
 
         genere.setCellValueFactory(new PropertyValueFactory<>("genere"));
         numero.setCellValueFactory(new PropertyValueFactory<>("numero"));
+
+        nomeDisco.setCellValueFactory(new PropertyValueFactory<>("nomeDisco"));
+        duplicatiDisco.setCellValueFactory(new PropertyValueFactory<>("numeroDuplicati"));
+
         for (GenereNumeroDischi gnd : getGenereNumeroDischi()) {
             table.getItems().add(gnd);
         }
+
+        for (DiscoDuplicati dd : getNumeroDischiDuplicati()) {
+            dischiDuplicati.getItems().add(dd);
+        }
+
+
     }
 
 

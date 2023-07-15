@@ -55,7 +55,37 @@ public class Query_JDBC {
     //********************QUERY***************************//
     //TODO c'è un gap vuoto, non ci sta la funzionalita 14
 
-    // FUnzionalità 34
+    // Funzionalità 35
+    // get numero duplicati dischi
+    public Map<Disco,Integer> getNumeroDuplicatiDischi(int IDCollezionista){
+        Map<Disco,Integer> duplicati = new HashMap<>();
+        try {
+            CallableStatement statement = connection.prepareCall("{call get_numero_duplicati_dischi(?)}");
+            statement.setInt(1, IDCollezionista);
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+            while (result.next()) {
+                duplicati.put(
+                        new Disco(
+                                result.getInt("ID"),
+                                result.getString("titolo"),
+                                result.getInt("anno_uscita"),
+                                result.getString("barcode"),
+                                result.getString("formato"),
+                                result.getString("stato_conservazione"),
+                                result.getString("descrizione_conservazione")
+                        ),result.getInt("numero_duplicati")
+                );
+            }
+
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return duplicati;
+    }
+
+
+    // Funzionalità 34
     // rimozione di un collezione dal database
     public void removeCollezione(int IDCollezione){
         try {

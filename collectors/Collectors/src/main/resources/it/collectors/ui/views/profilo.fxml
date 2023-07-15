@@ -64,12 +64,23 @@
             </HBox>
          </children>
       </VBox>
-      <TableView fx:id="table" prefHeight="322.0" prefWidth="800.0">
-        <columns>
-          <TableColumn fx:id="genere" prefWidth="388.0" text="Genere" />
-          <TableColumn fx:id="numero" prefWidth="411.20001220703125" text="Numero Dischi" />
-        </columns>
-      </TableView>
+      <HBox prefHeight="404.0" prefWidth="800.0">
+         <children>
+            <TableView fx:id="table" prefHeight="222.0" prefWidth="453.0">
+              <columns>
+                <TableColumn fx:id="genere" prefWidth="140.00000303983688" text="Genere" />
+                <TableColumn fx:id="numero" prefWidth="197.59996032714844" text="Numero Dischi" />
+              </columns>
+            </TableView>
+            <HBox prefHeight="222.0" prefWidth="254.0" HBox.hgrow="ALWAYS" />
+            <TableView fx:id="dischiDuplicati" prefHeight="222.0" prefWidth="446.0">
+              <columns>
+                <TableColumn fx:id="nomeDisco" prefWidth="168.80004274845123" text="Nome Disco" />
+                <TableColumn fx:id="duplicatiDisco" prefWidth="161.60003662109375" text="Duplicati" />
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
       <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="800.0">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="207.0">
@@ -102,7 +113,7 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <HBox prefHeight="70.0" prefWidth="482.0" HBox.hgrow="ALWAYS" />
             <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" style="-fx-background-color: transparent;" text="Vai alla Home">
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -121,4 +132,7 @@
          </children>
       </HBox>
    </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </VBox>

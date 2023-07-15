@@ -580,6 +580,20 @@ create procedure aggiunta_etichetta(in nome varchar(25), in sede_legale varchar(
         insert into etichetta(nome, sede_legale, email) values (nome, sede_legale, email);
     end$
 
+-- funzionalità 36
+-- get numero duplicati dischi
+
+drop procedure if exists get_numero_duplicati_dischi;
+
+    create procedure get_numero_duplicati_dischi(in ID_collezionista integer)
+begin
+    select colleziona_dischi.numero_duplicati, disco.ID, titolo, anno_uscita, barcode, formato, stato_conservazione, descrizione_conservazione, ID_etichetta, ID_genere
+    from colleziona_dischi
+    join collezionista on colleziona_dischi.ID_collezionista = collezionista.ID
+    join disco on colleziona_dischi.ID_disco = disco.ID
+    where colleziona_dischi.ID_collezionista = ID_collezionista and colleziona_dischi.numero_duplicati > 0;
+end $
+
 
 delimiter ;
 
