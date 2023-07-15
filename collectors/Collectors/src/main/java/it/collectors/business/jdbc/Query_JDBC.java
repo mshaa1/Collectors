@@ -881,19 +881,22 @@ public class Query_JDBC {
 
     // inserimento collezione
     // Funzionalità 1
-    public void inserimentoCollezione(String nome, boolean flag, int IDCollezionista) {
+    public int inserimentoCollezione(String nome, boolean flag, int IDCollezionista) {
         try {
-            CallableStatement statement = connection.prepareCall("{call inserisci_collezione(?,?,?)}");
+            CallableStatement statement = connection.prepareCall("{call inserisci_collezione(?,?,?,?)}");
             statement.setString(1, nome);
             statement.setBoolean(2, flag);
             statement.setInt(3, IDCollezionista);
-
+            statement.registerOutParameter(4, Types.INTEGER);
             statement.execute();
+            int id = statement.getInt(4);
             statement.close();
+            return id;
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+        return -1;
     }
 
         // inserimento di una nuova etichetta

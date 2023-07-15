@@ -2,15 +2,12 @@ package it.collectors.controller;
 
 import it.collectors.business.BusinessFactory;
 import it.collectors.business.jdbc.Query_JDBC;
-import it.collectors.model.Collezione;
 import it.collectors.model.Collezionista;
 import it.collectors.model.Disco;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -20,6 +17,8 @@ import java.util.ResourceBundle;
 
 public class AddCollezioneController implements Initializable, DataInitializable<Collezionista> {
 
+    @FXML
+    private Label erroreNomeCollezioneLabel;
     private Collezionista collezionista;
     protected void setCollezionista(Collezionista c){
         this.collezionista=c;
@@ -60,6 +59,9 @@ public class AddCollezioneController implements Initializable, DataInitializable
         barcodeDischiColumn.setReorderable(false);
         titoloCollezioneColumn.setReorderable(false);
         barcodeCollezioneColumn.setReorderable(false);
+        nome.setOnKeyTyped(event -> {
+            erroreNomeCollezioneLabel.setVisible(false);
+        });
 
     }
 
@@ -69,8 +71,34 @@ public class AddCollezioneController implements Initializable, DataInitializable
         dischiTable.getItems().addAll(dischi);
     }
 
-    @FXML
-    public void inserisci(){
 
+    public void caricaInCollezione(ActionEvent actionEvent) {
+        collezioneTable.getItems().add(dischiTable.getSelectionModel().getSelectedItem());
+        dischiTable.getItems().remove(dischiTable.getSelectionModel().getSelectedItem());
+    }
+
+
+    public void rimuoviDaCollezione(ActionEvent actionEvent) {
+        if (collezioneTable.getSelectionModel().getSelectedItem() == null) return;
+        dischiTable.getItems().add(collezioneTable.getSelectionModel().getSelectedItem());
+        collezioneTable.getItems().remove(collezioneTable.getSelectionModel().getSelectedItem());
+    }
+
+
+    public void aggiungiCollezione(ActionEvent actionEvent) {
+        if(nome.getText().isBlank()) {
+            erroreNomeCollezioneLabel.setVisible(true);
+            return;
+        }
+        Query_JDBC db = BusinessFactory.getImplementation();
+        boolean f;
+        if (flag.getValue().equals("Pubblica")) f = true;
+        else f = false;
+        int idCollezione = db.inserimentoCollezione(nome.getText(), f, collezionista.getId());
+        for (Disco d: collezioneTable.getItems().stream().toList()) {
+            db.inserimentoDiscoInCollezione(d.getId(), idCollezione);
+        }
+        Stage stage =(Stage) erroreNomeCollezioneLabel.getScene().getWindow();
+        stage.close();
     }
 }
