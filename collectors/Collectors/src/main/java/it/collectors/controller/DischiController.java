@@ -152,9 +152,8 @@ public class DischiController implements Initializable, DataInitializable<Collez
         descrizione.setCellValueFactory(new PropertyValueFactory<>("descrizioneConservazione"));
         etichetta.setCellValueFactory(new PropertyValueFactory<>("etichetta"));
         genere.setCellValueFactory(new PropertyValueFactory<>("genere"));
-        for(DiscoWrapper d: dischi){
-            table.getItems().add(d);
-        }
+
+        table.getItems().setAll(dischi);
     }
 
     @FXML
@@ -168,7 +167,6 @@ public class DischiController implements Initializable, DataInitializable<Collez
 
     @FXML
     public void remove() {
-
         Disco disco = table.getSelectionModel().getSelectedItem().getDisco();
         queryJdbc.removeDisco(disco.getId());
         table.getItems().remove(table.getSelectionModel().getSelectedItem());

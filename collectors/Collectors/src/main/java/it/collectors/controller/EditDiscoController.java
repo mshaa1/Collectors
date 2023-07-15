@@ -67,13 +67,15 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
 
     private Set<Genere> generi = new HashSet<>();
 
-    private List<Etichetta> etichette = new ArrayList<>();
+    private Set<Etichetta> etichette = new HashSet<>();
 
     private Query_JDBC query_jdbc = BusinessFactory.getImplementation();
 
     private ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 
-    private GenereController genereController;
+    private AddGenereController addGenereController;
+
+    private AddEtichettaController addEtichettaController;
 
     private Stage stage;
 
@@ -101,15 +103,14 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
         popolamentoStatoConservazioneComboBox();
     }
 
-    //TODO: implementare il metodo
     private void popolamentoGenereComboBox() {
         this.generi = query_jdbc.get_Generi_Sistema();
-        //this.genereComboBox.getItems().setAll(generi);
         genereComboBox.setItems(FXCollections.observableList(generi.stream().toList()));
     }
 
-    //TODO: implementare il metodo
     private void popolamentoEtichettaComboBox() {
+        this.etichette = query_jdbc.get_Etichette_Sistema();
+        etichettaComboBox.setItems(FXCollections.observableList(etichette.stream().toList()));
     }
 
     private void popolamentoFormatoComboBox() {
@@ -125,7 +126,7 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/collectors/ui/views/addGenere.fxml"));
         Parent root = loader.load();
-        genereController = loader.getController();
+        addGenereController = loader.getController();
         stage.resizableProperty().setValue(Boolean.FALSE);
         stage.setTitle("Aggiungi genere");
         stage.setScene(new Scene(root));
@@ -139,16 +140,34 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
     }
 
     @FXML
-    private void addEtichetta() {
-
+    private void addEtichetta() throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/collectors/ui/views/addEtichetta.fxml"));
+        Parent root = loader.load();
+        addEtichettaController = loader.getController();
+        stage.resizableProperty().setValue(Boolean.FALSE);
+        stage.setTitle("Aggiungi etichetta");
+        stage.setScene(new Scene(root));
+        /*stage.setOnCloseRequest(event ->{
+            popolamentoEtichettaComboBox();
+        });*/
+        stage.initOwner(this.addEtichettaButton.getScene().getWindow());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
+        popolamentoEtichettaComboBox();
     }
 
     @FXML
     private void addDisk() {
-        query_jdbc.inserisciDisco(this.titoloDisco.getText(), Integer.parseInt(this.annoUscita.getText()), this.barcodeDisco.getText(),
+        if(query_jdbc.inserisciDisco(this.collezionista.getId(),this.titoloDisco.getText(), Integer.parseInt(this.annoUscita.getText()), this.barcodeDisco.getText(),
                 this.formatoComboBox.getValue(), this.statoConservazioneComboBox.getValue(),
-                this.descrizioneConservazione.getText(), this.etichettaComboBox.getValue().getId(),
-                this.genereComboBox.getValue().getId());
+                this.descrizioneConservazione.getText(), this.etichettaComboBox.getSelectionModel().getSelectedItem().getId(),
+                this.genereComboBox.getSelectionModel().getSelectedItem().getId())) {
+            this.exceptionLabel.textProperty().set("Disco inserito correttamente / incrementato il numero dei suoi duplicati");
+        } else {
+            this.exceptionLabel.textProperty().set("Errore nell'inserimento del disco");
+        }
+
     }
 
     @FXML
