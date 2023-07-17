@@ -17,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -26,6 +27,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class CollezioneController implements Initializable, DataInitializable<Collezionista> {
+
+    @FXML
+    private VBox vBox;
 
     @FXML
     private TableView<Collezione> collezioneTable;
@@ -130,7 +134,7 @@ public class CollezioneController implements Initializable, DataInitializable<Co
     @FXML
     public void goToHome() {
         try {
-            viewDispatcher.navigateTo(Pages.HOME, this.collezionista);
+            viewDispatcher.changeStage(vBox.getScene(), vBox, "Home", "home.fxml", this.collezionista);
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -160,7 +164,7 @@ public class CollezioneController implements Initializable, DataInitializable<Co
 
     public void condivise(){
         try {
-            viewDispatcher.navigateTo(Pages.COLLEZIONICONDIVISE, this.collezionista);
+            viewDispatcher.changeStage(vBox.getScene(), vBox, "Collezioni condivise", "collezioniCondivise.fxml", this.collezionista);
         }catch (Exception e) {
             e.printStackTrace();
         }

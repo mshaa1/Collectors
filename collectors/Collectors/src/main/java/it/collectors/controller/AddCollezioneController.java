@@ -20,9 +20,11 @@ public class AddCollezioneController implements Initializable, DataInitializable
     @FXML
     private Label erroreNomeCollezioneLabel;
     private Collezionista collezionista;
+
     protected void setCollezionista(Collezionista c){
         this.collezionista=c;
     }
+
     @FXML
     private TextField nome;
 

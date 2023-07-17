@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -25,6 +26,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class HomeController implements Initializable, DataInitializable<Collezionista> {
+
+    @FXML
+    private VBox vBox;
 
     @FXML
     public Label loggedInLabel;
@@ -54,7 +58,7 @@ public class HomeController implements Initializable, DataInitializable<Collezio
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        System.gc();
     }
 
     @Override
@@ -86,47 +90,26 @@ public class HomeController implements Initializable, DataInitializable<Collezio
 
     @FXML
     private void goToCollections() {
-        try {
-            viewDispatcher.navigateTo(Pages.COLLECTIONS, this.collezionista);
-        } catch (ViewDispatcherException e) {
-            throw new RuntimeException(e);
-        }
+        viewDispatcher.changeStage(vBox.getScene(), vBox, "Collezioni", "collezioni.fxml", this.collezionista);
     }
 
     @FXML
     private void goToDisks() {
-        try {
-            viewDispatcher.navigateTo(Pages.DISCHI, this.collezionista);
-        } catch (ViewDispatcherException e) {
-            throw new RuntimeException(e);
-        }
+        viewDispatcher.changeStage(vBox.getScene(), vBox, "Dischi", "dischi.fxml", this.collezionista);
     }
 
     @FXML
     private void goToTracks() {
-        try {
-            viewDispatcher.navigateTo(Pages.TRACCE, this.collezionista);
-        } catch (ViewDispatcherException e) {
-            throw new RuntimeException(e);
-        }
-
+        viewDispatcher.changeStage(vBox.getScene(), vBox, "Tracce", "tracce.fxml", this.collezionista);
     }
 
     @FXML
     private void goToProfile() {
-        try {
-            viewDispatcher.navigateTo(Pages.PROFILO, this.collezionista);
-        } catch (ViewDispatcherException e) {
-            throw new RuntimeException(e);
-        }
+        viewDispatcher.changeStage(vBox.getScene(), vBox, "Profilo", "profilo.fxml", this.collezionista);
     }
     @FXML
     private void goToQueries(){
-        try {
-            viewDispatcher.navigateTo(Pages.QUERIES, this.collezionista);
-        } catch (ViewDispatcherException e) {
-            throw new RuntimeException(e);
-        }
+        viewDispatcher.changeStage(vBox.getScene(), vBox, "Queries", "queries.fxml", this.collezionista);
     }
 
     @FXML

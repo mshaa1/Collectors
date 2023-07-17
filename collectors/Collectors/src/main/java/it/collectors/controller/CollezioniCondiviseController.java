@@ -11,12 +11,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.*;
 
 
 public class CollezioniCondiviseController implements Initializable, DataInitializable<Collezionista> {
+
+    @FXML
+    private VBox vBox;
 
     @FXML
     private TableView<CollezioneCollezionistaWrapper> tabella;
@@ -83,7 +87,7 @@ public class CollezioniCondiviseController implements Initializable, DataInitial
     public void goToCollezioni() {
         ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
         try {
-            viewDispatcher.navigateTo(Pages.COLLECTIONS, collezionista);
+            viewDispatcher.changeStage(vBox.getScene(), vBox, "Collezioni", "collezioni.fxml", this.collezionista);
         } catch (Exception e) {
             e.printStackTrace();
         }

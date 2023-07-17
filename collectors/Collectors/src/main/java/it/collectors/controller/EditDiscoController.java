@@ -93,6 +93,8 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
                 .and(etichettaComboBox.valueProperty().isNull()));
 
         this.exceptionLabel.textProperty().set("");
+
+        System.gc();
     }
 
     @Override

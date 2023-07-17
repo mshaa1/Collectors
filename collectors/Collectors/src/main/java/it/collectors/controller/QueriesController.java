@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -21,12 +22,18 @@ import java.util.ResourceBundle;
 
 
 public class QueriesController implements Initializable, DataInitializable<Collezionista>{
+
+    @FXML
+    private AnchorPane anchorPane;
+
     @FXML
     private Button home;
+
     Collezionista collezionista;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
     }
 
     @Override
@@ -37,7 +44,7 @@ public class QueriesController implements Initializable, DataInitializable<Colle
     private void goToHome(){
             ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
             try {
-                viewDispatcher.navigateTo(Pages.HOME, collezionista);
+                viewDispatcher.changeStage(anchorPane.getScene(), anchorPane, "Home", "home.fxml", this.collezionista);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -59,20 +66,8 @@ public class QueriesController implements Initializable, DataInitializable<Colle
             childStage.initModality(Modality.APPLICATION_MODAL); // ordino al figlio di bloccare gli stage dei suoi padri
             childStage.getIcons().add(new Image("/it/collectors/ui/images/logo.png"));
             childStage.showAndWait(); // visualizzo lo stage del figlio, fino alla chiusura
-            //stage.close();
-
-            //stage.show();
-            //Stage thisStage = (Stage) home.getScene().getWindow();
-            /*thisStage.setOnCloseRequest(event -> {event.consume();});
-            stage.setOnCloseRequest(windowEvent -> {
-                thisStage.setOnCloseRequest(null);
-                exitable=true;
-            });*/
-
-
-
-
     }
+
     @FXML
     private void goToOperazione2 () {
 

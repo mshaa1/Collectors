@@ -8,10 +8,12 @@ import it.collectors.view.Pages;
 import it.collectors.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ import java.util.ResourceBundle;
 
 public class ProfiloController implements Initializable, DataInitializable<Collezionista>{
 
+    @FXML
+    private VBox vBox;
 
     @FXML
     private Label nick;
@@ -128,6 +132,7 @@ public class ProfiloController implements Initializable, DataInitializable<Colle
         numero.setReorderable(false);
         nomeDisco.setReorderable(false);
         duplicatiDisco.setReorderable(false);
+        System.gc();
     }
 
     @Override
@@ -160,7 +165,7 @@ public class ProfiloController implements Initializable, DataInitializable<Colle
     public void goToHome() {
         ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
         try {
-            viewDispatcher.navigateTo(Pages.HOME, collezionista);
+            viewDispatcher.changeStage(nick.getScene(), vBox, "Home", "home.fxml", this.collezionista);
         }catch (Exception e) {
             e.printStackTrace();
         }

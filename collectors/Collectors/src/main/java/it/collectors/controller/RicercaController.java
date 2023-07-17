@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,6 +20,10 @@ public class RicercaController implements Initializable, DataInitializable<Colle
 
     Query_JDBC db = BusinessFactory.getImplementation();
     Collezionista collezionista;
+
+    @FXML
+    private VBox vBox;
+
     @FXML
     private CheckBox pubblicheCheck;
 
@@ -215,7 +220,7 @@ public class RicercaController implements Initializable, DataInitializable<Colle
     public void goToDischi() {
         ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
         try {
-            viewDispatcher.navigateTo(Pages.DISCHI, collezionista);
+            viewDispatcher.changeStage(vBox.getScene(), vBox, "Dischi", "disco.fxml", this.collezionista);
         } catch (Exception e) {
             e.printStackTrace();
         }

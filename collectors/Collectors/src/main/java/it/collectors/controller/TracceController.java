@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,6 +24,9 @@ import java.util.ResourceBundle;
 public class TracceController implements Initializable, DataInitializable<Collezionista>{
 
     ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
+
+    @FXML
+    private VBox vBox;
 
     @FXML
     private TableView<Traccia> table;
@@ -41,6 +45,8 @@ public class TracceController implements Initializable, DataInitializable<Collez
     public void initialize(URL url, ResourceBundle resourceBundle) {
         titolo.setReorderable(false);
         durata.setReorderable(false);
+
+        System.gc();
     }
 
     @Override
@@ -61,7 +67,7 @@ public class TracceController implements Initializable, DataInitializable<Collez
     @FXML
     public void add() {
         try {
-            viewDispatcher.navigateTo(Pages.ADDTRACK, collezionista);
+            viewDispatcher.changeStage(vBox.getScene(), vBox, "Aggiungi traccia", "aggiuntaTraccia.fxml", this.collezionista);
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,7 +85,7 @@ public class TracceController implements Initializable, DataInitializable<Collez
     @FXML
     public void goToHome() {
         try {
-            viewDispatcher.navigateTo(Pages.HOME, collezionista);
+            viewDispatcher.changeStage(vBox.getScene(), vBox, "Home", "home.fxml", this.collezionista);
         }catch (Exception e) {
             e.printStackTrace();
         }
