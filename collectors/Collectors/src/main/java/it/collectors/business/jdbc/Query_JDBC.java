@@ -285,7 +285,7 @@ public class Query_JDBC {
     public int numeroCollezioniCollezionista(int IDCollezionista) {
         int num = -1;
         try {
-            CallableStatement statement = connection.prepareCall("{? = statistiche_numero_collezioni_collezionista(?)}");
+            CallableStatement statement = connection.prepareCall("{? = call statistiche_numero_collezioni_collezionista(?)}");
             statement.setInt(2, IDCollezionista);
             statement.registerOutParameter(1, Types.INTEGER);
             statement.execute();
@@ -716,15 +716,14 @@ public class Query_JDBC {
     public boolean getVerificaVisibilitaCollezione(int IDCollezione, int IDCollezionista) {
         boolean risultato = false;
         try {
-            PreparedStatement statement = connection.prepareStatement("select verifica_visibilita_collezione(?,?)");
-            statement.setInt(1, IDCollezione);
-            statement.setInt(2, IDCollezionista);
+            CallableStatement statement = connection.prepareCall("{? = call verifica_visibilita_collezione(?,?)}");
+            statement.setInt(2, IDCollezione);
+            statement.setInt(3, IDCollezionista);
+            statement.registerOutParameter(1, Types.BOOLEAN);
             statement.execute();
-            ResultSet rs = statement.getResultSet();
 
-            if (rs.next()) {
-                risultato = rs.getBoolean(1);
-            }
+            risultato = statement.getBoolean(1);
+
             statement.close();
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
