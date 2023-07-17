@@ -622,5 +622,25 @@ begin
     where condivide.ID_collezione = ID_collezione and condivide.ID_collezionista = ID_collezionista;
 end $
 
+-- funzionalità 39
+-- get immagini di un disco
+create procedure get_immagini_disco(in ID_disco integer)
+begin
+    select ID, file, didascalia from immagine where immagine.ID_disco = ID_disco;
+end $
+
+-- funzionalità 40
+-- rimozione immagini disco
+create procedure remove_immagini_disco(in ID_immagine integer)
+begin
+    delete from immagine where immagine.ID = ID_immagine;
+end $
+
+-- funzionalità 41
+-- aggiunta immagine disco
+create procedure add_immagine_disco(in file varchar(255), in didascalia varchar(255),in ID_disco integer)
+begin
+    insert into immagine(ID_disco, file, didascalia) values (ID_disco, file, didascalia);
+end $
 
 delimiter ;
