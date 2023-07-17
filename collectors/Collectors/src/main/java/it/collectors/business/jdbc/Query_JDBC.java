@@ -85,18 +85,6 @@ public class Query_JDBC {
     }
 
 
-    // Funzionalità 34
-    // rimozione di un collezione dal database
-    public void removeCollezione(int IDCollezione){
-        try {
-            CallableStatement statement = connection.prepareCall("{call rimuovi_collezione(?)}");
-            statement.setInt(1, IDCollezione);
-            statement.execute();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     // Funzionalità 33
     // rimozione di una traccia nel database
     public void removeTraccia(int IDTraccia){
@@ -404,20 +392,21 @@ public class Query_JDBC {
     public Integer getIDUtente(String nickname, String email) {
         Integer ID = null;
         try {
-            CallableStatement statement = connection.prepareCall("{call prendi_ID_utente(?,?,?)}");
-            statement.setString(1, nickname);
-            statement.setString(2, email);
-            statement.registerOutParameter(3, Types.INTEGER);
+            CallableStatement statement = connection.prepareCall("{? = call prendi_ID_utente(?,?)}");
+            statement.setString(2, nickname);
+            statement.setString(3, email);
+            statement.registerOutParameter(1, Types.INTEGER);
             statement.execute();
 
-            ID = statement.getInt(3);
+            ID = statement.getInt(1);
             statement.close();
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-
         return ID;
     }
+
+
     // Funzionalità 20
     //registrazione utente
     public boolean registrazioneUtente(String nickname, String email) {
@@ -443,15 +432,14 @@ public class Query_JDBC {
     public Boolean getAccesso(String nickname, String email) {
         Boolean risultato = false;
         try {
-            CallableStatement statement = connection.prepareCall("{call convalida_utente(?,?,?)}");
-            statement.setString(1, nickname);
-            statement.setString(2, email);
-            statement.registerOutParameter(3, Types.BOOLEAN);
+            CallableStatement statement = connection.prepareCall("{? = call convalida_utente(?,?)}");
+            statement.setString(2, nickname);
+            statement.setString(3, email);
+            statement.registerOutParameter(1, Types.BOOLEAN);
             statement.execute();
 
-            risultato = statement.getBoolean(3);
+            risultato = statement.getBoolean(1);
             statement.close();
-
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
@@ -735,16 +723,14 @@ public class Query_JDBC {
 
     // Funzionalità 10
     // numero di tracce di dischi distinti di un certo autore presenti nelle collezioni pubbliche
-
-
     public Integer getNumeroTracceDistintePerAutoreCollezioniPubblice(int IDAutore) {
         Integer risultato = null;
         try {
-            CallableStatement statement = connection.prepareCall("{call numero_tracce_distinte_per_autore_collezioni_pubbliche(?,?)}");
-            statement.setInt(1, IDAutore);
-            statement.registerOutParameter(2, Types.INTEGER);
+            CallableStatement statement = connection.prepareCall("{? = call numero_tracce_distinte_per_autore_collezioni_pubbliche(?)}");
+            statement.setInt(2, IDAutore);
+            statement.registerOutParameter(1, Types.INTEGER);
             statement.execute();
-            risultato = statement.getInt(2);
+            risultato = statement.getInt(1);
             statement.close();
 
         } catch (SQLException sqlException) {
@@ -909,13 +895,14 @@ public class Query_JDBC {
     // Funzionalità 1
     public int inserimentoCollezione(String nome, boolean flag, int IDCollezionista) {
         try {
-            CallableStatement statement = connection.prepareCall("{call inserisci_collezione(?,?,?,?)}");
-            statement.setString(1, nome);
-            statement.setBoolean(2, flag);
-            statement.setInt(3, IDCollezionista);
-            statement.registerOutParameter(4, Types.INTEGER);
+            CallableStatement statement = connection.prepareCall("{? = call inserisci_collezione(?,?,?)}");
+            statement.setString(2, nome);
+            statement.setBoolean(3, flag);
+            statement.setInt(4, IDCollezionista);
+            statement.registerOutParameter(1, Types.INTEGER);
+
             statement.execute();
-            int id = statement.getInt(4);
+            int id = statement.getInt(1);
             statement.close();
             return id;
 
