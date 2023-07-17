@@ -283,20 +283,18 @@ public class Query_JDBC {
     // Funzionalità 25
     // numero di collezoni totali per il singolo utente loggato
     public int numeroCollezioniCollezionista(int IDCollezionista) {
+        int num = -1;
         try {
-            CallableStatement statement = connection.prepareCall("{call statistiche_numero_collezioni_collezionista(?)}");
-            statement.setInt(1, IDCollezionista);
+            CallableStatement statement = connection.prepareCall("{? = statistiche_numero_collezioni_collezionista(?)}");
+            statement.setInt(2, IDCollezionista);
+            statement.registerOutParameter(1, Types.INTEGER);
             statement.execute();
-            ResultSet set = statement.getResultSet();
-            int num = -2;
-            if (set.next()) num = set.getInt(1);
+            num = statement.getInt(1);
             statement.close();
-            return num;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return -1;
+        return num;
 
     }
 
