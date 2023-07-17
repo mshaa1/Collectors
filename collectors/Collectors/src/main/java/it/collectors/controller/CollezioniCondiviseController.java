@@ -66,11 +66,12 @@ public class CollezioniCondiviseController implements Initializable, DataInitial
         List<CollezioneCollezionistaWrapper> collezioneCollezionistaWrappers = new ArrayList<>();
         Map<Collezione,Collezionista> map;
 
-        map = db.getCollezioniCondivisePropietario(this.collezionista.getId());
+        map = db.getCollezioniCondiviseProprietario(this.collezionista.getId());
 
         for (Map.Entry<Collezione, Collezionista> entry : map.entrySet()) {
             collezioneCollezionistaWrappers.add(new CollezioneCollezionistaWrapper(entry.getKey(), entry.getValue()));
         }
+
 
         for (CollezioneCollezionistaWrapper c : collezioneCollezionistaWrappers) {
             tabella.getItems().add(c);

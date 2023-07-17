@@ -29,6 +29,7 @@ public class HomeController implements Initializable, DataInitializable<Collezio
     @FXML
     public Label loggedInLabel;
 
+    //TODO: fare un'altra tableview con le collezioni condivise con te
     @FXML
     private TableView<Collezione> tabellaCollezioni;
 

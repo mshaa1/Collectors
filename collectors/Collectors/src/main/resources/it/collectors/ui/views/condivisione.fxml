@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="453.0" prefWidth="290.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.CondivisioneController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <TextField fx:id="nomeCollezionista" prefHeight="25.0" prefWidth="189.0" promptText="Nickname del collezionista" />
+            <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#aggiungiCondivisione" prefHeight="43.0" prefWidth="46.0" style="-fx-background-color: transparent;">
+               <graphic>
+                  <ImageView fitHeight="34.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/add-icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </HBox>
+      <Label fx:id="erroreCollezionistaNonTrovato" layoutX="77.0" layoutY="98.0" text="Collezionista non trovato" visible="false">
+         <VBox.margin>
+            <Insets right="97.0" top="-30.0" />
+         </VBox.margin>
+      </Label>
+      <Label fx:id="erroreCollezionistaGiaPresente" alignment="TOP_RIGHT" layoutX="40.0" layoutY="66.0" text="Collezionista già presente" visible="false">
+         <VBox.margin>
+            <Insets right="94.0" top="-18.0" />
+         </VBox.margin>
+      </Label>
+      <Label text="Collezionisti a cui è condivisa:">
+         <VBox.margin>
+            <Insets top="18.0" />
+         </VBox.margin>
+      </Label>
+      <HBox alignment="CENTER" prefHeight="230.0" prefWidth="287.0">
+         <children>
+            <TableView fx:id="condivisioneTable" prefHeight="217.0" prefWidth="234.0">
+               <columns>
+                  <TableColumn fx:id="condivisioneColumn" maxWidth="1.7976931348623157E308" minWidth="233.0" prefWidth="233.0" text="Nickname" />
+               </columns>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </TableView>
+         </children>
+         <VBox.margin>
+            <Insets bottom="7.0" top="9.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="126.0" prefWidth="290.0">
+         <children>
+            <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="26.0" layoutX="115.0" layoutY="10.0" mnemonicParsing="false" onAction="#rimuoviCondivisione" prefHeight="113.0" prefWidth="91.0" style="-fx-background-color: transparent;" text="Rimuovi dalla condivisione" textAlignment="CENTER" wrapText="true">
+               <graphic>
+                  <ImageView fitHeight="45.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" translateY="14.0">
+                     <image>
+                        <Image url="@../images/math-minus-icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>

@@ -533,10 +533,10 @@ create procedure get_collezioni_condivise_e_proprietario(in ID_utente integer)
 begin
     select c.ID as ID_collezione, c.nome, c.flag, prop.ID as ID_propietario, prop.email, prop.nickname
     from collezione c
+    join collezionista prop on c.ID_collezionista = prop.ID
     join condivide con on c.ID=con.ID_collezione
     join collezionista col on con.ID_collezionista=col.ID
-    join collezionista prop on c.ID = prop.ID
-    where con.ID_collezionista = ID_utente;
+    where col.ID = ID_utente;
 end $
 
 -- funzionalità 32
@@ -591,6 +591,25 @@ begin
     join collezionista on colleziona_dischi.ID_collezionista = collezionista.ID
     join disco on colleziona_dischi.ID_disco = disco.ID
     where colleziona_dischi.ID_collezionista = ID_collezionista and colleziona_dischi.numero_duplicati > 0;
+end $
+
+drop procedure if exists get_Collezionisti_Da_Condivisa_Collezione;
+-- funzionalità 37
+-- get collezionisti a cui è condivisa la data collezione
+create procedure get_Collezionisti_Da_Condivisa_Collezione (in ID_collezione integer)
+begin
+    select collezionista.ID, collezionista.email, collezionista.nickname
+    from collezionista
+    join condivide on collezionista.ID = condivide.ID_collezionista
+    where condivide.ID_collezione = ID_collezione;
+end $
+
+drop procedure if exists rimuovi_condivisione;
+-- funzionalità 38
+-- rimozione condivisione collezione
+create procedure rimuovi_condivisione(in ID_collezione integer, in ID_collezionista integer)
+begin
+    delete from condivide where condivide.ID_collezione = ID_collezione and condivide.ID_collezionista = ID_collezionista;
 end $
 
 

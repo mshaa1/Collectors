@@ -125,7 +125,7 @@ public class Query_JDBC {
     // Funzionalità 31
     // Get tutte le collezioni condivise con singolo utente e il nome del proprietario
 
-    public Map<Collezione,Collezionista> getCollezioniCondivisePropietario(int IDCollezionista){
+    public Map<Collezione,Collezionista> getCollezioniCondiviseProprietario(int IDCollezionista){
         Map<Collezione,Collezionista> collezioni = new HashMap<>();
 
         try{
