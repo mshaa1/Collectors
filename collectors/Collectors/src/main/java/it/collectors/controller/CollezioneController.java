@@ -122,7 +122,7 @@ public class CollezioneController implements Initializable, DataInitializable<Co
         if (collezione == null) {
             erroreSelezioneLabel.setVisible(true);
         }
-        queryJdbc.removeCollezione(collezione.getId());
+        queryJdbc.rimozioneCollezione(collezione.getId());
         collezioneTable.getItems().remove(collezione);
     }
 
