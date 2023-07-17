@@ -421,9 +421,10 @@ drop procedure if exists statistiche_numero_collezioni_collezionista;
 -- Funzionalità 25
 -- numero di collezioni di un collezionista
 create procedure statistiche_numero_collezioni_collezionista(in ID_collezionista integer)
-    begin
-        select count(all collezione.ID) from collezione where collezione.ID_collezionista = ID_collezionista;
-    end $
+begin
+    select count(all collezione.ID) from collezione where collezione.ID_collezionista = ID_collezionista;
+end $
+
 
 -- Funzionalità 26
 -- get tutti autori
