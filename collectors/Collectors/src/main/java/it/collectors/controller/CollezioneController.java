@@ -6,6 +6,7 @@ import it.collectors.model.Collezione;
 import it.collectors.model.Collezionista;
 import it.collectors.view.Pages;
 import it.collectors.view.ViewDispatcher;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -36,7 +37,7 @@ public class CollezioneController implements Initializable, DataInitializable<Co
     private TableColumn<Collezione, String> collezioneFlagColonna;
 
     @FXML
-    private Label erroreRimozioneLabel;
+    private Label erroreSelezioneLabel;
 
     private Query_JDBC queryJdbc = BusinessFactory.getImplementation();
 
@@ -50,7 +51,7 @@ public class CollezioneController implements Initializable, DataInitializable<Co
         collezioneNomeColonna.setReorderable(false);
         collezioneFlagColonna.setReorderable(false);
         collezioneTable.setOnMouseClicked(event -> {
-            erroreRimozioneLabel.setVisible(false);
+            erroreSelezioneLabel.setVisible(false);
         });
     }
 
@@ -84,10 +85,42 @@ public class CollezioneController implements Initializable, DataInitializable<Co
     }
 
     @FXML
+    public void editCollection() throws IOException{
+        Collezione collezione = collezioneTable.getSelectionModel().getSelectedItem();
+        if(collezione == null) {
+            erroreSelezioneLabel.setVisible(true);
+            return;
+        }
+        Stage childStage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/collectors/ui/views/editCollezione.fxml"));
+        Parent childScene = loader.load();
+        EditCollezioneController child = loader.getController();
+        child.setCollezionista(collezionista);
+        child.setCollezione(collezione);
+        child.loadTable();
+        childStage.resizableProperty().setValue(false);
+        childStage.setTitle("Modifica collezione");
+        childStage.setScene(new Scene(childScene)); //
+        childStage.initOwner((Stage) collezioneTable.getScene().getWindow()); //
+        childStage.initModality(Modality.APPLICATION_MODAL); //
+        childStage.showAndWait();
+        initializeData(collezionista);
+    }
+
+    @FXML
+    public void toggleVisibilityCollection(){
+        Query_JDBC db = BusinessFactory.getImplementation();
+        Collezione collezione = collezioneTable.getSelectionModel().getSelectedItem();
+        collezione.setFlag(!collezione.getFlag());
+        db.modificaFlagCollezione(collezione.getId(), collezione.getFlag());
+        collezioneTable.getItems().set(collezioneTable.getSelectionModel().getSelectedIndex(), collezione);
+    }
+
+    @FXML
     public void removeCollection() {
         Collezione collezione = collezioneTable.getSelectionModel().getSelectedItem();
         if (collezione == null) {
-            erroreRimozioneLabel.setVisible(true);
+            erroreSelezioneLabel.setVisible(true);
         }
         queryJdbc.removeCollezione(collezione.getId());
         collezioneTable.getItems().remove(collezione);
@@ -103,6 +136,25 @@ public class CollezioneController implements Initializable, DataInitializable<Co
 
     }
 
+    public void condividi(ActionEvent actionEvent) throws IOException {
+        Collezione collezione = collezioneTable.getSelectionModel().getSelectedItem();
+        if(collezione == null) {
+            erroreSelezioneLabel.setVisible(true);
+            return;
+        }
+        Stage childStage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/collectors/ui/views/condivisione.fxml"));
+        Parent childScene = loader.load();
+        CondivisioneController child = loader.getController();
+        child.setCollezione(collezione);
+        child.loadTable();
+        childStage.resizableProperty().setValue(false);
+        childStage.setTitle("Condividi");
+        childStage.setScene(new Scene(childScene)); //
+        childStage.initOwner((Stage) collezioneTable.getScene().getWindow()); //
+        childStage.initModality(Modality.APPLICATION_MODAL); //
+        childStage.showAndWait();
+    }
 
     public void condivise(){
         try {
@@ -111,5 +163,6 @@ public class CollezioneController implements Initializable, DataInitializable<Co
             e.printStackTrace();
         }
     }
+
 
 }

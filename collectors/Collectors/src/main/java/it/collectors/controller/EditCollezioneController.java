@@ -2,6 +2,7 @@ package it.collectors.controller;
 
 import it.collectors.business.BusinessFactory;
 import it.collectors.business.jdbc.Query_JDBC;
+import it.collectors.model.Collezione;
 import it.collectors.model.Collezionista;
 import it.collectors.model.Disco;
 import javafx.event.ActionEvent;
@@ -15,13 +16,17 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AddCollezioneController implements Initializable, DataInitializable<Collezionista> {
-
+public class EditCollezioneController implements Initializable {
     @FXML
     private Label erroreNomeCollezioneLabel;
     private Collezionista collezionista;
+    private Collezione collezione;
+    private List<Disco> dischiPrimaDiModifica;
     protected void setCollezionista(Collezionista c){
         this.collezionista=c;
+    }
+    protected void setCollezione(Collezione c){
+        this.collezione=c;
     }
     @FXML
     private TextField nome;
@@ -65,12 +70,19 @@ public class AddCollezioneController implements Initializable, DataInitializable
         collezioneTable.setPlaceholder(new Label("Nessun disco in collezione"));
         dischiTable.setPlaceholder(new Label("Nessun disco disponibile"));
 
+
     }
 
     protected void loadTable() {
+        nome.setText(collezione.getNome());
         Query_JDBC db = BusinessFactory.getImplementation();
         List<Disco> dischi = db.getDischiUtente(collezionista.getId());
         dischiTable.getItems().addAll(dischi);
+        dischi = db.listaDischiCollezione(collezione.getId());
+        dischiTable.getItems().removeAll(dischi);
+        collezioneTable.getItems().addAll(dischi);
+        dischiPrimaDiModifica = dischi;
+
     }
 
 
@@ -87,7 +99,7 @@ public class AddCollezioneController implements Initializable, DataInitializable
     }
 
 
-    public void aggiungiCollezione(ActionEvent actionEvent) {
+    public void modificaCollezione(ActionEvent actionEvent) {
         if(nome.getText().isBlank()) {
             erroreNomeCollezioneLabel.setVisible(true);
             return;
@@ -96,9 +108,13 @@ public class AddCollezioneController implements Initializable, DataInitializable
         boolean f;
         if (flag.getValue().equals("Pubblica")) f = true;
         else f = false;
-        int idCollezione = db.inserimentoCollezione(nome.getText(), f, collezionista.getId());
+
+        db.editCollezione(new Collezione(collezione.getId(), nome.getText(), f));
+        for(Disco d: dischiPrimaDiModifica) {
+            db.rimozioneDiscoCollezione(collezione.getId(), d.getId());
+        }
         for (Disco d: collezioneTable.getItems().stream().toList()) {
-            db.inserimentoDiscoInCollezione(d.getId(), idCollezione);
+            db.inserimentoDiscoInCollezione(d.getId(), collezione.getId());
         }
         Stage stage =(Stage) erroreNomeCollezioneLabel.getScene().getWindow();
         stage.close();

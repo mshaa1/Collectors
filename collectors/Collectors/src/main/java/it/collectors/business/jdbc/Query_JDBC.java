@@ -125,7 +125,7 @@ public class Query_JDBC {
     // Funzionalità 31
     // Get tutte le collezioni condivise con singolo utente e il nome del proprietario
 
-    public Map<Collezione,Collezionista> getCollezioniCondivisePropietario(int IDCollezionista){
+    public Map<Collezione,Collezionista> getCollezioniCondiviseProprietario(int IDCollezionista){
         Map<Collezione,Collezionista> collezioni = new HashMap<>();
 
         try{
@@ -538,7 +538,6 @@ public class Query_JDBC {
             statement.setInt(1, IDDisco);
             statement.setString(2, titolo);
             statement.setTime(3, new java.sql.Time(durataOre, durataMinuti, durataSecondi));
-
             statement.execute();
             statement.close();
         } catch (SQLException sqlException) {
@@ -1009,6 +1008,73 @@ public class Query_JDBC {
         return etichette;
     }
 
+    // Funzionalità 36
 
+    public void editCollezione(Collezione collezione) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("update collezione set nome=? and flag = ? where ID = ?");
+            statement.setString(1, collezione.getNome());
+            statement.setBoolean(2, collezione.getFlag());
+            statement.setInt(3, collezione.getId());
+            statement.execute();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 
- }
+    // Funzionalità 37
+    public List<Collezionista> getCollezionistiDaCondivisaCollezione(int IDCollezione){
+        try{
+            CallableStatement statement = connection.prepareCall("{call get_Collezionisti_Da_Condivisa_Collezione(?)}");
+            statement.setInt(1, IDCollezione);
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+            List<Collezionista> collezionisti = new ArrayList<>();
+            while(result.next()) {
+                collezionisti.add( new Collezionista(
+                        result.getInt(1),
+                        result.getString(2),
+                        result.getString(3)
+                        )
+                );
+            }
+            statement.close();
+            return collezionisti;
+        } catch (SQLException e ) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Funzionalità 37
+    public void rimuoviCondivisione(Integer IDCollezione, Integer IDCollezionista) {
+        try{
+            CallableStatement statement = connection.prepareCall("{call rimuovi_condivisione(?,?)}");
+            statement.setInt(1, IDCollezione);
+            statement.setInt(2, IDCollezionista);
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Funzionalità 38
+    public Collezionista getCollezionistaDaNickname(String nickname){
+        try{
+            PreparedStatement statement = connection.prepareStatement("select * from collezionista where nickname=?");
+            statement.setString(1, nickname);
+            statement.execute();
+            Collezionista collezionista = null;
+            ResultSet resultSet = statement.getResultSet();
+            if(resultSet.next()) {
+                collezionista = new Collezionista(resultSet.getInt(1),resultSet.getString(2), nickname);
+            }
+            statement.close();
+            return collezionista;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
