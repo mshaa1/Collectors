@@ -5,6 +5,7 @@ import it.collectors.model.Collezionista;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -40,12 +41,14 @@ public class ViewDispatcher {
         validateStage();
         View<T> viewToLoad = loadView("/it/collectors/ui/views/" + page.toString() + ".fxml");
         viewToLoad.getController().initializeData(data);
+        this.stage.getIcons().add(new Image("/it/collectors/ui/images/logo.png"));
         this.stage.setScene(new Scene(viewToLoad.getView())); //ci rendiamo conto di quanto sia inefficiente questa cosa
     }
 
     public void navigateTo(Pages page) throws ViewDispatcherException {
         validateStage();
         View viewToLoad = loadView("/it/collectors/ui/views/" + page.toString() + ".fxml");
+        this.stage.getIcons().add(new Image("/it/collectors/ui/images/logo.png"));
         this.stage.setScene(new Scene(viewToLoad.getView())); //ci rendiamo conto di quanto sia inefficiente questa cosa
     }
 

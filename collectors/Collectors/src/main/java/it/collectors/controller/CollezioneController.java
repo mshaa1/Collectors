@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -77,6 +78,7 @@ public class CollezioneController implements Initializable, DataInitializable<Co
         childStage.setScene(new Scene(childScene)); //
         childStage.initOwner((Stage) collezioneTable.getScene().getWindow()); //
         childStage.initModality(Modality.APPLICATION_MODAL); //
+        childStage.getIcons().add(new Image("/it/collectors/ui/images/logo.png"));
         childStage.showAndWait();
         initializeData(collezionista);
     }

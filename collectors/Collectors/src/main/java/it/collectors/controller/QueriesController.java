@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -56,6 +57,7 @@ public class QueriesController implements Initializable, DataInitializable<Colle
             childStage.setScene(new Scene(childScene)); // carico la scena nello stage
             childStage.initOwner((Stage) home.getScene().getWindow()); // setto lo stage di queries come padre di quello di addCollezione
             childStage.initModality(Modality.APPLICATION_MODAL); // ordino al figlio di bloccare gli stage dei suoi padri
+            childStage.getIcons().add(new Image("/it/collectors/ui/images/logo.png"));
             childStage.showAndWait(); // visualizzo lo stage del figlio, fino alla chiusura
             //stage.close();
 

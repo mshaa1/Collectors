@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -135,6 +136,7 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
         });*/
         stage.initOwner(this.addGenereButton.getScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.getIcons().add(new Image("/it/collectors/ui/images/logo.png"));
         stage.showAndWait();
         popolamentoGenereComboBox();
     }
@@ -153,6 +155,7 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
         });*/
         stage.initOwner(this.addEtichettaButton.getScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.getIcons().add(new Image("/it/collectors/ui/images/logo.png"));
         stage.showAndWait();
         popolamentoEtichettaComboBox();
     }
@@ -167,7 +170,6 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
         } else {
             this.exceptionLabel.textProperty().set("Errore nell'inserimento del disco");
         }
-
     }
 
     @FXML

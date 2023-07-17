@@ -126,6 +126,8 @@ public class ProfiloController implements Initializable, DataInitializable<Colle
     public void initialize(URL url, ResourceBundle resourceBundle) {
         genere.setReorderable(false);
         numero.setReorderable(false);
+        nomeDisco.setReorderable(false);
+        duplicatiDisco.setReorderable(false);
     }
 
     @Override
