@@ -346,8 +346,8 @@ end$
 -- Funzionalità 19
 -- convalida l'accesso di un utente
 
-create function convalida_utente(nickname varchar(25), email varchar(25), flag boolean)
-    returns integer
+create function convalida_utente(nickname varchar(25), email varchar(25))
+    returns boolean
     deterministic
 begin
     return (select count(*) from collezionista where collezionista.nickname = nickname and collezionista.email = email);

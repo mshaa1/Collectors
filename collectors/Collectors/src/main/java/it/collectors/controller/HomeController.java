@@ -134,6 +134,7 @@ public class HomeController implements Initializable, DataInitializable<Collezio
         try{
             queryJdbc.disconnect();
             viewDispatcher.showLogin();
+            System.gc();
         } catch (ApplicationException applicationException) {
             applicationException.printStackTrace();
         } catch (ViewDispatcherException e) {

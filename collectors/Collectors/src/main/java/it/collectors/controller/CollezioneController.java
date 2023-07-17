@@ -153,6 +153,7 @@ public class CollezioneController implements Initializable, DataInitializable<Co
         childStage.setScene(new Scene(childScene)); //
         childStage.initOwner((Stage) collezioneTable.getScene().getWindow()); //
         childStage.initModality(Modality.APPLICATION_MODAL); //
+        childStage.getIcons().add(new Image("/it/collectors/ui/images/logo.png"));
         childStage.showAndWait();
     }
 

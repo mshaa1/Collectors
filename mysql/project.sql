@@ -68,7 +68,7 @@ CREATE TABLE `colleziona_dischi` (
 
 LOCK TABLES `colleziona_dischi` WRITE;
 /*!40000 ALTER TABLE `colleziona_dischi` DISABLE KEYS */;
-INSERT INTO `colleziona_dischi` VALUES (1,1,2),(1,1,3),(1,1,4),(1,2,5),(1,2,6),(1,1,2),(1,1,3),(1,1,4),(1,2,5),(1,2,6);
+INSERT INTO `colleziona_dischi` VALUES (1,1,2),(1,1,3),(1,1,4),(0,2,2),(0,2,3),(0,2,1),(1,2,5),(1,2,6),(0,3,2),(0,3,3),(0,3,4),(0,3,1),(0,4,1);
 /*!40000 ALTER TABLE `colleziona_dischi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,7 +124,7 @@ CREATE TABLE `collezionista` (
 
 LOCK TABLES `collezionista` WRITE;
 /*!40000 ALTER TABLE `collezionista` DISABLE KEYS */;
-INSERT INTO `collezionista` VALUES (1,'whywhywhy@gmail.com','Mr.Why'),(2,'napoliteam@outlook.com','TeamNapoli'),(3,'loacker@temp232.it','SupaHacka'),(4,'AloneGotou@gmail.jp','GuitarHero');
+INSERT INTO `collezionista` VALUES (1,'a@a.a','a'),(2,'napoliteam@outlook.com','TeamNapoli'),(3,'loacker@temp232.it','SupaHacka'),(4,'AloneGotou@gmail.jp','GuitarHero');
 /*!40000 ALTER TABLE `collezionista` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,60 +154,6 @@ LOCK TABLES `comprende_dischi` WRITE;
 INSERT INTO `comprende_dischi` VALUES (1,2),(1,3),(1,4),(2,5),(2,6),(2,1),(2,2),(2,3),(3,1),(3,2),(3,3),(3,4),(4,1),(5,2),(5,3),(5,4),(5,5),(5,6),(6,5),(6,6);
 /*!40000 ALTER TABLE `comprende_dischi` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `Update_Duplicati_On_Insert_Comprende_Dischi` AFTER INSERT ON `comprende_dischi` FOR EACH ROW BEGIN
-    CALL gestione_disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `Update_Duplicati_On_Update_Comprende_Dischi` AFTER UPDATE ON `comprende_dischi` FOR EACH ROW BEGIN
-    IF OLD.ID_collezione = NEW.ID_collezione AND OLD.ID_disco <> NEW.ID_disco THEN
-        CALL gestione_disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
-        CALL gestione_disco(NEW.ID_collezione, NEW.ID_Disco, 'INSERT');
-    END IF;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `Update_Duplicati_On_Delete_Comprende_Dischi` AFTER DELETE ON `comprende_dischi` FOR EACH ROW BEGIN
-    CALL gestione_disco(OLD.ID_collezione, OLD.ID_Disco, 'DELETE');
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `condivide`
@@ -248,7 +194,7 @@ CREATE TABLE `disco` (
   `titolo` varchar(35) NOT NULL,
   `anno_uscita` smallint NOT NULL,
   `barcode` varchar(128) DEFAULT NULL,
-  `formato` enum('vinile','cd','digitale') DEFAULT NULL,
+  `formato` enum('vinile','cd','digitale','cassetta') DEFAULT NULL,
   `stato_conservazione` enum('nuovo','come nuovo','ottimo','buono','accettabile') DEFAULT NULL,
   `descrizione_conservazione` varchar(255) DEFAULT NULL,
   `ID_etichetta` int DEFAULT NULL,
@@ -270,6 +216,44 @@ LOCK TABLES `disco` WRITE;
 INSERT INTO `disco` VALUES (1,'kessoku bando album',2022,'92999282','digitale',NULL,NULL,1,2),(2,'Dr. Stone Original Soundtrack',2019,'2767236','cd','come nuovo',NULL,3,1),(3,'Dr. Stone Original Soundtrack 2',2021,'274829','vinile','ottimo','ripescato dal mare',3,1),(4,'Dr. Stone Original Soundtrack 3',2023,'72483','digitale','accettabile','non completo',3,1),(5,'Tobu collection',2023,'243432','digitale',NULL,NULL,2,3),(6,'Janji',2022,'378465783','digitale',NULL,NULL,2,3);
 /*!40000 ALTER TABLE `disco` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `Check_Anno_Uscita_Inserimento_Disco` BEFORE INSERT ON `disco` FOR EACH ROW begin
+    if NEW.anno_uscita > year(current_date) or NEW.anno_uscita < 1900 then
+        signal sqlstate '45000' set message_text = 'La data inserita non è valida';
+    end if;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `Check_Anno_Uscita_Aggiornamento_Disco` BEFORE UPDATE ON `disco` FOR EACH ROW begin
+    if NEW.anno_uscita > year(current_date) or NEW.anno_uscita < 1900 then
+        signal sqlstate '45000' set message_text = 'La data inserita non è valida';
+    end if;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `etichetta`
@@ -373,6 +357,31 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `lista_dischi_generale`
+--
+
+DROP TABLE IF EXISTS `lista_dischi_generale`;
+/*!50001 DROP VIEW IF EXISTS `lista_dischi_generale`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `lista_dischi_generale` AS SELECT 
+ 1 AS `nome`,
+ 1 AS `nickname`,
+ 1 AS `ID`,
+ 1 AS `titolo`,
+ 1 AS `anno_uscita`,
+ 1 AS `barcode`,
+ 1 AS `formato`,
+ 1 AS `stato_conservazione`,
+ 1 AS `descrizione_conservazione`,
+ 1 AS `ID_etichetta`,
+ 1 AS `ID_genere`,
+ 1 AS `nome_autore`,
+ 1 AS `flag`,
+ 1 AS `ID_collezionista`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `produce_disco`
 --
 
@@ -439,6 +448,7 @@ CREATE TABLE `traccia` (
   `durata` time NOT NULL,
   `ID_disco` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
+  UNIQUE KEY `titolo` (`titolo`),
   KEY `ID_disco` (`ID_disco`),
   CONSTRAINT `traccia_ibfk_1` FOREIGN KEY (`ID_disco`) REFERENCES `disco` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -471,6 +481,24 @@ UNLOCK TABLES;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `lista_dischi_generale`
+--
+
+/*!50001 DROP VIEW IF EXISTS `lista_dischi_generale`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `lista_dischi_generale` AS select `c`.`nome` AS `nome`,`c1`.`nickname` AS `nickname`,`d`.`ID` AS `ID`,`d`.`titolo` AS `titolo`,`d`.`anno_uscita` AS `anno_uscita`,`d`.`barcode` AS `barcode`,`d`.`formato` AS `formato`,`d`.`stato_conservazione` AS `stato_conservazione`,`d`.`descrizione_conservazione` AS `descrizione_conservazione`,`d`.`ID_etichetta` AS `ID_etichetta`,`d`.`ID_genere` AS `ID_genere`,`a`.`nome_autore` AS `nome_autore`,`c`.`flag` AS `flag`,`c`.`ID_collezionista` AS `ID_collezionista` from (((((`disco` `d` join `produce_disco` `pd` on((`d`.`ID` = `pd`.`ID_disco`))) join `autore` `a` on((`pd`.`ID_autore` = `a`.`ID`))) join `comprende_dischi` `cd` on((`d`.`ID` = `cd`.`ID_disco`))) join `collezione` `c` on((`cd`.`ID_collezione` = `c`.`ID`))) join `collezionista` `c1` on((`c`.`ID_collezionista` = `c1`.`ID`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -481,4 +509,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-18  1:25:20
+-- Dump completed on 2023-07-17 23:45:23
