@@ -874,17 +874,14 @@ public class Query_JDBC {
                             "where nome_autore regexp ?"
             );
 
-            queryBarcode.setString(1, barcode);
-            queryTitolo.setString(1, titolo);
-            queryAutore.setString(1, autore);
+            queryBarcode.setString(1, RicercaController.regexify(barcode));
+            queryTitolo.setString(1, RicercaController.regexify(titolo));
+            queryAutore.setString(1, RicercaController.regexify(autore));
 
-            queryBarcode.execute();
-            queryTitolo.execute();
-            queryAutore.execute();
 
-            ResultSet barcodeResult = queryBarcode.getResultSet();
-            ResultSet titoloResult = queryTitolo.getResultSet();
-            ResultSet autoreResult = queryAutore.getResultSet();
+            ResultSet barcodeResult = queryBarcode.executeQuery();
+            ResultSet titoloResult = queryTitolo.executeQuery();
+            ResultSet autoreResult = queryAutore.executeQuery();
 
             while (barcodeResult.next()) {
                 dischi.put(
@@ -896,7 +893,7 @@ public class Query_JDBC {
                                 barcodeResult.getString(5), //formato
                                 barcodeResult.getString(6), // stato di conservazione
                                 barcodeResult.getString(7) // descrizione conservazione
-                        ), 1
+                        ), 3
                 );
             }
 
