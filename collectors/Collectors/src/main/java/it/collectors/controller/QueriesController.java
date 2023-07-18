@@ -97,8 +97,18 @@ public class QueriesController implements Initializable, DataInitializable<Colle
 
     }
     @FXML
-    private void goToOperazione9 () {
-
+    private void goToOperazione9 () throws IOException {
+        Stage childStage= new Stage(); // nuova finestra
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/collectors/ui/views/verificaVisibilita.fxml")); //caricare questo
+        Parent childScene = loader.load(); // carico nella scena l'fxml
+        VerificaVisibilitaController child = loader.getController();
+        childStage.resizableProperty().setValue(false);
+        childStage.setTitle("Verrifica visibilità");
+        childStage.setScene(new Scene(childScene)); // carico la scena nello stage
+        childStage.initOwner((Stage) home.getScene().getWindow()); // setto lo stage di queries come padre di quello di addCollezione
+        childStage.initModality(Modality.APPLICATION_MODAL); // ordino al figlio di bloccare gli stage dei suoi padri
+        childStage.getIcons().add(new Image("/it/collectors/ui/images/logo.png"));
+        childStage.showAndWait(); // visualizzo lo stage del figlio, fino alla chiusura
     }
     @FXML
     private void goToOperazione10 () {

@@ -202,7 +202,7 @@ begin
     if (select count(*)
         from condivide c
         where c.ID_collezione = ID_collezione
-          and c.ID_collezionista = ID_collezionista) = 1 then
+          and c.ID_collezionista = ID_collezionista) = 1 then -- se la collezione è condivisa con il collezionista, allora può visionarla
         return true;
     end if;
     return false;

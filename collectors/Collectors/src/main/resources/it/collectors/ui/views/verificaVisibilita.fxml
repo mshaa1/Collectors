@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="465.0" prefWidth="552.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.VerificaVisibilitaController">
+   <children>
+      <TableView fx:id="collezionistiTable" layoutX="52.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="collezionistiColumn" prefWidth="199.0" text="Nome collezionista" />
+        </columns>
+      </TableView>
+      <TableView fx:id="collezioniTable" layoutX="324.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0">
+         <columns>
+            <TableColumn fx:id="collezioniColumn" prefWidth="199.0" text="Collezione" />
+         </columns>
+      </TableView>
+      <Label fx:id="visibileLabel" alignment="CENTER" layoutX="245.0" layoutY="329.0" text="Visibile" textAlignment="CENTER" visible="false" />
+      <Label fx:id="nonVisibileLabel" alignment="CENTER" layoutX="245.0" layoutY="329.0" text="Non visibile" textAlignment="CENTER" visible="false" />
+      <Label alignment="CENTER" layoutX="79.0" layoutY="8.0" prefHeight="43.0" prefWidth="394.0" text="Selezionare un collezionista e una collezione per controllare se quest'ultima è visibile al collezionista selezionato" textAlignment="CENTER" visible="false" wrapText="true" />
+   </children>
+</AnchorPane>
