@@ -878,6 +878,10 @@ public class Query_JDBC {
             queryTitolo.setString(1, titolo);
             queryAutore.setString(1, autore);
 
+            queryBarcode.execute();
+            queryTitolo.execute();
+            queryAutore.execute();
+
             ResultSet barcodeResult = queryBarcode.getResultSet();
             ResultSet titoloResult = queryTitolo.getResultSet();
             ResultSet autoreResult = queryAutore.getResultSet();
@@ -934,7 +938,6 @@ public class Query_JDBC {
             queryBarcode.close();
             queryTitolo.close();
             queryAutore.close();
-            if (dischi.isEmpty()) return null;
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
