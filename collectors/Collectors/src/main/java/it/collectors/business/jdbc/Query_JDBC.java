@@ -674,7 +674,6 @@ public class Query_JDBC {
                         )
                 );
             statement.close();
-            if (listaDischi.isEmpty()) return null;
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
@@ -699,7 +698,6 @@ public class Query_JDBC {
                         )
                 );
             statement.close();
-            if (tracklist.isEmpty()) return null;
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -1130,9 +1128,27 @@ public class Query_JDBC {
         }
         return null;
     }
+    // Funzionalità 40
     public List<Collezione> getCollezioni() {
         try {
             PreparedStatement query = connection.prepareStatement("select * from collezione");
+            ResultSet resultSet = query.executeQuery();
+            List<Collezione> collezioni = new ArrayList<>();
+            while (resultSet.next()) {
+                collezioni.add(new Collezione(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3)));
+            }
+            query.close();
+            return collezioni;
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
+    }
+    // Funzionalità 41
+    public List<Collezione> getCollezioniCondiviseACollezionista(Integer IDCollezionista) {
+        try {
+            PreparedStatement query = connection.prepareStatement("select * from collezione where ID in (select ID_collezione from condivide where ID_collezionista = ?)");
+            query.setInt(1, IDCollezionista);
             ResultSet resultSet = query.executeQuery();
             List<Collezione> collezioni = new ArrayList<>();
             while (resultSet.next()) {
