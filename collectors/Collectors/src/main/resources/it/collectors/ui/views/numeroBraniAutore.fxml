@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="465.0" prefWidth="552.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.NumeroBraniAutoreController">
+   <children>
+      <TableView fx:id="tabella" layoutX="70.0" layoutY="61.0" prefHeight="308.0" prefWidth="412.0">
+         <columns>
+            <TableColumn fx:id="autore" prefWidth="209.60003662109375" text="Autore" />
+            <TableColumn fx:id="brano" prefWidth="202.39996337890625" text="Numero brani" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>

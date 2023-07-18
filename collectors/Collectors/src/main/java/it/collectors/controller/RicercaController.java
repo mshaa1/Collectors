@@ -3,7 +3,6 @@ package it.collectors.controller;
 import it.collectors.business.BusinessFactory;
 import it.collectors.business.jdbc.Query_JDBC;
 import it.collectors.model.*;
-import it.collectors.view.Pages;
 import it.collectors.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -104,7 +103,7 @@ public class RicercaController implements Initializable, DataInitializable<Colle
         public String getAutori() {
             String concat = " ";
             for (Autore a : autori) {
-                concat += a.getNome_dAutore()+" ";
+                concat += a.getNomeDAutore()+" ";
             }
             return concat;
         }

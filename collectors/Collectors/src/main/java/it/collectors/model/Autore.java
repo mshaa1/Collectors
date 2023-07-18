@@ -46,7 +46,7 @@ public class Autore {
         return dataNascita;
     }
 
-    public String getNome_dAutore() {
+    public String getNomeDAutore() {
         return nome_dAutore;
     }
 
