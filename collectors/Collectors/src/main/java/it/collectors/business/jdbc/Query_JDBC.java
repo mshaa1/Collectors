@@ -53,7 +53,60 @@ public class Query_JDBC {
 
 
     //********************QUERY***************************//
-    //TODO c'è un gap vuoto, non ci sta la funzionalita 14
+
+    // Funzionalità 41
+    // Aggiunta immagine disco
+    public void addImmagineDisco( String path, String didascalia,int IDDisco){
+        try {
+            CallableStatement statement = connection.prepareCall("{call add_immagine_disco(?,?,?)}");
+            statement.setString(1, path);
+            statement.setString(2, didascalia);
+            statement.setInt(3, IDDisco);
+            statement.execute();
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
+
+    //Funzionalità 40
+    // rimozione immagine disco
+    public void removeImmagineDisco(int IDImmagine){
+        try {
+            CallableStatement statement = connection.prepareCall("{call remove_immagine_disco(?)}");
+            statement.setInt(1, IDImmagine);
+            statement.execute();
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
+
+    //Funzionalità 39
+    // get immagini disco
+    public List<Immagine> getImmaginiDisco(int IDDisco){
+        List<Immagine> immagini = new ArrayList<>();
+        try{
+            CallableStatement statement = connection.prepareCall("{call get_immagini_disco(?)}");
+            statement.setInt(1, IDDisco);
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+            while (result.next()) {
+                immagini.add(
+                        new Immagine(
+                                result.getInt("ID"),
+                                result.getString("file"),
+                                result.getString("didascalia")
+                        )
+                );
+            }
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+
+        return immagini;
+    }
+
 
     // Funzionalità 35
     // get numero duplicati dischi

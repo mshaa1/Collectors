@@ -10,7 +10,8 @@ public enum Pages {
     ADDDISCO("addDisco"),
     QUERIES("queries"),
     COLLEZIONICONDIVISE("collezioniCondivise"),
-    ADDTRACK("aggiuntaTraccia");
+    ADDTRACK("aggiuntaTraccia"),
+    IMMAGINI("immaginiDischi");
 
     private final String name;
 

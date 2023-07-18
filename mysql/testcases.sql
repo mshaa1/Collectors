@@ -90,14 +90,6 @@ VALUES
     /*ha 2 dischi di ognuno*/
 
 
-insert into immagine(file, didascalia, ID_disco)
-values  ('it/collectors/ui/images/Immagini disco/THCA-60247.jpg', null, 2),
-        ('it/collectors/ui/images/Immagini disco/THCA-60247.jpg', null, 3),
-        ('it/collectors/ui/images/Immagini disco/THCA-60247.jpg', null, 4),
-        ('it/collectors/ui/images/Immagini disco/88286-1566552305.jpg', 'dr', 2),
-        ('it/collectors/ui/images/Immagini disco/kessoku-band-logo-for-download-v0-uihz2dhhim2a1.png', null, 1),
-        ('it/collectors/ui/images/Immagini disco/tobu.jpg', null, 5);
-
 INSERT INTO autore(ID, nome, cognome, data_nascita, nome_autore, info, ruolo)
 VALUES
     (1, 'Hitori', 'Gotou', '2004-02-21', 'GuitarHero', null, 'poliedrico'),

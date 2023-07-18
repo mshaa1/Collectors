@@ -11,7 +11,7 @@ public class Immagine {
     private final String didascalia;
 
 
-    public Immagine(Integer id, String filePath, String descrizione, InputStream content, byte[] cache) {
+    public Immagine(Integer id, String filePath, String descrizione) {
         this.id = id;
         this.filePath = filePath;
         this.didascalia = descrizione;

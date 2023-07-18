@@ -11,15 +11,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.*;
 
-public class DischiController implements Initializable, DataInitializable<Collezionista>{
-
-    @FXML
-    private VBox vBox;
+public class DischiController<E> implements Initializable, DataInitializable<Collezionista>{
 
     @FXML
     private TableView<DiscoWrapper> table;
@@ -52,7 +48,7 @@ public class DischiController implements Initializable, DataInitializable<Collez
 
     private ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 
-    Collezionista collezionista;
+    private Collezionista collezionista;
 
     protected class DiscoWrapper {
         private Disco disco;
@@ -160,7 +156,11 @@ public class DischiController implements Initializable, DataInitializable<Collez
 
     @FXML
     public void add(){
-        viewDispatcher.changeStage(vBox.getScene(), vBox, "Aggiungi disco", "addDisco.fxml", this.collezionista);
+        try{
+            this.viewDispatcher.navigateTo(Pages.ADDDISCO, this.collezionista);
+        } catch (ViewDispatcherException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -173,10 +173,26 @@ public class DischiController implements Initializable, DataInitializable<Collez
     @FXML
     public void ricerca() {
         try {
-            viewDispatcher.changeStage(vBox.getScene(), vBox, "Ricerca disco", "ricerca.fxml", this.collezionista);
+            viewDispatcher.navigateTo(Pages.RICERCA, collezionista);
         }
         catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void immagini() {
+        if (table.getSelectionModel().getSelectedItem() != null) {
+            Disco disco = table.getSelectionModel().getSelectedItem().getDisco();
+            List<E> discoList = new ArrayList<>();
+            discoList.add((E) disco);
+            discoList.add((E) collezionista);
+            try {
+                viewDispatcher.navigateTo(Pages.IMMAGINI, discoList);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -184,7 +200,7 @@ public class DischiController implements Initializable, DataInitializable<Collez
     @FXML
     public void goToHome() {
         try {
-            viewDispatcher.changeStage(vBox.getScene(), vBox, "Home", "home.fxml", this.collezionista);
+            viewDispatcher.navigateTo(Pages.HOME,collezionista);
         }catch (Exception e) {
             e.printStackTrace();
         }
