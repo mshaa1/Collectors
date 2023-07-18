@@ -155,7 +155,11 @@ public class QueriesController implements Initializable, DataInitializable<Colle
     }
     @FXML
     private void goToOperazione13 () {
-
+        try{
+            viewDispatcher.changeStage(anchorPane.getScene(), anchorPane, "Dischi coereti", "dischiCoerenti.fxml", this.collezionista);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

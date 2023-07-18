@@ -46,7 +46,7 @@ public class RicercaController implements Initializable, DataInitializable<Colle
         private Genere genere;
         private List<Autore> autori;
 
-        public DiscoWrapper(Disco disco, Etichetta etichetta, Genere genere, List<Autore> autori) {
+        protected DiscoWrapper(Disco disco, Etichetta etichetta, Genere genere, List<Autore> autori) {
             this.disco = disco;
             this.etichetta = etichetta;
             this.genere = genere;

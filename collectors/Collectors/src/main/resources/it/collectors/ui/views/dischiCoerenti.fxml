@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.DischiCoerentiController">
+   <children>
+      <TableView fx:id="risultatiRicerca" prefHeight="668.0" prefWidth="1024.0">
+         <columns>
+            <TableColumn fx:id="titolo" prefWidth="100.0" sortable="false" text="Titolo" />
+            <TableColumn fx:id="affinitaColumn" prefWidth="138.0" sortable="false" text="Affinità" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1024.0">
+         <children>
+            <VBox prefHeight="95.0" prefWidth="183.0" translateX="5.0">
+               <children>
+                  <TextField fx:id="discoField" onKeyTyped="#filtra" promptText="Titolo disco">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></TextField>
+                  <TextField fx:id="barcodeField" layoutX="16.0" layoutY="16.0" onKeyTyped="#filtra" promptText="Barcode" />
+                  <TextField fx:id="autoreField" layoutX="16.0" layoutY="16.0" onKeyTyped="#filtra" promptText="Nome autore">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+               <padding>
+                  <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+               </padding>
+            </VBox>
+            <HBox prefHeight="95.0" prefWidth="128.0" HBox.hgrow="ALWAYS" />
+            <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" style="-fx-background-color: transparent;" text="Vai alla Home" translateX="-5.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/homepage-icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>

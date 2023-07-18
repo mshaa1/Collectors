@@ -865,23 +865,22 @@ public class Query_JDBC {
     public HashMap<Disco, Integer> dischiSimiliA(String barcode, String titolo, String autore) {
         HashMap<Disco, Integer> dischi = new HashMap<>();
         try {
-            PreparedStatement queryBarcode = connection.prepareStatement("select * from disco where barcode like ?");
-            PreparedStatement queryTitolo = connection.prepareStatement("select * from disco where titolo like ?");
+            PreparedStatement queryBarcode = connection.prepareStatement("select * from disco where barcode regexp ?");
+            PreparedStatement queryTitolo = connection.prepareStatement("select * from disco where titolo regexp ?");
             PreparedStatement queryAutore = connection.prepareStatement(
                     "select d.* from " +
-                            "disco d join produce_disco p on d.ID=p.ID_disco" +
-                            "join autore a on p.ID_autore=a.ID" +
-                            "where nome_autore like ?"
+                            "disco d join produce_disco p on d.ID = p.ID_disco " +
+                            "join autore a on p.ID_autore = a.ID " +
+                            "where nome_autore regexp ?"
             );
 
             queryBarcode.setString(1, barcode);
             queryTitolo.setString(1, titolo);
             queryAutore.setString(1, autore);
 
-
-            ResultSet barcodeResult = queryBarcode.executeQuery();
-            ResultSet titoloResult = queryTitolo.executeQuery();
-            ResultSet autoreResult = queryAutore.executeQuery();
+            ResultSet barcodeResult = queryBarcode.getResultSet();
+            ResultSet titoloResult = queryTitolo.getResultSet();
+            ResultSet autoreResult = queryAutore.getResultSet();
 
             while (barcodeResult.next()) {
                 dischi.put(
@@ -897,9 +896,9 @@ public class Query_JDBC {
                 );
             }
 
+
             while (titoloResult.next()) {
                 Disco disco = new Disco(
-
                         titoloResult.getInt(1), //ID
                         titoloResult.getString(2), // titolo
                         titoloResult.getInt(3), //anno di uscita
@@ -914,6 +913,7 @@ public class Query_JDBC {
                 else
                     dischi.put(disco, 1);
             }
+
 
             while (autoreResult.next()) {
                 Disco disco = new Disco(
