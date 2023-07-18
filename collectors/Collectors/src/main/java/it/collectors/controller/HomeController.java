@@ -17,7 +17,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Shape;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -27,6 +29,8 @@ import java.util.ResourceBundle;
 
 public class HomeController implements Initializable, DataInitializable<Collezionista> {
 
+    public TableView<Collezione> tabellaCollezioniCondivise;
+    public TableColumn<Collezione, String> colonnaCollezioniCondivise;
     @FXML
     private VBox vBox;
 
@@ -65,24 +69,55 @@ public class HomeController implements Initializable, DataInitializable<Collezio
     public void initializeData(Collezionista data) {
         loggedInLabel.textProperty().set("Sei attualmente identificato come: "+ data.getNickname());
         this.collezionista = data;
+
         colonnaCollezioni.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colonnaCollezioniCondivise.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colonnaDischi.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         colonnaTracce.setCellValueFactory(new PropertyValueFactory<>("titolo"));
+
+        tabellaCollezioni.setPlaceholder(new Label("Non hai ancora creato nessuna collezione"));
+        tabellaCollezioniCondivise.setPlaceholder(new Label("Non hai ancora nessuna collezione condivisa con te"));
+        tabellaDischi.setPlaceholder(new Label("Non hai ancora nessun disco o seleziona una collezione"));
+        tabellaTracce.setPlaceholder(new Label("Non hai ancora nessuna traccia o seleziona un disco"));
+
+        Label label = (Label) tabellaCollezioni.getPlaceholder();
+        label.setWrapText(true);
+        label = (Label) tabellaCollezioniCondivise.getPlaceholder();
+        label.setWrapText(true);
+        label = (Label) tabellaDischi.getPlaceholder();
+        label.setWrapText(true);
+        label.setAlignment(javafx.geometry.Pos.CENTER);
+        label = (Label) tabellaTracce.getPlaceholder();
+        label.setWrapText(true);
+
+
+        colonnaCollezioniCondivise.setReorderable(false);
         colonnaDischi.setReorderable(false);
         colonnaCollezioni.setReorderable(false);
         colonnaTracce.setReorderable(false);
+
         Query_JDBC db = BusinessFactory.getImplementation();
+
         tabellaCollezioni.getItems().setAll(db.getCollezioniUtente(data.getId()));
-        //TODO: evitare eccezione quando si seleziona una collezione con nessun disco
         tabellaCollezioni.setOnMouseClicked(event->{
             if(tabellaCollezioni.getSelectionModel().getSelectedItem()==null) return;
-            tabellaDischi.getItems().setAll(db.listaDischiCollezione(tabellaCollezioni.getSelectionModel().getSelectedItem().getId()));
+            List<Disco> dischi = db.listaDischiCollezione(tabellaCollezioni.getSelectionModel().getSelectedItem().getId());
+            tabellaDischi.getItems().setAll(dischi);
             tabellaTracce.getItems().setAll(new ArrayList<>());
         });
-        //TODO: evitare eccezione quando si seleziona un disco con nessuna traccia
+
+        tabellaCollezioniCondivise.getItems().setAll(db.getCollezioniCondiviseACollezionista(data.getId()));
+        tabellaCollezioniCondivise.setOnMouseClicked(event->{
+            if(tabellaCollezioniCondivise.getSelectionModel().getSelectedItem()==null) return;
+            List<Disco> dischi = db.listaDischiCollezione(tabellaCollezioniCondivise.getSelectionModel().getSelectedItem().getId());
+            tabellaDischi.getItems().setAll(dischi);
+            tabellaTracce.getItems().setAll(new ArrayList<>());
+        });
+
         tabellaDischi.setOnMouseClicked(event->{
             if(tabellaDischi.getSelectionModel().getSelectedItem()==null) return;
-            tabellaTracce.getItems().setAll(db.tracklistDisco(tabellaDischi.getSelectionModel().getSelectedItem().getId()));
+            List<Traccia> tracce = db.tracklistDisco(tabellaDischi.getSelectionModel().getSelectedItem().getId());tabellaTracce.getItems().setAll(tracce);
+            //tabellaTracce.getItems().setAll(db.tracklistDisco(tabellaDischi.getSelectionModel().getSelectedItem().getId()));
         });
 
     }
