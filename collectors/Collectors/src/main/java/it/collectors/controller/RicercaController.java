@@ -172,7 +172,7 @@ public class RicercaController implements Initializable, DataInitializable<Colle
         //flag.setOnAction(event -> {filtra();});
     }
 
-    private String regexify(String string) {
+    public static String regexify(String string) {
         if (string == null || string.isBlank()) return null;
         return "^.*"+string+".*$";
     }

@@ -24,7 +24,6 @@ public class DischiCoerentiController implements Initializable, DataInitializabl
     @FXML
     private VBox vBox;
 
-
     @FXML
     private TextField discoField;
 
@@ -35,7 +34,7 @@ public class DischiCoerentiController implements Initializable, DataInitializabl
     private TextField barcodeField;
 
 
-    protected class DiscoWrapper {
+    protected class DiscoWrapper implements Comparable<DiscoWrapper> {
         private Disco disco;
 
         private Integer affinita;
@@ -57,6 +56,11 @@ public class DischiCoerentiController implements Initializable, DataInitializabl
         public String getAffinita() {
             return affinita.toString();
         }
+
+        @Override
+        public int compareTo(DiscoWrapper o) {
+            return this.affinita.compareTo(o.affinita);
+        }
     }
 
     @FXML
@@ -71,8 +75,9 @@ public class DischiCoerentiController implements Initializable, DataInitializabl
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        titolo.setReorderable(false);
-        affinitaColumn.setReorderable(false);
+
+        affinitaColumn.setSortType(TableColumn.SortType.DESCENDING);;
+        risultatiRicerca.getSortOrder().add(affinitaColumn);
     }
 
     @Override
@@ -82,10 +87,6 @@ public class DischiCoerentiController implements Initializable, DataInitializabl
         affinitaColumn.setCellValueFactory(new PropertyValueFactory<>("affinita"));
     }
 
-    private String regexify(String string) {
-        if (string == null || string.isBlank()) return null;
-        return "^.*"+string+".*$";
-    }
 
     @FXML
     public void filtra() {
@@ -94,11 +95,7 @@ public class DischiCoerentiController implements Initializable, DataInitializabl
             risultatiRicerca.getItems().clear();
         }
 
-        String autore = regexify(autoreField.getText());
-        String titolo = regexify(discoField.getText());
-        String barcode = regexify(barcodeField.getText());
-
-        Map<Disco, Integer> dischi = db.dischiSimiliA(barcode, titolo, autore);
+        Map<Disco, Integer> dischi = db.dischiSimiliA(barcodeField.getText(), discoField.getText(), autoreField.getText());
 
         System.out.println(dischi.size());
 
@@ -113,6 +110,7 @@ public class DischiCoerentiController implements Initializable, DataInitializabl
         for (DiscoWrapper w : dischiWrapper) {
             risultatiRicerca.getItems().add(w);
         }
+        risultatiRicerca.sort();
     }
 
     @FXML
