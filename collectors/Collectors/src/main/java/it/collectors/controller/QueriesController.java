@@ -3,6 +3,7 @@ package it.collectors.controller;
 import it.collectors.model.Collezionista;
 import it.collectors.view.Pages;
 import it.collectors.view.ViewDispatcher;
+import it.collectors.view.ViewDispatcherException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,7 +30,9 @@ public class QueriesController implements Initializable, DataInitializable<Colle
     @FXML
     private Button home;
 
-    Collezionista collezionista;
+    private Collezionista collezionista;
+
+    ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -73,28 +76,52 @@ public class QueriesController implements Initializable, DataInitializable<Colle
 
     }
     @FXML
-    private void goToOperazione3 () {
-
+    private void goToOperazione3 (){
+        try {
+            viewDispatcher.navigateTo(Pages.COLLECTIONS, this.collezionista);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     @FXML
     private void goToOperazione4 () {
-
+        try {
+            viewDispatcher.navigateTo(Pages.COLLECTIONS, this.collezionista);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     @FXML
     private void goToOperazione5 () {
-
+        try {
+            viewDispatcher.navigateTo(Pages.COLLECTIONS, this.collezionista);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     @FXML
     private void goToOperazione6 () {
-
+        try {
+            viewDispatcher.navigateTo(Pages.HOME, this.collezionista);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     @FXML
     private void goToOperazione7 () {
-
+        try {
+            viewDispatcher.navigateTo(Pages.HOME, this.collezionista);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     @FXML
     private void goToOperazione8 () {
-
+        try {
+            viewDispatcher.navigateTo(Pages.DISCHI, this.collezionista);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     @FXML
     private void goToOperazione9 () throws IOException {
@@ -120,7 +147,11 @@ public class QueriesController implements Initializable, DataInitializable<Colle
     }
     @FXML
     private void goToOperazione12 () {
-
+        try {
+            viewDispatcher.navigateTo(Pages.PROFILO, this.collezionista);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     @FXML
     private void goToOperazione13 () {
