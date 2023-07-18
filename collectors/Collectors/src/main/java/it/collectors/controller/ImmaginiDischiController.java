@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import it.collectors.view.Pages;
 import it.collectors.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,12 +23,15 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ImmaginiDischi<E> implements Initializable, DataInitializable<List<E>> {
+public class ImmaginiDischiController<E> implements Initializable, DataInitializable<List<E>> {
 
     private Collezionista collezionista;
     private Disco disco;
 
     private int IDImmagine;
+
+    @FXML
+    private VBox vBox;
 
     @FXML
     private ImageView immagine;
@@ -43,12 +45,16 @@ public class ImmaginiDischi<E> implements Initializable, DataInitializable<List<
     private Button avanti;
 
     private List<Immagine> immagini;
+
     @FXML
     private Button didascaliaBottone;
+
     @FXML
     private TextField didascaliaText;
+
     @FXML
     private HBox didascaliaBox;
+
     @FXML
     private HBox immagineVisualizzata;
 
@@ -75,7 +81,6 @@ public class ImmaginiDischi<E> implements Initializable, DataInitializable<List<
         this.collezionista = (Collezionista) data.get(1);
 
 
-
         didascalia.setText("");
         setImmagine();
     }
@@ -86,7 +91,6 @@ public class ImmaginiDischi<E> implements Initializable, DataInitializable<List<
         immagineVisualizzata.setManaged(false);
         didascaliaBox.setVisible(true);
         didascaliaBox.setManaged(true);
-
     }
 
     @FXML
@@ -157,7 +161,7 @@ public class ImmaginiDischi<E> implements Initializable, DataInitializable<List<
     @FXML
     public void goToDischi() {
         try {
-            viewDispatcher.navigateTo(Pages.DISCHI,this.collezionista);
+            viewDispatcher.changeStage(vBox.getScene(), vBox, "Dischi", "dischi.fxml", this.collezionista);
         }catch (Exception e) {
             e.printStackTrace();
         }

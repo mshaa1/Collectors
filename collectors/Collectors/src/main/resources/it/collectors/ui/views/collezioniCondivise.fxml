@@ -6,18 +6,18 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.CollezioniCondiviseController">
+<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.CollezioniCondiviseController">
    <children>
-      <TableView fx:id="tabella" prefHeight="390.0" prefWidth="800.0">
+      <TableView fx:id="tabella" prefHeight="668.0" prefWidth="1024.0">
          <columns>
-            <TableColumn fx:id="nomeCollezione" prefWidth="400.0" text="Nome collezione" />
-            <TableColumn fx:id="nomeCollezionista" prefWidth="399.0" text="Collezionista che la possiede" />
+            <TableColumn fx:id="nomeCollezione" prefWidth="503.0" text="Nome collezione" />
+            <TableColumn fx:id="nomeCollezionista" prefWidth="518.0" text="Collezionista che la possiede" />
          </columns>
       </TableView>
-      <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="BOTTOM_LEFT" prefHeight="263.0" prefWidth="1024.0">
          <children>
-            <HBox prefHeight="74.0" prefWidth="693.0" HBox.hgrow="ALWAYS" />
-            <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToCollezioni" style="-fx-background-color: transparent;" text="Vai alle collezioni">
+            <HBox prefHeight="74.0" prefWidth="917.0" HBox.hgrow="ALWAYS" />
+            <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToCollezioni" style="-fx-background-color: transparent;" text="Vai alle collezioni" translateX="-3.0" translateY="-10.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

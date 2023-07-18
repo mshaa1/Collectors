@@ -299,7 +299,9 @@ drop procedure if exists aggiunta_etichetta;
 drop procedure if exists get_numero_duplicati_dischi;
 drop procedure if exists get_Collezionisti_Da_Condivisa_Collezione;
 drop procedure if exists rimuovi_condivisione;
-
+drop procedure if exists remove_immagine_disco;
+drop procedure if exists add_immagine_disco;
+drop procedure if exists get_immagini_disco;
 
 -- Funzionalità 15
 -- Aggiunta di nuove condivisioni a una collezione'
@@ -623,7 +625,6 @@ begin
 end $
 
 
-drop procedure if exists get_immagini_disco;
 
 -- funzionalità 39
 -- get immagini di un disco
@@ -632,7 +633,7 @@ begin
     select ID, file, didascalia from immagine where immagine.ID_disco = ID_disco;
 end $
 
-drop procedure if exists remove_immagine_disco;
+
 
 -- funzionalità 40
 -- rimozione immagini disco
@@ -641,7 +642,6 @@ begin
     delete from immagine where immagine.ID = ID_immagine;
 end $
 
-drop procedure if exists add_immagine_disco;
 
 -- funzionalità 41
 -- aggiunta immagine disco

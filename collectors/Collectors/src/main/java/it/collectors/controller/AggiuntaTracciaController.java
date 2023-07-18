@@ -14,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,20 +22,30 @@ import java.util.ResourceBundle;
 public class AggiuntaTracciaController implements Initializable, DataInitializable<Collezionista>{
 
     private Query_JDBC queryJdbc = BusinessFactory.getImplementation();
+
     private Collezionista collezionista;
+
     @FXML
     private TextField nomeTraccia;
+
     @FXML
     private TextField ore;
+
     @FXML
     private TextField minuti;
+
     @FXML
     private TextField secondi;
+
     @FXML
     private Label errore;
 
     @FXML
+    private VBox vBox;
+
+    @FXML
     private TableView<Disco> tabella;
+
     @FXML
     private TableColumn<Disco, String> dischi;
 
@@ -58,7 +69,7 @@ public class AggiuntaTracciaController implements Initializable, DataInitializab
     @FXML
     public void goToTracce() {
         try {
-            viewDispatcher.navigateTo(Pages.TRACCE, collezionista);
+            viewDispatcher.changeStage(vBox.getScene(), vBox, "Tracce", "tracce.fxml", this.collezionista);
         }catch (Exception e) {
             e.printStackTrace();
         }

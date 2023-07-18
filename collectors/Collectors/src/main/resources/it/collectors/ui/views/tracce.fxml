@@ -6,12 +6,12 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.TracceController">
+<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.TracceController">
    <children>
       <TableView fx:id="table" prefHeight="390.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
          <columns>
-            <TableColumn fx:id="titolo" prefWidth="400.0" text="Titolo" />
-            <TableColumn fx:id="durata" prefWidth="399.0" text="Durata" />
+            <TableColumn fx:id="titolo" prefWidth="513.0" text="Titolo" />
+            <TableColumn fx:id="durata" prefWidth="510.0" text="Durata" />
          </columns>
       </TableView>
       <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="800.0">

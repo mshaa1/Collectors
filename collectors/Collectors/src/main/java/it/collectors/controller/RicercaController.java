@@ -220,7 +220,7 @@ public class RicercaController implements Initializable, DataInitializable<Colle
     public void goToDischi() {
         ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
         try {
-            viewDispatcher.changeStage(vBox.getScene(), vBox, "Dischi", "disco.fxml", this.collezionista);
+            viewDispatcher.changeStage(vBox.getScene(), vBox, "Dischi", "dischi.fxml", this.collezionista);
         } catch (Exception e) {
             e.printStackTrace();
         }

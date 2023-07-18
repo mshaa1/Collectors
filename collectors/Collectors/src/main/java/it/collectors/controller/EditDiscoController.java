@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -63,6 +64,9 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
 
     @FXML
     private Label exceptionLabel;
+
+    @FXML
+    private VBox vBox;
 
     private Collezionista collezionista;
 
@@ -176,11 +180,7 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
 
     @FXML
     private void cancel() {
-        try{
-            viewDispatcher.navigateTo(Pages.DISCHI, this.collezionista);
-        } catch (ViewDispatcherException e) {
-            throw new RuntimeException(e);
-        }
+        viewDispatcher.changeStage(vBox.getScene(), vBox, "Dischi", "dischi.fxml", this.collezionista);
     }
 
 }

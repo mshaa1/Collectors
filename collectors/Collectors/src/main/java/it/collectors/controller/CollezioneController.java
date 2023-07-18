@@ -115,7 +115,10 @@ public class CollezioneController implements Initializable, DataInitializable<Co
     public void toggleVisibilityCollection(){
         Query_JDBC db = BusinessFactory.getImplementation();
         Collezione collezione = collezioneTable.getSelectionModel().getSelectedItem();
-        if(collezione == null) return;
+        if(collezione == null){
+            erroreSelezioneLabel.setVisible(true);
+            return;
+        }
         collezione.setFlag(!collezione.getFlag());
         db.modificaFlagCollezione(collezione.getId(), collezione.getFlag());
         collezioneTable.getItems().set(collezioneTable.getSelectionModel().getSelectedIndex(), collezione);

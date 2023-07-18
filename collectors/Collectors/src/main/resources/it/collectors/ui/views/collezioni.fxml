@@ -6,15 +6,16 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.CollezioneController">
+<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.CollezioneController">
    <children>
-      <TableView fx:id="collezioneTable" prefHeight="390.0" prefWidth="800.0">
+      <TableView fx:id="collezioneTable" prefHeight="668.0" prefWidth="1024.0">
         <columns>
-          <TableColumn fx:id="collezioneNomeColonna" prefWidth="400.0" text="Nome collezione" />
-          <TableColumn fx:id="collezioneFlagColonna" prefWidth="399.0" text="Visibilità collezione" />
+          <TableColumn fx:id="collezioneNomeColonna" prefWidth="511.0" text="Nome collezione" />
+          <TableColumn fx:id="collezioneFlagColonna" prefWidth="512.0" text="Visibilità collezione" />
         </columns>
       </TableView>
-      <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0">
+      <Label fx:id="erroreSelezioneLabel" alignment="CENTER" text="Selezionare una collezione" translateX="450.0" translateY="65.0" visible="false" />
+      <HBox alignment="BOTTOM_LEFT" prefHeight="271.0" prefWidth="1024.0" translateX="2.0">
          <children>
             <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#addCollection" style="-fx-background-color: transparent;" text="Aggiungi">
                <cursor>
@@ -31,12 +32,12 @@
                   <Insets />
                </HBox.margin>
             </Button>
-            <Button alignment="CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="26.0" mnemonicParsing="false" onAction="#editCollection" style="-fx-background-color: transparent;" text="Modifica">
+            <Button alignment="CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="26.0" mnemonicParsing="false" onAction="#editCollection" style="-fx-background-color: transparent;" text="Modifica" translateX="4.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <graphic>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" translateX="2.0" translateY="-1.0">
                      <image>
                         <Image url="@../images/edit-button.png" />
                      </image>
@@ -70,34 +71,31 @@
                   <Insets />
                </HBox.margin>
             </Button>
-            <Button alignment="CENTER" contentDisplay="TOP" layoutX="351.0" layoutY="46.0" mnemonicParsing="false" onAction="#condividi" style="-fx-background-color: transparent;" text="Condividi">
+            <Button alignment="CENTER" contentDisplay="TOP" layoutX="351.0" layoutY="46.0" mnemonicParsing="false" onAction="#condividi" style="-fx-background-color: transparent;" text="Condividi" translateX="10.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" translateY="-12.0">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" translateY="-3.0">
                      <image>
                         <Image url="@../images/share.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button alignment="CENTER" contentDisplay="TOP" layoutX="76.0" layoutY="59.0" mnemonicParsing="false" onAction="#condivise" style="-fx-background-color: transparent;" text="Condivise con te">
+            <Button alignment="CENTER" contentDisplay="TOP" layoutX="76.0" layoutY="59.0" mnemonicParsing="false" onAction="#condivise" style="-fx-background-color: transparent;" text="Condivise con te" translateX="10.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <graphic>
-                  <ImageView fitHeight="44.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateY="-8.0">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" translateY="-3.0">
                      <image>
                         <Image url="@../images/Shared%20with%20you.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label fx:id="erroreSelezioneLabel" alignment="CENTER" text="Selezionare una collezione" visible="false" />
-               </children></HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToHome" style="-fx-background-color: transparent;" text="Vai alla Home">
                <cursor>
                   <Cursor fx:constant="HAND" />

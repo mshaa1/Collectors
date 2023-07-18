@@ -11,11 +11,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.*;
 
 public class DischiController<E> implements Initializable, DataInitializable<Collezionista>{
+
+    @FXML
+    private VBox vBox;
 
     @FXML
     private TableView<DiscoWrapper> table;
@@ -156,11 +160,7 @@ public class DischiController<E> implements Initializable, DataInitializable<Col
 
     @FXML
     public void add(){
-        try{
-            this.viewDispatcher.navigateTo(Pages.ADDDISCO, this.collezionista);
-        } catch (ViewDispatcherException e) {
-            e.printStackTrace();
-        }
+        viewDispatcher.changeStage(vBox.getScene(), vBox, "Aggiungi disco", "addDisco.fxml", this.collezionista);
     }
 
     @FXML
@@ -173,7 +173,7 @@ public class DischiController<E> implements Initializable, DataInitializable<Col
     @FXML
     public void ricerca() {
         try {
-            viewDispatcher.navigateTo(Pages.RICERCA, collezionista);
+            viewDispatcher.changeStage(vBox.getScene(), vBox, "Ricerca disco", "ricerca.fxml", this.collezionista);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -188,7 +188,7 @@ public class DischiController<E> implements Initializable, DataInitializable<Col
             discoList.add((E) disco);
             discoList.add((E) collezionista);
             try {
-                viewDispatcher.navigateTo(Pages.IMMAGINI, discoList);
+                viewDispatcher.changeStage(vBox.getScene(), vBox, "Immagini disco", "immaginiDischi.fxml", discoList);
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -200,7 +200,7 @@ public class DischiController<E> implements Initializable, DataInitializable<Col
     @FXML
     public void goToHome() {
         try {
-            viewDispatcher.navigateTo(Pages.HOME,collezionista);
+            viewDispatcher.changeStage(vBox.getScene(), vBox, "Home", "home.fxml", this.collezionista);
         }catch (Exception e) {
             e.printStackTrace();
         }
