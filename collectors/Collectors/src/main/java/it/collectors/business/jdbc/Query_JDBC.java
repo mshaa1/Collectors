@@ -1114,4 +1114,35 @@ public class Query_JDBC {
             throw new RuntimeException(e);
         }
     }
+    // Funzionalità 39
+    public List<Collezionista> getCollezionisti() {
+        try {
+            PreparedStatement query = connection.prepareStatement("select * from collezionista");
+            ResultSet resultSet = query.executeQuery();
+            List<Collezionista> collezionisti = new ArrayList<>();
+            while (resultSet.next()) {
+                collezionisti.add(new Collezionista(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3)));
+            }
+            query.close();
+            return collezionisti;
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
+    }
+    public List<Collezione> getCollezioni() {
+        try {
+            PreparedStatement query = connection.prepareStatement("select * from collezione");
+            ResultSet resultSet = query.executeQuery();
+            List<Collezione> collezioni = new ArrayList<>();
+            while (resultSet.next()) {
+                collezioni.add(new Collezione(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3)));
+            }
+            query.close();
+            return collezioni;
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
+    }
 }

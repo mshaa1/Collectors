@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 
 import java.net.URL;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class CondivisioneController implements Initializable {
@@ -62,10 +63,13 @@ public class CondivisioneController implements Initializable {
     }
 
     public void aggiungiCondivisione(ActionEvent actionEvent) {
-        if(!condivisioneTable.getItems().isEmpty())
-            while(condivisioneTable.getItems().iterator().next().getNickname() != nomeCollezionista.getText()){
-                erroreCollezionistaGiaPresente.setVisible(true);
-                return;
+        if(condivisioneTable.getItems().isEmpty()) return;
+        Iterator<Collezionista> iterator = condivisioneTable.getItems().iterator();
+        while(iterator.hasNext()){
+                if(iterator.next().getNickname().equals(nomeCollezionista.getText())) {
+                    erroreCollezionistaGiaPresente.setVisible(true);
+                    return;
+                }
             }
         Collezionista collezionista = db.getCollezionistaDaNickname(nomeCollezionista.getText());
         if (collezionista == null) {
