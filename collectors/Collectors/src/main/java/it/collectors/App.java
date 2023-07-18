@@ -34,7 +34,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.stage=stage;
-        boolean loginVeloce = true; // mettere true per skippare la pagina di login
+        boolean loginVeloce = false; // mettere true per skippare la pagina di login
         try {
             ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 
