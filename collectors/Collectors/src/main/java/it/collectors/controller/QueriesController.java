@@ -162,8 +162,13 @@ public class QueriesController implements Initializable, DataInitializable<Colle
     }
     @FXML
     private void goToOperazione11 () {
-
+        try {
+            viewDispatcher.changeStage(anchorPane.getScene(), anchorPane, "Profilo", "profilo.fxml", this.collezionista);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
+
     @FXML
     private void goToOperazione12 () {
         try {

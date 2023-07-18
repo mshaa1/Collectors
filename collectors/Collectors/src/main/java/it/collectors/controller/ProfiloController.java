@@ -45,6 +45,18 @@ public class ProfiloController implements Initializable, DataInitializable<Colle
     private TableView<DiscoDuplicati> dischiDuplicati;
 
     @FXML
+    private TableView<AutoreWrapper> minutiTotali;
+
+    @FXML
+    private TableColumn<AutoreWrapper, String> autore;
+
+    @FXML
+    private TableColumn<AutoreWrapper, String> numeroMinuti;
+
+
+
+
+    @FXML
     private TableColumn<GenereNumeroDischi, String> genere;
 
     @FXML
@@ -92,6 +104,22 @@ public class ProfiloController implements Initializable, DataInitializable<Colle
 
         public int getNumeroDuplicati() {
             return numeroDuplicati;
+        }
+    }
+    protected class AutoreWrapper{
+        Autore autore;
+        Integer minuti;
+
+        public AutoreWrapper(Autore autore, Integer minuti){
+            this.autore = autore;
+            this.minuti = minuti;
+        }
+
+        public String getNomeDAutore() {
+            return autore.getNomeDAutore();
+        }
+        public Integer getMinuti() {
+            return minuti;
         }
     }
 
@@ -149,12 +177,19 @@ public class ProfiloController implements Initializable, DataInitializable<Colle
         nomeDisco.setCellValueFactory(new PropertyValueFactory<>("nomeDisco"));
         duplicatiDisco.setCellValueFactory(new PropertyValueFactory<>("numeroDuplicati"));
 
+        autore.setCellValueFactory(new PropertyValueFactory<>("NomeDAutore"));
+        numeroMinuti.setCellValueFactory(new PropertyValueFactory<>("minuti"));
+
         for (GenereNumeroDischi gnd : getGenereNumeroDischi()) {
             table.getItems().add(gnd);
         }
 
         for (DiscoDuplicati dd : getNumeroDischiDuplicati()) {
             dischiDuplicati.getItems().add(dd);
+        }
+
+        for(Autore a : queryJdbc.getAutori()){
+            minutiTotali.getItems().add(new AutoreWrapper(a,queryJdbc.getMinutiTotaliMusicaPerAutore(a.getId())));
         }
 
 

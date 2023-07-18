@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.ProfiloController">
+<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.ProfiloController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="363.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
          <children>
@@ -59,20 +64,25 @@
             </HBox>
          </children>
       </VBox>
-      <HBox prefHeight="490.0" prefWidth="1004.0" translateY="-80.0">
+      <HBox prefHeight="490.0" prefWidth="1004.0" spacing="10.0" translateY="-80.0">
          <children>
             <TableView fx:id="table" prefHeight="222.0" prefWidth="453.0">
               <columns>
-                <TableColumn fx:id="genere" prefWidth="198.0" text="Genere" />
-                <TableColumn fx:id="numero" prefWidth="203.0" text="Numero Dischi" />
+                <TableColumn fx:id="genere" prefWidth="144.79999101161957" text="Genere" />
+                <TableColumn fx:id="numero" prefWidth="182.40003967285156" text="Numero Dischi" />
               </columns>
             </TableView>
-            <HBox prefHeight="222.0" prefWidth="254.0" HBox.hgrow="ALWAYS" />
             <TableView fx:id="dischiDuplicati" prefHeight="222.0" prefWidth="446.0">
               <columns>
                 <TableColumn fx:id="nomeDisco" prefWidth="198.0" text="Nome Disco" />
-                <TableColumn fx:id="duplicatiDisco" prefWidth="198.0" text="Duplicati" />
+                <TableColumn fx:id="duplicatiDisco" prefWidth="122.39996337890625" text="Duplicati" />
               </columns>
+            </TableView>
+            <TableView fx:id="minutiTotali" layoutX="10.0" layoutY="10.0" prefHeight="222.0" prefWidth="453.0">
+               <columns>
+                  <TableColumn fx:id="autore" prefWidth="172.80004274845123" text="Autore" />
+                  <TableColumn fx:id="numeroMinuti" prefWidth="155.199951171875" text="Numero Minuti" />
+               </columns>
             </TableView>
          </children>
       </HBox>
