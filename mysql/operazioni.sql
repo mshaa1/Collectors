@@ -35,7 +35,6 @@ begin
     set id = last_insert_id();
 
     return id;
-    -- notare che possono essere create anche collezioni con stesso nome
 end$
 
 

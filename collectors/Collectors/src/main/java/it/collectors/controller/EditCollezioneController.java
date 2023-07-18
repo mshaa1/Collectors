@@ -17,17 +17,24 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class EditCollezioneController implements Initializable {
+
     @FXML
     private Label erroreNomeCollezioneLabel;
+
     private Collezionista collezionista;
+
     private Collezione collezione;
+
     private List<Disco> dischiPrimaDiModifica;
+
     protected void setCollezionista(Collezionista c){
         this.collezionista=c;
     }
+
     protected void setCollezione(Collezione c){
         this.collezione=c;
     }
+
     @FXML
     private TextField nome;
 
@@ -40,14 +47,15 @@ public class EditCollezioneController implements Initializable {
     @FXML
     private TableView<Disco> collezioneTable;
 
-
     @FXML
     private TableColumn<Disco, String> titoloDischiColumn;
+
     @FXML
     private TableColumn<Disco, String> barcodeDischiColumn;
 
     @FXML
     private TableColumn<Disco, String> titoloCollezioneColumn;
+
     @FXML
     private TableColumn<Disco, String> barcodeCollezioneColumn;
 
@@ -69,8 +77,6 @@ public class EditCollezioneController implements Initializable {
         });
         collezioneTable.setPlaceholder(new Label("Nessun disco in collezione"));
         dischiTable.setPlaceholder(new Label("Nessun disco disponibile"));
-
-
     }
 
     protected void loadTable() {
@@ -82,7 +88,6 @@ public class EditCollezioneController implements Initializable {
         dischiTable.getItems().removeAll(dischi);
         collezioneTable.getItems().addAll(dischi);
         dischiPrimaDiModifica = dischi;
-
     }
 
 

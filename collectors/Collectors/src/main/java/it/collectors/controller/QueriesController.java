@@ -78,7 +78,7 @@ public class QueriesController implements Initializable, DataInitializable<Colle
     @FXML
     private void goToOperazione3 (){
         try {
-            viewDispatcher.navigateTo(Pages.COLLECTIONS, this.collezionista);
+            viewDispatcher.changeStage(anchorPane.getScene(), anchorPane, "Collezioni", "collezioni.fxml", this.collezionista);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -86,7 +86,7 @@ public class QueriesController implements Initializable, DataInitializable<Colle
     @FXML
     private void goToOperazione4 () {
         try {
-            viewDispatcher.navigateTo(Pages.COLLECTIONS, this.collezionista);
+            viewDispatcher.changeStage(anchorPane.getScene(), anchorPane, "Collezioni", "collezioni.fxml", this.collezionista);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -94,7 +94,7 @@ public class QueriesController implements Initializable, DataInitializable<Colle
     @FXML
     private void goToOperazione5 () {
         try {
-            viewDispatcher.navigateTo(Pages.COLLECTIONS, this.collezionista);
+            viewDispatcher.changeStage(anchorPane.getScene(), anchorPane, "Collezioni", "collezioni.fxml", this.collezionista);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -102,7 +102,7 @@ public class QueriesController implements Initializable, DataInitializable<Colle
     @FXML
     private void goToOperazione6 () {
         try {
-            viewDispatcher.navigateTo(Pages.HOME, this.collezionista);
+            viewDispatcher.changeStage(anchorPane.getScene(), anchorPane, "Home", "home.fxml", this.collezionista);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -110,7 +110,7 @@ public class QueriesController implements Initializable, DataInitializable<Colle
     @FXML
     private void goToOperazione7 () {
         try {
-            viewDispatcher.navigateTo(Pages.HOME, this.collezionista);
+            viewDispatcher.changeStage(anchorPane.getScene(), anchorPane, "Home", "home.fxml", this.collezionista);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -118,7 +118,7 @@ public class QueriesController implements Initializable, DataInitializable<Colle
     @FXML
     private void goToOperazione8 () {
         try {
-            viewDispatcher.navigateTo(Pages.DISCHI, this.collezionista);
+            viewDispatcher.changeStage(anchorPane.getScene(), anchorPane, "Dischi", "dischi.fxml", this.collezionista);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -148,7 +148,7 @@ public class QueriesController implements Initializable, DataInitializable<Colle
     @FXML
     private void goToOperazione12 () {
         try {
-            viewDispatcher.navigateTo(Pages.PROFILO, this.collezionista);
+            viewDispatcher.changeStage(anchorPane.getScene(), anchorPane, "Profilo", "profilo.fxml", this.collezionista);
         }catch (Exception e){
             e.printStackTrace();
         }
