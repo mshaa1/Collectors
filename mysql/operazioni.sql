@@ -486,9 +486,11 @@ create procedure inserisci_disco(in ID_collezionista varchar(25), in titolo varc
                                  in descrizione_conservazione varchar(255), in ID_etichetta integer,
                                  in ID_genere integer)
 begin
-    select ID
+    select disco.ID
     from disco
-    where disco.titolo = titolo
+    join colleziona_dischi on disco.ID = colleziona_dischi.ID_disco
+    where colleziona_dischi.ID_collezionista = ID_collezionista
+      and disco.titolo = titolo
       and disco.anno_uscita = anno_uscita
       and disco.barcode = barcode
       and disco.formato = formato
@@ -496,6 +498,7 @@ begin
       and disco.descrizione_conservazione = descrizione_conservazione
       and disco.ID_etichetta = ID_etichetta
       and disco.ID_genere = ID_genere
+
     into @ID_disco;
 
     if (@ID_disco is null) then
@@ -503,37 +506,19 @@ begin
                           ID_etichetta, ID_genere)
         values (titolo, anno_uscita, barcode, formato, stato_conservazione, descrizione_conservazione, ID_etichetta,
                 ID_genere);
-
-        select ID
-        from disco
-        where disco.titolo = titolo
-          and disco.anno_uscita = anno_uscita
-          and disco.barcode = barcode
-          and disco.formato = formato
-          and disco.stato_conservazione = stato_conservazione
-          and disco.descrizione_conservazione = descrizione_conservazione
-          and disco.ID_etichetta = ID_etichetta
-          and disco.ID_genere = ID_genere
-        into @ID_disco;
-    end if;
-
-
-    select numero_duplicati
-    from colleziona_dischi
-    where colleziona_dischi.ID_collezionista = ID_collezionista
-      and colleziona_dischi.ID_disco = @ID_disco
-    into @numero_duplicati;
-
-    if (@numero_duplicati is null)
-    then
         insert into colleziona_dischi (ID_collezionista, ID_disco, numero_duplicati)
-        values (ID_collezionista, @ID_disco, 0);
-    else
-        update colleziona_dischi
+        values (ID_collezionista, last_insert_id(), 0);
+
+        else
+
+            update colleziona_dischi
         set numero_duplicati = numero_duplicati + 1
-        where colleziona_dischi.ID_collezionista = ID_collezionista
+        where  ID_collezionista = colleziona_dischi.ID_collezionista
           and colleziona_dischi.ID_disco = @ID_disco;
-    end if;
+
+            end if;
+
+
 
 end $
 

@@ -168,9 +168,10 @@ public class EditDiscoController implements Initializable, DataInitializable<Col
 
     @FXML
     private void addDisk() {
-        if(query_jdbc.inserisciDisco(this.collezionista.getId(),this.titoloDisco.getText(), Integer.parseInt(this.annoUscita.getText()), this.barcodeDisco.getText(),
+        if(query_jdbc.inserisciDisco(this.collezionista.getId(), this.titoloDisco.getText(), Integer.parseInt(this.annoUscita.getText()), this.barcodeDisco.getText(),
                 this.formatoComboBox.getValue(), this.statoConservazioneComboBox.getValue(),
-                this.descrizioneConservazione.getText(), this.etichettaComboBox.getSelectionModel().getSelectedItem().getId(),
+                this.descrizioneConservazione.getText(),
+                this.etichettaComboBox.getSelectionModel().getSelectedItem().getId(),
                 this.genereComboBox.getSelectionModel().getSelectedItem().getId())) {
             this.exceptionLabel.textProperty().set("Disco inserito correttamente / incrementato il numero dei suoi duplicati");
         } else {
