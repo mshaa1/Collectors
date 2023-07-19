@@ -40,7 +40,7 @@ CREATE TABLE `autore` (
 
 LOCK TABLES `autore` WRITE;
 /*!40000 ALTER TABLE `autore` DISABLE KEYS */;
-INSERT INTO `autore` (`ID`, `nome`, `cognome`, `data_nascita`, `nome_autore`, `info`, `ruolo`) VALUES (1,'Hitori','Gotou','2004-02-21','GuitarHero',NULL,'poliedrico'),(2,'Nijika','Ijichi','2004-05-29','Nijika',NULL,'poliedrico'),(3,'Ryo','Yamada','2002-09-18','Ryo',NULL,'poliedrico'),(4,'Kita','Ikuyo','2003-04-21','Kita','la chitarra scappata','poliedrico'),(5,NULL,NULL,'1988-12-23','Tobu',NULL,'poliedrico'),(6,NULL,NULL,'1997-10-05','Janji',NULL,'poliedrico'),(7,NULL,NULL,'2007-01-06','BURNOUT SYNDROMES',NULL,'poliedrico');
+INSERT INTO `autore` VALUES (1,'Hitori','Gotou','2004-02-21','GuitarHero',NULL,'poliedrico'),(2,'Nijika','Ijichi','2004-05-29','Nijika',NULL,'poliedrico'),(3,'Ryo','Yamada','2002-09-18','Ryo',NULL,'poliedrico'),(4,'Kita','Ikuyo','2003-04-21','Kita','la chitarra scappata','poliedrico'),(5,NULL,NULL,'1988-12-23','Tobu',NULL,'poliedrico'),(6,NULL,NULL,'1997-10-05','Janji',NULL,'poliedrico'),(7,NULL,NULL,'2007-01-06','BURNOUT SYNDROMES',NULL,'poliedrico');
 /*!40000 ALTER TABLE `autore` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -68,7 +68,7 @@ CREATE TABLE `colleziona_dischi` (
 
 LOCK TABLES `colleziona_dischi` WRITE;
 /*!40000 ALTER TABLE `colleziona_dischi` DISABLE KEYS */;
-INSERT INTO `colleziona_dischi` (`numero_duplicati`, `ID_collezionista`, `ID_disco`) VALUES (1,1,2),(1,1,3),(1,1,4),(0,1,5),(0,1,6),(0,2,2),(0,2,3),(0,2,1),(1,2,5),(1,2,6),(0,3,2),(0,3,3),(0,3,4),(0,3,1),(0,4,1);
+INSERT INTO `colleziona_dischi` VALUES (1,1,2),(1,1,3),(1,1,4),(0,1,5),(0,1,6),(0,2,2),(0,2,3),(0,2,1),(1,2,5),(1,2,6),(0,3,2),(0,3,3),(0,3,4),(0,3,1),(0,4,1);
 /*!40000 ALTER TABLE `colleziona_dischi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,7 +96,7 @@ CREATE TABLE `collezione` (
 
 LOCK TABLES `collezione` WRITE;
 /*!40000 ALTER TABLE `collezione` DISABLE KEYS */;
-INSERT INTO `collezione` (`ID`, `nome`, `flag`, `ID_collezionista`) VALUES (1,'Dr.Stone OST',1,1),(2,'Canzoni',1,2),(3,'Anime',0,3),(4,'kessoku',0,4),(5,'Main playlist',0,1),(6,'House',0,2);
+INSERT INTO `collezione` VALUES (1,'Dr.Stone OST',1,1),(2,'Canzoni',1,2),(3,'Anime',0,3),(4,'kessoku',0,4),(5,'Main playlist',0,1),(6,'House',0,2);
 /*!40000 ALTER TABLE `collezione` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,7 +124,7 @@ CREATE TABLE `collezionista` (
 
 LOCK TABLES `collezionista` WRITE;
 /*!40000 ALTER TABLE `collezionista` DISABLE KEYS */;
-INSERT INTO `collezionista` (`ID`, `email`, `nickname`) VALUES (1,'a@a.a','a'),(2,'napoliteam@outlook.com','TeamNapoli'),(3,'loacker@temp232.it','SupaHacka'),(4,'AloneGotou@gmail.jp','GuitarHero');
+INSERT INTO `collezionista` VALUES (1,'a@a.a','a'),(2,'napoliteam@outlook.com','TeamNapoli'),(3,'loacker@temp232.it','SupaHacka'),(4,'AloneGotou@gmail.jp','GuitarHero');
 /*!40000 ALTER TABLE `collezionista` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,7 +151,7 @@ CREATE TABLE `comprende_dischi` (
 
 LOCK TABLES `comprende_dischi` WRITE;
 /*!40000 ALTER TABLE `comprende_dischi` DISABLE KEYS */;
-INSERT INTO `comprende_dischi` (`ID_collezione`, `ID_disco`) VALUES (1,2),(1,3),(1,4),(2,5),(2,6),(2,1),(2,2),(2,3),(3,1),(3,2),(3,3),(3,4),(4,1),(5,2),(5,3),(5,4),(5,5),(5,6),(6,5),(6,6);
+INSERT INTO `comprende_dischi` VALUES (1,2),(1,3),(1,4),(2,5),(2,6),(2,1),(2,2),(2,3),(3,1),(3,2),(3,3),(3,4),(4,1),(5,2),(5,3),(5,4),(5,5),(5,6),(6,5),(6,6);
 /*!40000 ALTER TABLE `comprende_dischi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,7 +178,7 @@ CREATE TABLE `condivide` (
 
 LOCK TABLES `condivide` WRITE;
 /*!40000 ALTER TABLE `condivide` DISABLE KEYS */;
-INSERT INTO `condivide` (`ID_collezione`, `ID_collezionista`) VALUES (2,4),(3,1);
+INSERT INTO `condivide` VALUES (2,4),(3,1);
 /*!40000 ALTER TABLE `condivide` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -213,7 +213,7 @@ CREATE TABLE `disco` (
 
 LOCK TABLES `disco` WRITE;
 /*!40000 ALTER TABLE `disco` DISABLE KEYS */;
-INSERT INTO `disco` (`ID`, `titolo`, `anno_uscita`, `barcode`, `formato`, `stato_conservazione`, `descrizione_conservazione`, `ID_etichetta`, `ID_genere`) VALUES (1,'kessoku bando album',2022,'92999282','digitale',NULL,NULL,1,2),(2,'Dr. Stone Original Soundtrack',2019,'2767236','cd','come nuovo',NULL,3,1),(3,'Dr. Stone Original Soundtrack 2',2021,'274829','vinile','ottimo','ripescato dal mare',3,1),(4,'Dr. Stone Original Soundtrack 3',2023,'72483','digitale','accettabile','non completo',3,1),(5,'Tobu collection',2023,'243432','digitale',NULL,NULL,2,3),(6,'Janji',2022,'378465783','digitale',NULL,NULL,2,3);
+INSERT INTO `disco` VALUES (1,'kessoku bando album',2022,'92999282','digitale',NULL,NULL,1,2),(2,'Dr. Stone Original Soundtrack',2019,'2767236','cd','come nuovo',NULL,3,1),(3,'Dr. Stone Original Soundtrack 2',2021,'274829','vinile','ottimo','ripescato dal mare',3,1),(4,'Dr. Stone Original Soundtrack 3',2023,'72483','digitale','accettabile','non completo',3,1),(5,'Tobu collection',2023,'243432','digitale',NULL,NULL,2,3),(6,'Janji',2022,'378465783','digitale',NULL,NULL,2,3);
 /*!40000 ALTER TABLE `disco` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -224,7 +224,6 @@ UNLOCK TABLES;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-/*!50032 DROP TRIGGER IF EXISTS Check_Anno_Uscita_Inserimento_Disco */;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `Check_Anno_Uscita_Inserimento_Disco` BEFORE INSERT ON `disco` FOR EACH ROW begin
     if NEW.anno_uscita > year(current_date) or NEW.anno_uscita < 1900 then
@@ -244,7 +243,6 @@ DELIMITER ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-/*!50032 DROP TRIGGER IF EXISTS Check_Anno_Uscita_Aggiornamento_Disco */;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `Check_Anno_Uscita_Aggiornamento_Disco` BEFORE UPDATE ON `disco` FOR EACH ROW begin
     if NEW.anno_uscita > year(current_date) or NEW.anno_uscita < 1900 then
@@ -280,7 +278,7 @@ CREATE TABLE `etichetta` (
 
 LOCK TABLES `etichetta` WRITE;
 /*!40000 ALTER TABLE `etichetta` DISABLE KEYS */;
-INSERT INTO `etichetta` (`ID`, `nome`, `sede_legale`, `email`) VALUES (1,'Aniplex','Tokyo','Aniplex.business@aho.jp'),(2,'NCS','Oslo','nocopyrightsongs@support.com'),(3,'TMS','Tokyo','TMSCompany@jld.com');
+INSERT INTO `etichetta` VALUES (1,'Aniplex','Tokyo','Aniplex.business@aho.jp'),(2,'NCS','Oslo','nocopyrightsongs@support.com'),(3,'TMS','Tokyo','TMSCompany@jld.com');
 /*!40000 ALTER TABLE `etichetta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -305,7 +303,7 @@ CREATE TABLE `genere` (
 
 LOCK TABLES `genere` WRITE;
 /*!40000 ALTER TABLE `genere` DISABLE KEYS */;
-INSERT INTO `genere` (`ID`, `nome`) VALUES (1,'OST'),(3,'Progressive Electronic'),(2,'Rock');
+INSERT INTO `genere` VALUES (1,'OST'),(3,'Progressive Electronic'),(2,'Rock');
 /*!40000 ALTER TABLE `genere` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -406,7 +404,7 @@ CREATE TABLE `produce_disco` (
 
 LOCK TABLES `produce_disco` WRITE;
 /*!40000 ALTER TABLE `produce_disco` DISABLE KEYS */;
-INSERT INTO `produce_disco` (`ID_disco`, `ID_autore`) VALUES (1,1),(1,2),(1,3),(1,4),(2,7),(3,7),(4,7),(5,5),(6,6);
+INSERT INTO `produce_disco` VALUES (1,1),(1,2),(1,3),(1,4),(2,7),(3,7),(4,7),(5,5),(6,6);
 /*!40000 ALTER TABLE `produce_disco` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -433,7 +431,7 @@ CREATE TABLE `realizza_traccia` (
 
 LOCK TABLES `realizza_traccia` WRITE;
 /*!40000 ALTER TABLE `realizza_traccia` DISABLE KEYS */;
-INSERT INTO `realizza_traccia` (`ID_traccia`, `ID_autore`) VALUES (1,1),(1,2),(1,3),(2,1),(2,3),(3,2),(3,3),(4,1),(4,3),(5,1),(5,4),(6,3),(7,3),(8,2),(9,4),(10,3),(10,4),(11,2),(11,1),(12,3),(12,4),(13,1),(13,3),(14,1),(15,7),(16,7),(17,7),(18,7),(19,7),(20,7),(21,7),(22,7),(23,7),(24,7),(25,7),(26,7),(27,5),(28,5),(29,5),(30,5),(31,6),(32,6),(33,6),(34,6);
+INSERT INTO `realizza_traccia` VALUES (1,1),(1,2),(1,3),(2,1),(2,3),(3,2),(3,3),(4,1),(4,3),(5,1),(5,4),(6,3),(7,3),(8,2),(9,4),(10,3),(10,4),(11,2),(11,1),(12,3),(12,4),(13,1),(13,3),(14,1),(15,7),(16,7),(17,7),(18,7),(19,7),(20,7),(21,7),(22,7),(23,7),(24,7),(25,7),(26,7),(27,5),(28,5),(29,5),(30,5),(31,6),(32,6),(33,6),(34,6);
 /*!40000 ALTER TABLE `realizza_traccia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -462,7 +460,7 @@ CREATE TABLE `traccia` (
 
 LOCK TABLES `traccia` WRITE;
 /*!40000 ALTER TABLE `traccia` DISABLE KEYS */;
-INSERT INTO `traccia` (`ID`, `titolo`, `durata`, `ID_disco`) VALUES (1,'Seishun Complex','00:03:23',1),(2,'Hitoribocchi Tokyo','00:03:52',1),(3,'Distortion!!','00:03:23',1),(4,'Secret Base','00:03:52',1),(5,'Guitar, Loneliness and Blue Planet','00:03:48',1),(6,'I Can\'t Sing a Love Song','00:03:08',1),(7,'That Band','00:03:33',1),(8,'Karakara','00:04:25',1),(9,'The Little Sea','00:03:43',1),(10,'What Is Wrong With','00:03:47',1),(11,'Never Forget','00:03:43',1),(12,'If I Could Be a Constellation','00:04:18',1),(13,'Flashbacker','00:04:35',1),(14,'Rockn\' Roll, Morning Light Falls on You','00:04:31',1),(15,'STONE WORLD','00:03:27',2),(16,'Turned To Stone','00:01:28',2),(17,'Beginning','00:02:39',2),(18,'From Zero','00:02:38',2),(19,'Trash is a Treasure','00:02:42',3),(20,'Won\'t Give Up','00:02:15',3),(21,'One Small Step','00:04:11',3),(22,'Wake Up, Senku!!','00:01:41',3),(23,'Senku\'s Story','00:04:35',4),(24,'Spinning Gears','00:02:45',4),(25,'Kohaku VS Homura','00:02:32',4),(26,'Connecting Dots','00:02:24',4),(27,'Caelum','00:03:23',5),(28,'Colors','00:03:52',5),(29,'Candyland','00:03:23',5),(30,'Cloud 9','00:03:52',5),(31,'Shadows','00:03:52',6),(32,'Dawn','00:03:29',6),(33,'Aurora','00:04:22',6),(34,'Horizon','00:03:17',6);
+INSERT INTO `traccia` VALUES (1,'Seishun Complex','00:03:23',1),(2,'Hitoribocchi Tokyo','00:03:52',1),(3,'Distortion!!','00:03:23',1),(4,'Secret Base','00:03:52',1),(5,'Guitar, Loneliness and Blue Planet','00:03:48',1),(6,'I Can\'t Sing a Love Song','00:03:08',1),(7,'That Band','00:03:33',1),(8,'Karakara','00:04:25',1),(9,'The Little Sea','00:03:43',1),(10,'What Is Wrong With','00:03:47',1),(11,'Never Forget','00:03:43',1),(12,'If I Could Be a Constellation','00:04:18',1),(13,'Flashbacker','00:04:35',1),(14,'Rockn\' Roll, Morning Light Falls on You','00:04:31',1),(15,'STONE WORLD','00:03:27',2),(16,'Turned To Stone','00:01:28',2),(17,'Beginning','00:02:39',2),(18,'From Zero','00:02:38',2),(19,'Trash is a Treasure','00:02:42',3),(20,'Won\'t Give Up','00:02:15',3),(21,'One Small Step','00:04:11',3),(22,'Wake Up, Senku!!','00:01:41',3),(23,'Senku\'s Story','00:04:35',4),(24,'Spinning Gears','00:02:45',4),(25,'Kohaku VS Homura','00:02:32',4),(26,'Connecting Dots','00:02:24',4),(27,'Caelum','00:03:23',5),(28,'Colors','00:03:52',5),(29,'Candyland','00:03:23',5),(30,'Cloud 9','00:03:52',5),(31,'Shadows','00:03:52',6),(32,'Dawn','00:03:29',6),(33,'Aurora','00:04:22',6),(34,'Horizon','00:03:17',6);
 /*!40000 ALTER TABLE `traccia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -511,4 +509,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-18 23:58:31
+-- Dump completed on 2023-07-19 13:53:18

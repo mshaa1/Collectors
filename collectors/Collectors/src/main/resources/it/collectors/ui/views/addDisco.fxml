@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="vBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.EditDiscoController">
+<VBox fx:id="vBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.collectors.controller.EditDiscoController">
    <children>
       <TextField fx:id="titoloDisco" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" promptText="Inserisci titolo disco" />
        <TextField fx:id="annoUscita" maxWidth="300.0" minWidth="300.0" promptText="Inserisci anno di uscita del disco">
@@ -65,7 +65,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="96.0" text="Annulla">
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="96.0" text="Indietro">
                <HBox.margin>
                   <Insets right="200.0" />
                </HBox.margin>
