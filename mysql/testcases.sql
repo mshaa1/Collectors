@@ -3,7 +3,7 @@ use collectors;
 
 insert into collezionista(ID, email, nickname)
 VALUES
-    (1,'a@a.a', 'a'),
+    (1,'rossidiana@gmail.com', 'Diana'),
     (2,'napoliteam@outlook.com', 'TeamNapoli'),
     (3,'loacker@temp232.it', 'SupaHacka'),
     (4,'AloneGotou@gmail.jp','GuitarHero');

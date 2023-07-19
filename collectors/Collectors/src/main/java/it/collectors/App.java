@@ -33,15 +33,15 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        this.stage=stage;
-        boolean loginVeloce = false; // mettere true per skippare la pagina di login
+        this.stage = stage;
+        boolean loginVeloce = false; // mettere true per skippare la pagina di login (only for test purpose)
         try {
             ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 
             viewDispatcher.setStage(stage);
             if(loginVeloce) {
                 try {
-                    viewDispatcher.navigateTo(Pages.HOME, new Collezionista(1,"a@a.a","a"));
+                    viewDispatcher.navigateTo(Pages.HOME, new Collezionista(1,"rossidiana@gmail.com","Diana"));
                 } catch (ViewDispatcherException e) {
                     throw new RuntimeException(e);
                 }

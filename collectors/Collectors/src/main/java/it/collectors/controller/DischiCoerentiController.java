@@ -97,8 +97,6 @@ public class DischiCoerentiController implements Initializable, DataInitializabl
 
         Map<Disco, Integer> dischi = db.dischiSimiliA(barcodeField.getText(), discoField.getText(), autoreField.getText());
 
-        System.out.println(dischi.size());
-
         if (dischi == null) return;
 
         List<DiscoWrapper> dischiWrapper = new ArrayList<>();
